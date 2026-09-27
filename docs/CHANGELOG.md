@@ -5,6 +5,34 @@ All notable changes to the **SoulQuote** project will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] - 2026-09-27
+
+### Added
+- **Phase 7 Dynamic Content Update System**:
+  - `ContentManifest`:
+    - Structured DTO with parser for `manifestVersion`, `contentVersion`, `minAppVersion`, `packageUrl`, `packageSizeBytes`, `packageChecksumSha256`, `changelog`, `quotesCount`, and `meditationsCount`.
+    - Checksum normalization (`lowercase` and trimmed) preventing hash comparison false-negatives.
+  - `ContentPackage`:
+    - Robust JSON parser mapping incoming delta payloads to Room entities (`QuoteEntity`, `QuoteCategoryEntity`, `TemplateEntity`, `MeditationEntity`, `MeditationCategoryEntity`).
+  - `ContentUpdateManager`:
+    - Safe download/extraction to isolated cache directory `cacheDir/staging/`.
+    - Cryptographic SHA-256 integrity verification against package manifest before processing.
+    - Version guard (`contentVersion` comparator and `minAppVersion` compatibility check against `BuildConfig.VERSION_CODE`).
+    - Atomic database transaction (`withTransaction`) with automatic rollback on error to protect local data integrity.
+    - Automatic cleanup of temporary staging files upon completion or failure.
+  - Presentation & UI in `SettingsScreen`:
+    - Interactive "Pembaruan Konten" Card with live version pill badge (`v3` -> `v4`).
+    - Real-time content statistics (`72 Kutipan • 4 Meditasi` -> `77 Kutipan • 4 Meditasi`).
+    - Dismissable status and success alert banners.
+    - Package preview showing changelog, file size in KB, and new quote count.
+    - "Perbarui Sekarang" action button with progress feedback (`LinearProgressIndicator` and step descriptions).
+    - "Periksa Pembaruan Konten" button with live circular loading indicator.
+  - Seed Content Package:
+    - Bundled `seed/content_manifest.json` and `seed/content_update_v4.json` containing 5 new quotes by Bunda Arsaningsih.
+  - Verification & Testing:
+    - Unit tests (`ContentUpdateTest`) covering manifest parsing, package entity transformation, SHA-256 file hashing, and version check logic.
+    - Live physical device verification on Xiaomi Redmi Note 8 Pro (`com.dearyoti.soulquote`): verified update check, atomic merge from v3 to v4 (72 -> 77 quotes), and immediate appearance of newly added quotes in `ExploreScreen`.
+
 ## [0.7.0] - 2026-09-27
 
 ### Added

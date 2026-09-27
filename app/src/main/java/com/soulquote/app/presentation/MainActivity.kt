@@ -129,6 +129,12 @@ class MainActivity : ComponentActivity() {
                 ambientViewModel.applyPreset(preset)
             }
         }
+        val contentAction = intent?.getStringExtra("extra_content_action")
+        if (contentAction == "check") {
+            settingsViewModel.checkForUpdates()
+        } else if (contentAction == "apply") {
+            settingsViewModel.applyContentUpdate()
+        }
     }
 }
 

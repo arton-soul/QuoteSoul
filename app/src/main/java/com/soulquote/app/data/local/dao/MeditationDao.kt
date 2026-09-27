@@ -20,6 +20,9 @@ interface MeditationDao {
     @Query("SELECT * FROM meditations WHERE id = :id")
     suspend fun getMeditationById(id: String): MeditationEntity?
 
+    @Query("SELECT COUNT(*) FROM meditations WHERE active = 1")
+    suspend fun getActiveMeditationCount(): Int
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMeditations(meditations: List<MeditationEntity>)
 

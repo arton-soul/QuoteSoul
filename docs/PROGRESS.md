@@ -75,13 +75,13 @@
 ---
 
 ## Phase 7 — Content Update
-- [ ] Content manifest DTO and parser
-- [ ] Version comparison logic
-- [ ] Secure package download to staging
-- [ ] SHA-256 checksum verification
-- [ ] Safe database transaction & atomic merge
-- [ ] Error rollback mechanism
-- [ ] Content update UI status
+- [x] Content manifest DTO and parser (2026-09-27 | Status: DONE | ContentManifest parser with schema validation, checksum normalization, and minAppVersion constraint)
+- [x] Version comparison logic (2026-09-27 | Status: DONE | Manifest vs Room content_version comparator with AppUpdateRequired guard)
+- [x] Secure package download to staging (2026-09-27 | Status: DONE | Download/stream to cacheDir/staging/ .tmp with isolated cleanup)
+- [x] SHA-256 checksum verification (2026-09-27 | Status: DONE | Strict SHA-256 integrity verification before parsing; aborts on mismatch)
+- [x] Safe database transaction & atomic merge (2026-09-27 | Status: DONE | Room withTransaction atomic upsert for categories, quotes, templates, and meditations)
+- [x] Error rollback mechanism (2026-09-27 | Status: DONE | Atomic transaction rollback on exceptions, staging file cleanup on failure)
+- [x] Content update UI status (2026-09-27 | Status: DONE | Interactive card in Settings with live version badge, quote counts, changelog preview, progress bar, and 1-tap update)
 
 ---
 
