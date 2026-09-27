@@ -1,6 +1,7 @@
 package com.soulquote.app.presentation
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,29 +21,30 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.soulquote.app.SoulQuoteApp
 import com.soulquote.app.core.notification.NotificationHelper
 import com.soulquote.app.core.theme.SoulQuoteTheme
+import com.soulquote.app.presentation.ambient.AmbientViewModel
+import com.soulquote.app.presentation.ambient.AmbientViewModelFactory
+import com.soulquote.app.presentation.journal.JournalViewModel
+import com.soulquote.app.presentation.meditation.MeditationViewModel
+import com.soulquote.app.presentation.meditation.MeditationViewModelFactory
 import com.soulquote.app.presentation.navigation.Screen
 import com.soulquote.app.presentation.navigation.SoulQuoteNavGraph
 import com.soulquote.app.presentation.quotes.QuoteViewModel
 import com.soulquote.app.presentation.quotes.QuoteViewModelFactory
-import com.soulquote.app.presentation.meditation.MeditationViewModel
-import com.soulquote.app.presentation.meditation.MeditationViewModelFactory
-import com.soulquote.app.presentation.ambient.AmbientViewModel
-import com.soulquote.app.presentation.ambient.AmbientViewModelFactory
 import com.soulquote.app.presentation.settings.SettingsViewModel
 import com.soulquote.app.presentation.settings.SettingsViewModelFactory
 import com.soulquote.app.presentation.studio.StudioViewModel
 import com.soulquote.app.presentation.studio.StudioViewModelFactory
-import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
@@ -71,6 +73,11 @@ class MainActivity : ComponentActivity() {
         AmbientViewModelFactory(appContainer)
     }
 
+    private val journalViewModel: JournalViewModel by viewModels {
+        val appContainer = (application as SoulQuoteApp).appContainer
+        JournalViewModel.provideFactory(appContainer.journalRepository)
+    }
+
     private val _navTarget = MutableStateFlow<String?>(null)
     val navTarget: StateFlow<String?> = _navTarget.asStateFlow()
 
@@ -87,6 +94,7 @@ class MainActivity : ComponentActivity() {
                     studioViewModel = studioViewModel,
                     meditationViewModel = meditationViewModel,
                     ambientViewModel = ambientViewModel,
+                    journalViewModel = journalViewModel,
                     navTargetState = navTarget,
                     onConsumeNavTarget = { _navTarget.value = null }
                 )
@@ -110,6 +118,68 @@ class MainActivity : ComponentActivity() {
             }
             _navTarget.value = target
         }
+
+        // Deep Link Handling (Phase 10: soulquote://... and https://soulquote.app/...)
+        val dataUri: Uri? = intent?.data
+        if (dataUri != null) {
+            val scheme = dataUri.scheme
+            val host = dataUri.host
+            val path = dataUri.path ?: ""
+
+            if (scheme == "soulquote" || (scheme == "https" && host == "soulquote.app")) {
+                if (host == "quote" || path.startsWith("/quote")) {
+                    val quoteId = if (host == "quote") {
+                        dataUri.lastPathSegment ?: dataUri.getQueryParameter("id")
+                    } else {
+                        dataUri.lastPathSegment
+                    }
+                    if (quoteId != null) {
+                        lifecycleScope.launch {
+                            val appContainer = (application as SoulQuoteApp).appContainer
+                            val quote = appContainer.quoteRepository.getQuoteById(quoteId)
+                            if (quote != null) {
+                                quoteViewModel.showQuoteDetail(quote)
+                                _navTarget.value = "home"
+                            }
+                        }
+                    }
+                } else if (host == "meditation" || path.startsWith("/meditation")) {
+                    val meditationId = if (host == "meditation") {
+                        dataUri.lastPathSegment ?: dataUri.getQueryParameter("id")
+                    } else {
+                        dataUri.lastPathSegment
+                    }
+                    if (meditationId != null) {
+                        ambientViewModel.selectTab(0)
+                        _navTarget.value = "meditation"
+                        lifecycleScope.launch {
+                            meditationViewModel.catalogUiState.collect { state ->
+                                val med = state.meditations.find { it.id == meditationId }
+                                if (med != null) {
+                                    meditationViewModel.playMeditation(med)
+                                    cancel()
+                                }
+                            }
+                        }
+                    }
+                } else if (host == "studio" || path.startsWith("/studio")) {
+                    val quoteId = dataUri.getQueryParameter("quoteId")
+                    if (quoteId != null) {
+                        lifecycleScope.launch {
+                            val appContainer = (application as SoulQuoteApp).appContainer
+                            val quote = appContainer.quoteRepository.getQuoteById(quoteId)
+                            if (quote != null) {
+                                studioViewModel.setQuote(quote)
+                            }
+                        }
+                    }
+                    _navTarget.value = "studio"
+                } else if (host == "journal" || path.startsWith("/journal")) {
+                    _navTarget.value = "home"
+                }
+            }
+        }
+
         val playId = intent?.getStringExtra("extra_play_meditation_id")
         if (playId != null) {
             lifecycleScope.launch {
@@ -149,6 +219,7 @@ fun MainContent(
     studioViewModel: StudioViewModel,
     meditationViewModel: MeditationViewModel,
     ambientViewModel: AmbientViewModel,
+    journalViewModel: JournalViewModel,
     navTargetState: StateFlow<String?>,
     onConsumeNavTarget: () -> Unit
 ) {
@@ -263,6 +334,7 @@ fun MainContent(
             studioViewModel = studioViewModel,
             meditationViewModel = meditationViewModel,
             ambientViewModel = ambientViewModel,
+            journalViewModel = journalViewModel,
             modifier = Modifier.padding(innerPadding)
         )
     }

@@ -5,9 +5,11 @@ import androidx.room.withTransaction
 import com.soulquote.app.BuildConfig
 import com.soulquote.app.data.local.SoulQuoteUserDatabase
 import com.soulquote.app.data.local.backup.FavoriteBackupDto
+import com.soulquote.app.data.local.backup.JournalEntryBackupDto
 import com.soulquote.app.data.local.backup.MeditationHistoryBackupDto
 import com.soulquote.app.data.local.backup.UserDataBackup
 import com.soulquote.app.data.local.entity.user.FavoriteEntity
+import com.soulquote.app.data.local.entity.user.JournalEntryEntity
 import com.soulquote.app.data.local.entity.user.MeditationHistoryEntity
 import com.soulquote.app.data.local.entity.user.UserSettingEntity
 import kotlinx.coroutines.Dispatchers
@@ -21,12 +23,14 @@ import java.util.Locale
 data class UserDataStats(
     val favoritesCount: Int,
     val historyCount: Int,
+    val journalCount: Int = 0,
     val settingsCount: Int
 )
 
 data class RestoreResult(
     val favoritesRestored: Int,
     val historyRestored: Int,
+    val journalRestored: Int = 0,
     val settingsRestored: Int
 )
 
@@ -43,10 +47,12 @@ class UserDataBackupManager(
     suspend fun getUserDataStats(): UserDataStats = withContext(Dispatchers.IO) {
         val favorites = userDatabase.favoriteDao().getAllFavoritesList().size
         val history = userDatabase.meditationHistoryDao().getAllHistoryList().size
+        val journal = userDatabase.journalDao().getJournalEntriesList().size
         val settings = userDatabase.userSettingDao().getAllSettingsList().size
         UserDataStats(
             favoritesCount = favorites,
             historyCount = history,
+            journalCount = journal,
             settingsCount = settings
         )
     }
@@ -54,6 +60,7 @@ class UserDataBackupManager(
     suspend fun exportUserData(): UserDataBackup = withContext(Dispatchers.IO) {
         val favoriteEntities = userDatabase.favoriteDao().getAllFavoritesList()
         val historyEntities = userDatabase.meditationHistoryDao().getAllHistoryList()
+        val journalEntities = userDatabase.journalDao().getJournalEntriesList()
         val settingEntities = userDatabase.userSettingDao().getAllSettingsList()
 
         val favorites = favoriteEntities.map {
@@ -68,6 +75,18 @@ class UserDataBackupManager(
                 completed = it.completed
             )
         }
+        val journals = journalEntities.map {
+            JournalEntryBackupDto(
+                id = it.id,
+                date = it.date,
+                mood = it.mood,
+                reflectionPrompt = it.reflectionPrompt,
+                content = it.content,
+                quoteId = it.quoteId,
+                createdAt = it.createdAt,
+                updatedAt = it.updatedAt
+            )
+        }
         val settings = settingEntities.associate { it.key to it.value }
 
         // Compute checksum of combined contents
@@ -75,6 +94,7 @@ class UserDataBackupManager(
         val contentSummary = buildString {
             favorites.forEach { append("${it.quoteId};") }
             history.forEach { append("${it.meditationId}:${it.completedAt};") }
+            journals.forEach { append("${it.id}:${it.date};") }
             settings.forEach { append("${it.key}=${it.value};") }
         }
         val checksum = contentDigest.digest(contentSummary.toByteArray()).joinToString("") { "%02x".format(it) }
@@ -86,6 +106,7 @@ class UserDataBackupManager(
             exportedAt = System.currentTimeMillis(),
             favorites = favorites,
             meditationHistory = history,
+            journalEntries = journals,
             settings = settings,
             checksumSha256 = checksum
         )
@@ -126,6 +147,7 @@ class UserDataBackupManager(
                 if (replaceExisting) {
                     userDatabase.favoriteDao().clearFavorites()
                     userDatabase.meditationHistoryDao().clearHistory()
+                    userDatabase.journalDao().clearJournalEntries()
                     userDatabase.userSettingDao().clearSettings()
                 }
 
@@ -149,6 +171,22 @@ class UserDataBackupManager(
                     userDatabase.meditationHistoryDao().insertHistoryList(history)
                 }
 
+                if (backup.journalEntries.isNotEmpty()) {
+                    val journals = backup.journalEntries.map {
+                        JournalEntryEntity(
+                            id = it.id,
+                            date = it.date,
+                            mood = it.mood,
+                            reflectionPrompt = it.reflectionPrompt,
+                            content = it.content,
+                            quoteId = it.quoteId,
+                            createdAt = it.createdAt,
+                            updatedAt = it.updatedAt
+                        )
+                    }
+                    userDatabase.journalDao().insertJournalEntries(journals)
+                }
+
                 if (backup.settings.isNotEmpty()) {
                     val settings = backup.settings.map {
                         UserSettingEntity(key = it.key, value = it.value)
@@ -161,6 +199,7 @@ class UserDataBackupManager(
                 RestoreResult(
                     favoritesRestored = backup.favorites.size,
                     historyRestored = backup.meditationHistory.size,
+                    journalRestored = backup.journalEntries.size,
                     settingsRestored = backup.settings.size
                 )
             )

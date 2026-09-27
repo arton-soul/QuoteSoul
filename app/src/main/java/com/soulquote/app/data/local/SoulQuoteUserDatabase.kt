@@ -4,12 +4,16 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.soulquote.app.data.local.dao.DownloadedAudioDao
 import com.soulquote.app.data.local.dao.FavoriteDao
+import com.soulquote.app.data.local.dao.JournalDao
 import com.soulquote.app.data.local.dao.MeditationHistoryDao
 import com.soulquote.app.data.local.dao.UserSettingDao
 import com.soulquote.app.data.local.entity.user.DownloadedAudioEntity
 import com.soulquote.app.data.local.entity.user.FavoriteEntity
+import com.soulquote.app.data.local.entity.user.JournalEntryEntity
 import com.soulquote.app.data.local.entity.user.MeditationHistoryEntity
 import com.soulquote.app.data.local.entity.user.UserSettingEntity
 
@@ -18,9 +22,10 @@ import com.soulquote.app.data.local.entity.user.UserSettingEntity
         FavoriteEntity::class,
         MeditationHistoryEntity::class,
         UserSettingEntity::class,
-        DownloadedAudioEntity::class
+        DownloadedAudioEntity::class,
+        JournalEntryEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = true
 )
 abstract class SoulQuoteUserDatabase : RoomDatabase() {
@@ -28,9 +33,32 @@ abstract class SoulQuoteUserDatabase : RoomDatabase() {
     abstract fun meditationHistoryDao(): MeditationHistoryDao
     abstract fun userSettingDao(): UserSettingDao
     abstract fun downloadedAudioDao(): DownloadedAudioDao
+    abstract fun journalDao(): JournalDao
 
     companion object {
         const val DATABASE_NAME = "soulquote_user.db"
+
+        val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS `journal_entries` (
+                        `id` TEXT NOT NULL,
+                        `date` TEXT NOT NULL,
+                        `mood` TEXT NOT NULL,
+                        `reflectionPrompt` TEXT NOT NULL,
+                        `content` TEXT NOT NULL,
+                        `quoteId` TEXT,
+                        `createdAt` INTEGER NOT NULL,
+                        `updatedAt` INTEGER NOT NULL,
+                        PRIMARY KEY(`id`)
+                    )
+                    """.trimIndent()
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_journal_entries_date` ON `journal_entries` (`date`)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_journal_entries_createdAt` ON `journal_entries` (`createdAt`)")
+            }
+        }
 
         @Volatile
         private var INSTANCE: SoulQuoteUserDatabase? = null
@@ -41,7 +69,9 @@ abstract class SoulQuoteUserDatabase : RoomDatabase() {
                     context.applicationContext,
                     SoulQuoteUserDatabase::class.java,
                     DATABASE_NAME
-                ).build()
+                )
+                    .addMigrations(MIGRATION_1_2)
+                    .build()
                 INSTANCE = instance
                 instance
             }

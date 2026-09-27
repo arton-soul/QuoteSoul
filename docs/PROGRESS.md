@@ -101,12 +101,12 @@
 ---
 
 ## Phase 10 — Modern Features
-- [ ] Meditation streak counter & badges
-- [ ] Daily mindful journaling
-- [ ] Morning inspiration & evening reflection prompts
-- [ ] Mood tracking check-in
-- [ ] App Widgets (Daily Quote on Home Screen)
-- [ ] Deep linking support
+- [x] Meditation streak counter & badges (2026-09-27 | Status: DONE | Consecutive day streak tracking, longest streak, and MindfulBadge achievements with progress tracking)
+- [x] Daily mindful journaling (2026-09-27 | Status: DONE | JournalEntryEntity, JournalDao, Room MIGRATION_1_2, and interactive MindfulJournalDialog with local history)
+- [x] Morning inspiration & evening reflection prompts (2026-09-27 | Status: DONE | Timezone & hour-aware mindful reflection questions with refreshable prompts)
+- [x] Mood tracking check-in (2026-09-27 | Status: DONE | 6 mood categories [Peaceful, Grateful, Calm, Energetic, Tired, Anxious] with quick selector chips on HomeScreen)
+- [x] App Widgets (Daily Quote on Home Screen) (2026-09-27 | Status: DONE | DailyQuoteWidgetProvider 4x2 Home Screen widget with automatic daily rollover sync and 1-tap quote refresh)
+- [x] Deep linking support (2026-09-27 | Status: DONE | Custom scheme soulquote://[quote|meditation|studio|journal] and web links https://soulquote.app verified via ADB)
 
 ---
 

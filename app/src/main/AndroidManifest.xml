@@ -30,7 +30,39 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <!-- Custom URI Scheme: soulquote://quote/{id}, soulquote://meditation/{id}, soulquote://studio, soulquote://journal -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="soulquote" />
+            </intent-filter>
+
+            <!-- Web App Link: https://soulquote.app/... -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="soulquote.app" />
+            </intent-filter>
         </activity>
+
+        <!-- Daily Quote App Widget -->
+        <receiver
+            android:name=".core.widget.DailyQuoteWidgetProvider"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.soulquote.app.ACTION_REFRESH_WIDGET" />
+                <action android:name="com.soulquote.app.ACTION_SYNC_WIDGET" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/daily_quote_widget_info" />
+        </receiver>
 
         <receiver
             android:name=".core.notification.receiver.DailyQuoteNotificationReceiver"

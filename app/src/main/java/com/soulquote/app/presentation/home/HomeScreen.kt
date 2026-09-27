@@ -2,6 +2,7 @@ package com.soulquote.app.presentation.home
 
 import android.content.Intent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,12 +23,16 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.EditNote
+import androidx.compose.material.icons.filled.EmojiEvents
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.SelfImprovement
 import androidx.compose.material.icons.filled.Waves
 import androidx.compose.material.icons.filled.WbSunny
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedFilterChip
@@ -36,20 +41,31 @@ import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.soulquote.app.domain.model.MoodType
 import com.soulquote.app.domain.model.Quote
 import com.soulquote.app.domain.model.QuoteCategory
 import com.soulquote.app.presentation.components.QuoteCard
 import com.soulquote.app.presentation.components.QuoteDetailDialog
+import com.soulquote.app.presentation.journal.JournalViewModel
+import com.soulquote.app.presentation.journal.MindfulBadgesDialog
+import com.soulquote.app.presentation.journal.MindfulJournalDialog
 import com.soulquote.app.presentation.quotes.QuoteViewModel
 import java.time.LocalTime
 
@@ -62,12 +78,22 @@ fun HomeScreen(
     onNavigateToStudio: ((Quote) -> Unit)? = null,
     onNavigateToMeditation: (() -> Unit)? = null,
     onNavigateToAmbient: (() -> Unit)? = null,
-    onNavigateToFavorites: (() -> Unit)? = null
+    onNavigateToFavorites: (() -> Unit)? = null,
+    journalViewModel: JournalViewModel? = null
 ) {
     val dailyQuote by viewModel.dailyQuote.collectAsState()
     val categories by viewModel.categories.collectAsState()
     val selectedQuoteForDetail by viewModel.selectedQuoteForDetail.collectAsState()
     val context = LocalContext.current
+
+    var showJournalDialog by remember { mutableStateOf(false) }
+    var showBadgesDialog by remember { mutableStateOf(false) }
+
+    val streakInfo = journalViewModel?.streakInfo?.collectAsStateWithLifecycle()?.value
+    val todayEntry = journalViewModel?.todayEntry?.collectAsStateWithLifecycle()?.value
+    val currentPrompt = journalViewModel?.currentPrompt?.collectAsStateWithLifecycle()?.value
+        ?: "Apa yang membuat jiwamu merasa tenang hari ini?"
+    val selectedMood = journalViewModel?.selectedMood?.collectAsStateWithLifecycle()?.value ?: MoodType.CALM
 
     val greeting = when (LocalTime.now().hour) {
         in 5..11 -> "Good Morning"
@@ -83,6 +109,21 @@ fun HomeScreen(
             onToggleFavorite = { viewModel.toggleFavorite(it) },
             onShare = { shareQuote(context, it) },
             onCustomizeInStudio = onNavigateToStudio
+        )
+    }
+
+    if (showJournalDialog && journalViewModel != null) {
+        MindfulJournalDialog(
+            viewModel = journalViewModel,
+            onDismiss = { showJournalDialog = false },
+            associatedQuoteId = dailyQuote?.id
+        )
+    }
+
+    if (showBadgesDialog && journalViewModel != null) {
+        MindfulBadgesDialog(
+            viewModel = journalViewModel,
+            onDismiss = { showBadgesDialog = false }
         )
     }
 
@@ -123,6 +164,27 @@ fun HomeScreen(
                 }
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
+                    // Mindful Streak Badge Pill
+                    if (journalViewModel != null) {
+                        Row(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(20.dp))
+                                .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.7f))
+                                .clickable { showBadgesDialog = true }
+                                .padding(horizontal = 10.dp, vertical = 6.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(text = "🔥", fontSize = 13.sp)
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = "${streakInfo?.currentStreak ?: 0} Hari",
+                                style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(6.dp))
+                    }
+
                     IconButton(onClick = { viewModel.loadDailyQuote() }) {
                         Icon(
                             imageVector = Icons.Default.Refresh,
@@ -169,6 +231,108 @@ fun HomeScreen(
             }
         }
 
+        // Mindful Mood Check-in & Journal Card (Phase 10)
+        item {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(20.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f)
+                )
+            ) {
+                Column(modifier = Modifier.padding(18.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(text = "🧘", fontSize = 18.sp)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Refleksi Batin & Mood",
+                                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                                color = MaterialTheme.colorScheme.onSecondaryContainer
+                            )
+                        }
+
+                        if (todayEntry != null) {
+                            Text(
+                                text = "${todayEntry.mood.emoji} Tersimpan",
+                                style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = currentPrompt,
+                        style = MaterialTheme.typography.bodyMedium.copy(fontStyle = androidx.compose.ui.text.font.FontStyle.Italic),
+                        color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.9f)
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    // Quick Mood Selectors
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        MoodType.entries.forEach { mood ->
+                            val isSelected = mood == selectedMood
+                            Box(
+                                modifier = Modifier
+                                    .size(38.dp)
+                                    .clip(CircleShape)
+                                    .background(
+                                        if (isSelected) MaterialTheme.colorScheme.primary.copy(alpha = 0.25f)
+                                        else MaterialTheme.colorScheme.surface.copy(alpha = 0.6f)
+                                    )
+                                    .border(
+                                        width = if (isSelected) 1.5.dp else 0.dp,
+                                        color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
+                                        shape = CircleShape
+                                    )
+                                    .clickable {
+                                        journalViewModel?.selectMood(mood)
+                                        showJournalDialog = true
+                                    },
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(text = mood.emoji, fontSize = 16.sp)
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        OutlinedButton(
+                            onClick = { showJournalDialog = true },
+                            shape = RoundedCornerShape(12.dp),
+                            contentPadding = PaddingValues(horizontal = 14.dp, vertical = 6.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.EditNote,
+                                contentDescription = null,
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(
+                                text = if (todayEntry != null) "Buka Jurnal Refleksi" else "Tulis Refleksi Hari Ini",
+                                style = MaterialTheme.typography.labelMedium
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
         // Browse by Themes / Categories Header
         item {
             Row(
@@ -193,31 +357,6 @@ fun HomeScreen(
                         colors = FilterChipDefaults.elevatedFilterChipColors(
                             containerColor = MaterialTheme.colorScheme.surface
                         )
-                    )
-                }
-            }
-        }
-
-        // Daily Intention prompt card
-        item {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f)
-                )
-            ) {
-                Column(modifier = Modifier.padding(20.dp)) {
-                    Text(
-                        text = "Daily Practice",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = "Pause for 3 deep breaths and reflect on what you can control today.",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
                     )
                 }
             }
@@ -303,25 +442,25 @@ fun HomeScreen(
                                 imageVector = Icons.Default.Waves,
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.onSecondary,
-                                modifier = Modifier.size(26.dp)
+                                modifier = Modifier.size(28.dp)
                             )
                         }
                         Spacer(modifier = Modifier.width(14.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                text = "Soundscape Suara Alam",
+                                text = "Atmospheric Soundscapes",
                                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                                 color = MaterialTheme.colorScheme.onSecondaryContainer
                             )
                             Text(
-                                text = "Paduan hujan, ombak, hutan & api unggun untuk relaksasi",
+                                text = "Hujan, ombak, hutan & api unggun untuk fokus dan tidur",
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.85f)
                             )
                         }
                         Icon(
                             imageVector = Icons.Default.PlayArrow,
-                            contentDescription = "Buka",
+                            contentDescription = "Dengarkan",
                             tint = MaterialTheme.colorScheme.secondary
                         )
                     }
@@ -332,10 +471,12 @@ fun HomeScreen(
 }
 
 fun shareQuote(context: android.content.Context, quote: Quote) {
-    val shareIntent = Intent(Intent.ACTION_SEND).apply {
+    val shareText = "\"${quote.text}\"\n\n— ${quote.author}\n\nShared via SoulQuote"
+    val sendIntent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_TEXT, shareText)
         type = "text/plain"
-        putExtra(Intent.EXTRA_SUBJECT, "SoulQuote Inspiration")
-        putExtra(Intent.EXTRA_TEXT, "“${quote.text}” — ${quote.author}\n\nShared via SoulQuote")
     }
-    context.startActivity(Intent.createChooser(shareIntent, "Share Quote"))
+    val shareIntent = Intent.createChooser(sendIntent, "Bagikan Kutipan")
+    context.startActivity(shareIntent)
 }

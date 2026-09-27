@@ -4,9 +4,11 @@ import android.content.Context
 import com.soulquote.app.data.local.SoulQuoteContentDatabase
 import com.soulquote.app.data.local.SoulQuoteUserDatabase
 import com.soulquote.app.data.local.seeder.DatabaseSeeder
+import com.soulquote.app.data.repository.JournalRepositoryImpl
 import com.soulquote.app.data.repository.MeditationRepositoryImpl
 import com.soulquote.app.data.repository.QuoteRepositoryImpl
 import com.soulquote.app.data.repository.UserRepositoryImpl
+import com.soulquote.app.domain.repository.JournalRepository
 import com.soulquote.app.domain.repository.MeditationRepository
 import com.soulquote.app.domain.repository.QuoteRepository
 import com.soulquote.app.domain.repository.UserRepository
@@ -17,6 +19,7 @@ interface AppContainer {
     val quoteRepository: QuoteRepository
     val meditationRepository: MeditationRepository
     val userRepository: UserRepository
+    val journalRepository: JournalRepository
     val databaseSeeder: DatabaseSeeder
     val notificationHelper: com.soulquote.app.core.notification.NotificationHelper
     val notificationScheduler: com.soulquote.app.core.notification.NotificationScheduler
@@ -56,6 +59,13 @@ class DefaultAppContainer(private val context: Context) : AppContainer {
             userSettingDao = userDatabase.userSettingDao(),
             meditationHistoryDao = userDatabase.meditationHistoryDao(),
             downloadedAudioDao = userDatabase.downloadedAudioDao()
+        )
+    }
+
+    override val journalRepository: JournalRepository by lazy {
+        JournalRepositoryImpl(
+            journalDao = userDatabase.journalDao(),
+            meditationHistoryDao = userDatabase.meditationHistoryDao()
         )
     }
 

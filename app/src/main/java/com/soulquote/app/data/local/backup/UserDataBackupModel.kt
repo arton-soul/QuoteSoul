@@ -17,6 +17,17 @@ data class MeditationHistoryBackupDto(
     val completed: Boolean
 )
 
+data class JournalEntryBackupDto(
+    val id: String,
+    val date: String,
+    val mood: String,
+    val reflectionPrompt: String,
+    val content: String,
+    val quoteId: String? = null,
+    val createdAt: Long = System.currentTimeMillis(),
+    val updatedAt: Long = System.currentTimeMillis()
+)
+
 data class UserDataBackup(
     val backupVersion: Int = 1,
     val appVersion: Int = 1,
@@ -24,6 +35,7 @@ data class UserDataBackup(
     val exportedAt: Long = System.currentTimeMillis(),
     val favorites: List<FavoriteBackupDto> = emptyList(),
     val meditationHistory: List<MeditationHistoryBackupDto> = emptyList(),
+    val journalEntries: List<JournalEntryBackupDto> = emptyList(),
     val settings: Map<String, String> = emptyMap(),
     val checksumSha256: String = ""
 ) {
@@ -57,6 +69,23 @@ data class UserDataBackup(
             histArray.put(obj)
         }
         dataObj.put("meditationHistory", histArray)
+
+        val journalArray = JSONArray()
+        for (j in journalEntries) {
+            val obj = JSONObject()
+            obj.put("id", j.id)
+            obj.put("date", j.date)
+            obj.put("mood", j.mood)
+            obj.put("reflectionPrompt", j.reflectionPrompt)
+            obj.put("content", j.content)
+            if (j.quoteId != null) {
+                obj.put("quoteId", j.quoteId)
+            }
+            obj.put("createdAt", j.createdAt)
+            obj.put("updatedAt", j.updatedAt)
+            journalArray.put(obj)
+        }
+        dataObj.put("journalEntries", journalArray)
 
         val setObj = JSONObject()
         for ((k, v) in settings) {
@@ -113,6 +142,26 @@ data class UserDataBackup(
                 }
             }
 
+            val journalList = mutableListOf<JournalEntryBackupDto>()
+            val journalArray = dataObj.optJSONArray("journalEntries")
+            if (journalArray != null) {
+                for (i in 0 until journalArray.length()) {
+                    val obj = journalArray.getJSONObject(i)
+                    journalList.add(
+                        JournalEntryBackupDto(
+                            id = obj.getString("id"),
+                            date = obj.getString("date"),
+                            mood = obj.optString("mood", "CALM"),
+                            reflectionPrompt = obj.optString("reflectionPrompt", ""),
+                            content = obj.optString("content", ""),
+                            quoteId = if (obj.has("quoteId") && !obj.isNull("quoteId")) obj.getString("quoteId") else null,
+                            createdAt = obj.optLong("createdAt", System.currentTimeMillis()),
+                            updatedAt = obj.optLong("updatedAt", System.currentTimeMillis())
+                        )
+                    )
+                }
+            }
+
             val settings = mutableMapOf<String, String>()
             val setObj = dataObj.optJSONObject("settings")
             if (setObj != null) {
@@ -130,6 +179,7 @@ data class UserDataBackup(
                 exportedAt = exportedAt,
                 favorites = favorites,
                 meditationHistory = history,
+                journalEntries = journalList,
                 settings = settings,
                 checksumSha256 = checksumSha256
             )

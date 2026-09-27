@@ -13,6 +13,7 @@ import com.soulquote.app.presentation.quotes.QuoteViewModel
 import com.soulquote.app.presentation.meditation.MeditationCatalogScreen
 import com.soulquote.app.presentation.meditation.MeditationViewModel
 import com.soulquote.app.presentation.ambient.AmbientViewModel
+import com.soulquote.app.presentation.journal.JournalViewModel
 import com.soulquote.app.presentation.settings.SettingsScreen
 import com.soulquote.app.presentation.settings.SettingsViewModel
 import com.soulquote.app.presentation.studio.StudioScreen
@@ -26,6 +27,7 @@ fun SoulQuoteNavGraph(
     studioViewModel: StudioViewModel,
     meditationViewModel: MeditationViewModel,
     ambientViewModel: AmbientViewModel,
+    journalViewModel: JournalViewModel,
     modifier: Modifier = Modifier
 ) {
     val navigateToStudioWithQuote: (Quote) -> Unit = { quote ->
@@ -74,7 +76,8 @@ fun SoulQuoteNavGraph(
                         launchSingleTop = true
                         restoreState = true
                     }
-                }
+                },
+                journalViewModel = journalViewModel
             )
         }
 

@@ -34,6 +34,9 @@ class DailyQuoteNotificationReceiver : BroadcastReceiver() {
                     )
                 }
 
+                // Sync home screen AppWidget with today's quote
+                com.soulquote.app.core.widget.DailyQuoteWidgetProvider.notifyWidgetUpdate(context)
+
                 // Reschedule for next day if setting is still active
                 val settings = appContainer.userRepository.getUserSettings().firstOrNull()
                 if (settings?.dailyQuoteEnabled == true) {

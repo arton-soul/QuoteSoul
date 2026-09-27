@@ -5,6 +5,29 @@ All notable changes to the **SoulQuote** project will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.11.0] - 2026-09-27
+
+### Added
+- **Phase 10 Modern Features & Enhancements**:
+  - `MindfulStreak` & Achievement Badges:
+    - Automatic calculation of current consecutive practice streak and all-time record streak based on local meditation and journaling events.
+    - 6 unlockable Mindful Badges (*Langkah Pertama*, *Fokus 3 Hari*, *Seminggu Damai*, *Kedamaian Batin*, *Zen Master*, *Penyelam Batin*) with visual progress bars.
+    - Streak badge counter pill (`🔥 X Hari`) embedded on `HomeScreen` header with interactive `MindfulBadgesDialog`.
+  - Daily Mindful Journaling & Mood Tracking:
+    - Room User Database expansion: added `JournalEntryEntity`, `JournalDao`, and safe `MIGRATION_1_2` without data loss.
+    - 6 core emotional moods (`PEACEFUL`, `GRATEFUL`, `CALM`, `ENERGETIC`, `TIRED`, `ANXIOUS`) with emoji avatars.
+    - Timezone and hour-aware reflection prompts (morning inspiration, afternoon pause, evening gratitude, night letting go) with random prompt generator.
+    - Interactive `MindfulJournalDialog` supporting two tabs: reflection entry and history log with instant delete.
+    - Full inclusion of journal entries into `UserDataBackupManager` JSON backup and restore routines.
+  - Android AppWidget (Daily Quote Widget):
+    - Added `DailyQuoteWidgetProvider` (4x2 widget format) displaying the current daily quote, author attribution, and category tag.
+    - Tap widget card to launch SoulQuote directly via deep link.
+    - Tap refresh icon on widget to immediately cycle to an inspiring random quote.
+    - Automated widget synchronization upon daily quote notification broadcast.
+  - Deep Linking Support:
+    - Added intent-filters for custom scheme `soulquote://` (`quote/{id}`, `meditation/{id}`, `studio?quoteId={id}`, `journal`) and verified web domain `https://soulquote.app`.
+    - Deep links verified and tested via ADB on physical Xiaomi Redmi Note 8 Pro.
+
 ## [0.10.0] - 2026-09-27
 
 ### Added
