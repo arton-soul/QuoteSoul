@@ -42,7 +42,18 @@ class MeditationDownloadManager(
 
     fun isDownloadedLocally(meditation: Meditation): Boolean {
         val file = File(audioDir, meditation.localFileName)
-        return file.exists() && file.length() > 0
+        if (file.exists() && file.length() > 0) return true
+
+        val extAudioDir = context.getExternalFilesDir("audio")
+        if (extAudioDir != null && File(extAudioDir, meditation.localFileName).let { it.exists() && it.length() > 0 }) {
+            return true
+        }
+
+        val externalDownloadFile = File(
+            android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DOWNLOADS),
+            meditation.localFileName
+        )
+        return externalDownloadFile.exists() && externalDownloadFile.length() > 0
     }
 
     fun getAudioUri(meditation: Meditation): Uri {
@@ -50,6 +61,23 @@ class MeditationDownloadManager(
         if (localFile.exists() && localFile.length() > 0) {
             return Uri.fromFile(localFile)
         }
+
+        val extAudioDir = context.getExternalFilesDir("audio")
+        if (extAudioDir != null) {
+            val extFile = File(extAudioDir, meditation.localFileName)
+            if (extFile.exists() && extFile.length() > 0) {
+                return Uri.fromFile(extFile)
+            }
+        }
+
+        val externalDownloadFile = File(
+            android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DOWNLOADS),
+            meditation.localFileName
+        )
+        if (externalDownloadFile.exists() && externalDownloadFile.length() > 0) {
+            return Uri.fromFile(externalDownloadFile)
+        }
+
         // If not downloaded locally, fallback to bundled offline ambient track
         return Uri.parse("${ContentResolver.SCHEME_ANDROID_RESOURCE}://${context.packageName}/${R.raw.meditation_bell_ambient}")
     }

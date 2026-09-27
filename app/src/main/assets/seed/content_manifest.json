@@ -1,12 +1,12 @@
 {
   "manifestVersion": 1,
-  "contentVersion": 4,
+  "contentVersion": 5,
   "minAppVersion": 1,
-  "releasedAt": "2026-09-27T15:00:00Z",
-  "packageUrl": "asset://seed/content_update_v4.json",
-  "packageSizeBytes": 3483,
-  "packageChecksumSha256": "4dd56ba53a468631bd87eea9612f4041edc326f8144b7749f9a347e301e96aa3",
-  "changelog": "Penambahan 5 kutipan inspirasi keheningan batin, rasa syukur, dan cinta kasih dari Bunda Arsaningsih.",
-  "quotesCount": 5,
-  "meditationsCount": 0
+  "releasedAt": "2026-09-28T07:20:00Z",
+  "packageUrl": "asset://seed/content_update_v5.json",
+  "packageSizeBytes": 833,
+  "packageChecksumSha256": "3bdaada88659cd0332d345e18acafb10c89439deac7c1eddcd8b4cdc01c71d75",
+  "changelog": "Penambahan sesi audio Meditasi Online (18 Juni 2025) bersama Bunda Arsaningsih.",
+  "quotesCount": 0,
+  "meditationsCount": 1
 }

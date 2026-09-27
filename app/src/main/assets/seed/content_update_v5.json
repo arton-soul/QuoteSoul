@@ -1,0 +1,23 @@
+{
+  "contentVersion": 5,
+  "categories": [],
+  "quotes": [],
+  "templates": [],
+  "meditationCategories": [],
+  "meditations": [
+    {
+      "id": "med_online_18juni2025",
+      "title": "Meditasi Online (18 Juni 2025)",
+      "description": "Sesi meditasi online mendalam bersama Bunda Arsaningsih. Penyelarasan kesadaran, pembersihan energi negatif, ketenangan batin, dan pancaran cinta kasih murni.",
+      "category": "spiritual_energy",
+      "durationSeconds": 1938,
+      "instructor": "Bunda Arsaningsih",
+      "audioUrl": "https://assets.soulquote.dearyoti.com/audio/18Juni2025-MeditasiOnline.mp3",
+      "localFileName": "18Juni2025-MeditasiOnline.mp3",
+      "version": 1,
+      "checksum": "0443037f00f2d4540b3d061d7bc10dd4aaf48bbb55a3f8fba98dd4e10308c0b6",
+      "sizeBytes": 25454448,
+      "active": true
+    }
+  ]
+}
