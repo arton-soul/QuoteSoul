@@ -33,6 +33,7 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.SelfImprovement
 import androidx.compose.material.icons.filled.Timer
+import androidx.compose.material.icons.filled.Waves
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -48,12 +49,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -65,14 +71,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.soulquote.app.domain.model.Meditation
+import com.soulquote.app.presentation.ambient.AmbientMixerScreen
+import com.soulquote.app.presentation.ambient.AmbientViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MeditationCatalogScreen(
     viewModel: MeditationViewModel,
+    ambientViewModel: AmbientViewModel,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+    val selectedTabIndex by ambientViewModel.selectedTab.collectAsStateWithLifecycle()
     val catalogState by viewModel.catalogUiState.collectAsStateWithLifecycle()
     val playerState by viewModel.playerUiState.collectAsStateWithLifecycle()
 
@@ -120,108 +130,136 @@ fun MeditationCatalogScreen(
                 .padding(innerPadding)
         ) {
             Column(modifier = Modifier.fillMaxSize()) {
-                // Search Bar
-                OutlinedTextField(
-                    value = catalogState.searchQuery,
-                    onValueChange = { viewModel.setSearchQuery(it) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 6.dp),
-                    placeholder = { Text("Cari meditasi atau instruktur...", fontSize = 14.sp) },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = "Cari",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    },
-                    trailingIcon = {
-                        if (catalogState.searchQuery.isNotEmpty()) {
-                            IconButton(onClick = { viewModel.setSearchQuery("") }) {
-                                Icon(
-                                    imageVector = Icons.Default.Clear,
-                                    contentDescription = "Hapus",
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                        }
-                    },
-                    singleLine = true,
-                    shape = RoundedCornerShape(12.dp)
-                )
-
-                // Category Chips Row
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .horizontalScroll(rememberScrollState())
-                        .padding(horizontal = 16.dp, vertical = 6.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                TabRow(
+                    selectedTabIndex = selectedTabIndex,
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    contentColor = MaterialTheme.colorScheme.primary
                 ) {
-                    val isAllSelected = catalogState.selectedCategoryId == "all"
-                    FilterChip(
-                        selected = isAllSelected,
-                        onClick = { viewModel.selectCategory("all") },
-                        label = { Text("Semua", fontSize = 13.sp) },
-                        colors = FilterChipDefaults.filterChipColors(
-                            selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                            selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
+                    Tab(
+                        selected = selectedTabIndex == 0,
+                        onClick = { ambientViewModel.selectTab(0) },
+                        text = { Text("Panduan Suara", fontWeight = if (selectedTabIndex == 0) FontWeight.Bold else FontWeight.Normal) },
+                        icon = { Icon(Icons.Default.SelfImprovement, contentDescription = null, modifier = Modifier.size(20.dp)) }
+                    )
+                    Tab(
+                        selected = selectedTabIndex == 1,
+                        onClick = { ambientViewModel.selectTab(1) },
+                        text = { Text("Suara Alam", fontWeight = if (selectedTabIndex == 1) FontWeight.Bold else FontWeight.Normal) },
+                        icon = { Icon(Icons.Default.Waves, contentDescription = null, modifier = Modifier.size(20.dp)) }
+                    )
+                }
+
+                if (selectedTabIndex == 0) {
+                    // Search Bar
+                    OutlinedTextField(
+                        value = catalogState.searchQuery,
+                        onValueChange = { viewModel.setSearchQuery(it) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 6.dp),
+                        placeholder = { Text("Cari meditasi atau instruktur...", fontSize = 14.sp) },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = "Cari",
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        },
+                        trailingIcon = {
+                            if (catalogState.searchQuery.isNotEmpty()) {
+                                IconButton(onClick = { viewModel.setSearchQuery("") }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Clear,
+                                        contentDescription = "Hapus",
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                            }
+                        },
+                        singleLine = true,
+                        shape = RoundedCornerShape(12.dp)
                     )
 
-                    catalogState.categories.forEach { category ->
-                        val selected = catalogState.selectedCategoryId == category.id
+                    // Category Chips Row
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .horizontalScroll(rememberScrollState())
+                            .padding(horizontal = 16.dp, vertical = 6.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        val isAllSelected = catalogState.selectedCategoryId == "all"
                         FilterChip(
-                            selected = selected,
-                            onClick = { viewModel.selectCategory(category.id) },
-                            label = { Text(category.name, fontSize = 13.sp) },
+                            selected = isAllSelected,
+                            onClick = { viewModel.selectCategory("all") },
+                            label = { Text("Semua", fontSize = 13.sp) },
                             colors = FilterChipDefaults.filterChipColors(
                                 selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
                                 selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
                             )
                         )
-                    }
-                }
 
-                // Meditation List
-                val filtered = catalogState.filteredMeditations
-                if (filtered.isEmpty()) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "Tidak ada sesi meditasi yang sesuai.",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                } else {
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f),
-                        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 80.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        items(filtered, key = { it.id }) { meditation ->
-                            val isCurrentPlaying = playerState.currentMeditation?.id == meditation.id && playerState.isPlaying
-                            MeditationSessionCard(
-                                meditation = meditation,
-                                isCurrentPlaying = isCurrentPlaying,
-                                onPlayClick = { viewModel.playMeditation(meditation) },
-                                onDownloadClick = {
-                                    if (meditation.isDownloaded) {
-                                        viewModel.deleteDownload(meditation)
-                                    } else {
-                                        viewModel.downloadAudio(meditation)
-                                    }
-                                }
+                        catalogState.categories.forEach { category ->
+                            val selected = catalogState.selectedCategoryId == category.id
+                            FilterChip(
+                                selected = selected,
+                                onClick = { viewModel.selectCategory(category.id) },
+                                label = { Text(category.name, fontSize = 13.sp) },
+                                colors = FilterChipDefaults.filterChipColors(
+                                    selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                                    selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
+                                )
                             )
                         }
                     }
+
+                    // Meditation List
+                    val filtered = catalogState.filteredMeditations
+                    if (filtered.isEmpty()) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "Tidak ada sesi meditasi yang sesuai.",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    } else {
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f),
+                            contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 80.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            items(filtered, key = { it.id }) { meditation ->
+                                val isCurrentPlaying = playerState.currentMeditation?.id == meditation.id && playerState.isPlaying
+                                MeditationSessionCard(
+                                    meditation = meditation,
+                                    isCurrentPlaying = isCurrentPlaying,
+                                    onPlayClick = { viewModel.playMeditation(meditation) },
+                                    onDownloadClick = {
+                                        if (meditation.isDownloaded) {
+                                            viewModel.deleteDownload(meditation)
+                                        } else {
+                                            viewModel.downloadAudio(meditation)
+                                        }
+                                    }
+                                )
+                            }
+                        }
+                    }
+                } else {
+                    AmbientMixerScreen(
+                        viewModel = ambientViewModel,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                    )
                 }
             }
 

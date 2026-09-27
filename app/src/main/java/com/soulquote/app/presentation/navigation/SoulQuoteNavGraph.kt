@@ -12,6 +12,7 @@ import com.soulquote.app.presentation.quotes.ExploreQuotesScreen
 import com.soulquote.app.presentation.quotes.QuoteViewModel
 import com.soulquote.app.presentation.meditation.MeditationCatalogScreen
 import com.soulquote.app.presentation.meditation.MeditationViewModel
+import com.soulquote.app.presentation.ambient.AmbientViewModel
 import com.soulquote.app.presentation.settings.SettingsScreen
 import com.soulquote.app.presentation.settings.SettingsViewModel
 import com.soulquote.app.presentation.studio.StudioScreen
@@ -24,6 +25,7 @@ fun SoulQuoteNavGraph(
     settingsViewModel: SettingsViewModel,
     studioViewModel: StudioViewModel,
     meditationViewModel: MeditationViewModel,
+    ambientViewModel: AmbientViewModel,
     modifier: Modifier = Modifier
 ) {
     val navigateToStudioWithQuote: (Quote) -> Unit = { quote ->
@@ -51,6 +53,7 @@ fun SoulQuoteNavGraph(
                 },
                 onNavigateToStudio = navigateToStudioWithQuote,
                 onNavigateToMeditation = {
+                    ambientViewModel.selectTab(0)
                     navController.navigate(Screen.Meditation.route) {
                         popUpTo(Screen.Home.route) { saveState = true }
                         launchSingleTop = true
@@ -59,6 +62,14 @@ fun SoulQuoteNavGraph(
                 },
                 onNavigateToFavorites = {
                     navController.navigate(Screen.Favorites.route) {
+                        popUpTo(Screen.Home.route) { saveState = true }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                onNavigateToAmbient = {
+                    ambientViewModel.selectTab(1)
+                    navController.navigate(Screen.Meditation.route) {
                         popUpTo(Screen.Home.route) { saveState = true }
                         launchSingleTop = true
                         restoreState = true
@@ -76,7 +87,8 @@ fun SoulQuoteNavGraph(
 
         composable(Screen.Meditation.route) {
             MeditationCatalogScreen(
-                viewModel = meditationViewModel
+                viewModel = meditationViewModel,
+                ambientViewModel = ambientViewModel
             )
         }
 

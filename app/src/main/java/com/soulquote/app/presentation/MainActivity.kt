@@ -31,6 +31,8 @@ import com.soulquote.app.presentation.quotes.QuoteViewModel
 import com.soulquote.app.presentation.quotes.QuoteViewModelFactory
 import com.soulquote.app.presentation.meditation.MeditationViewModel
 import com.soulquote.app.presentation.meditation.MeditationViewModelFactory
+import com.soulquote.app.presentation.ambient.AmbientViewModel
+import com.soulquote.app.presentation.ambient.AmbientViewModelFactory
 import com.soulquote.app.presentation.settings.SettingsViewModel
 import com.soulquote.app.presentation.settings.SettingsViewModelFactory
 import com.soulquote.app.presentation.studio.StudioViewModel
@@ -64,6 +66,11 @@ class MainActivity : ComponentActivity() {
         MeditationViewModelFactory(appContainer)
     }
 
+    private val ambientViewModel: AmbientViewModel by viewModels {
+        val appContainer = (application as SoulQuoteApp).appContainer
+        AmbientViewModelFactory(appContainer)
+    }
+
     private val _navTarget = MutableStateFlow<String?>(null)
     val navTarget: StateFlow<String?> = _navTarget.asStateFlow()
 
@@ -79,6 +86,7 @@ class MainActivity : ComponentActivity() {
                     settingsViewModel = settingsViewModel,
                     studioViewModel = studioViewModel,
                     meditationViewModel = meditationViewModel,
+                    ambientViewModel = ambientViewModel,
                     navTargetState = navTarget,
                     onConsumeNavTarget = { _navTarget.value = null }
                 )
@@ -95,6 +103,11 @@ class MainActivity : ComponentActivity() {
     private fun handleNavIntent(intent: Intent?) {
         val target = intent?.getStringExtra(NotificationHelper.EXTRA_NAV_TARGET)
         if (target != null) {
+            if (target == "ambient") {
+                ambientViewModel.selectTab(1)
+            } else if (target == "meditation") {
+                ambientViewModel.selectTab(0)
+            }
             _navTarget.value = target
         }
         val playId = intent?.getStringExtra("extra_play_meditation_id")
@@ -109,6 +122,13 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+        val presetId = intent?.getStringExtra("extra_play_ambient_preset")
+        if (presetId != null) {
+            val preset = com.soulquote.app.domain.model.AmbientPreset.DEFAULT_PRESETS.find { it.id == presetId }
+            if (preset != null) {
+                ambientViewModel.applyPreset(preset)
+            }
+        }
     }
 }
 
@@ -118,6 +138,7 @@ fun MainContent(
     settingsViewModel: SettingsViewModel,
     studioViewModel: StudioViewModel,
     meditationViewModel: MeditationViewModel,
+    ambientViewModel: AmbientViewModel,
     navTargetState: StateFlow<String?>,
     onConsumeNavTarget: () -> Unit
 ) {
@@ -150,7 +171,7 @@ fun MainContent(
                         }
                     }
                 }
-                "meditation" -> {
+                "meditation", "ambient" -> {
                     if (currentRoute != Screen.Meditation.route) {
                         navController.navigate(Screen.Meditation.route) {
                             popUpTo(Screen.Home.route) { saveState = true }
@@ -231,6 +252,7 @@ fun MainContent(
             settingsViewModel = settingsViewModel,
             studioViewModel = studioViewModel,
             meditationViewModel = meditationViewModel,
+            ambientViewModel = ambientViewModel,
             modifier = Modifier.padding(innerPadding)
         )
     }

@@ -5,6 +5,45 @@ All notable changes to the **SoulQuote** project will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2026-09-27
+
+### Added
+- **Phase 5 Ambient & Background Audio System**:
+  - `AmbientAudioEngine`: Multi-track concurrent audio engine leveraging AndroidX Media3 `ExoPlayer` instances for gapless looping (`REPEAT_MODE_ONE`) of natural ambient layers.
+  - Multi-Channel Audio Mixing:
+    - Independent track volume sliders (`0%` to `100%`) with individual toggle switches.
+    - Master volume slider scaling all active sounds simultaneously.
+    - Master Play/Pause and one-tap "Heningkan Semua" (Mute All).
+    - Dynamic animated soundwave bars when a sound is actively playing.
+  - Audio Focus & Interruption Management:
+    - Android `AudioManager` AudioFocus handling (`USAGE_MEDIA`, `CONTENT_TYPE_MUSIC`).
+    - Automatic ducking (volume reduced to 25%) on transient audio focus events (e.g. notifications) with smooth recovery.
+    - Automatic pause on complete audio focus loss (e.g. phone calls).
+  - Sleep Timer with Smooth Volume Fade-Out:
+    - Configurable durations (`15m`, `30m`, `45m`, `60m`, or custom) via modal `SleepTimerDialog`.
+    - Live countdown display on the master control bar.
+    - Automatic linear 10-second fade-out before playback stops at timer completion.
+  - High-Fidelity 100% Offline Ambient Sound Library (`res/raw`):
+    - `ambient_rain.wav` ("Hujan Rintik" - soothing rain patter on leaves)
+    - `ambient_ocean.wav` ("Ombak Samudra" - rhythmic ocean surf swells)
+    - `ambient_forest.wav` ("Hutan Hening" - gentle forest breeze and distant birds)
+    - `ambient_campfire.wav` ("Api Unggun" - cozy crackling campfire embers)
+    - `ambient_night.wav` ("Malam Syahdu" - peaceful evening crickets and night air)
+    - `ambient_zen_bowl.wav` ("Lonceng Tibet" - 432Hz/528Hz pure harmonic singing bowl drone)
+    - `ambient_white_noise.wav` ("Derau Lembut" - pink noise for deep focus)
+  - Atmospheric Presets (1-tap combinations):
+    - "Malam Hujan Hangat" (Rain 75% + Campfire 45%)
+    - "Suaka Hutan Zen" (Forest 70% + Zen Bowl 40%)
+    - "Tidur Lelap Samudra" (Ocean 65% + Night Crickets 35%)
+    - "Fokus & Konsentrasi" (Pink Noise 50% + Rain 40%)
+  - Integrated UI & Navigation:
+    - Top `TabRow` on the Meditation screen (`Screen.Meditation`): "Panduan Suara" (Guided) and "Suara Alam" (Soundscape Mixer).
+    - Quick shortcut card "Soundscape Suara Alam" on `HomeScreen` with direct navigation to the sound mixer.
+  - Testing & Verification:
+    - Unit tests (`AmbientSoundTest`) verifying library uniqueness, preset references, and timer formatting.
+    - All 57 Gradle test tasks passing.
+    - Live verification on connected physical Xiaomi Redmi Note 8 Pro (`com.dearyoti.soulquote`).
+
 ## [0.6.0] - 2026-09-27
 
 ### Added

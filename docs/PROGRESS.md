@@ -55,10 +55,10 @@
 ---
 
 ## Phase 5 — Audio / Ambient
-- [ ] Background ambient audio engine
-- [ ] Ambient sound library (rain, ocean, forest, fire, white noise)
-- [ ] Volume mixing & looping controls
-- [ ] Audio session and AudioFocus management
+- [x] Background ambient audio engine (2026-09-27 | Status: DONE | AmbientAudioEngine with multi-ExoPlayer instances, gapless looping, and sleep timer with volume fade-out)
+- [x] Ambient sound library (rain, ocean, forest, fire, white noise) (2026-09-27 | Status: DONE | 7 bundled high-quality offline soundscapes in res/raw + 4 atmospheric presets)
+- [x] Volume mixing & looping controls (2026-09-27 | Status: DONE | Master & individual volume sliders, master play/pause, mute all, and animated sound waves)
+- [x] Audio session and AudioFocus management (2026-09-27 | Status: DONE | AudioManager AudioFocus with auto ducking on notification and pause on audio loss)
 
 ---
 
