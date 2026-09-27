@@ -44,3 +44,14 @@
 - **Context**: Guided meditations need background playback, lock screen controls, notification playback controls, and offline audio file handling.
 - **Decision**: Use Android Media3 (ExoPlayer) for guided sessions and lightweight looping players for ambient audio.
 - **Consequences**: Delivers reliable audio focus management, background playback efficiency, and support for local file URIs.
+
+---
+
+## ADR-006: Physical Database Separation (Content DB vs. User DB)
+- **Date**: 2026-09-27
+- **Status**: Accepted
+- **Context**: SoulQuote requires seamless content distribution (quotes, meditations, templates) updated dynamically via Google Drive without any risk of altering, corrupting, or wiping user personal data (favorites, meditation history, settings).
+- **Decision**: Create two separate physical SQLite Room databases:
+  1. `SoulQuoteContentDatabase` (`soulquote_content.db`): Contains developer content (`quotes`, `quote_categories`, `meditations`, `templates`, `app_content_config`).
+  2. `SoulQuoteUserDatabase` (`soulquote_user.db`): Contains user personal data (`favorites`, `meditation_history`, `user_settings`, `downloaded_audio`).
+- **Consequences**: Physical file-level isolation guarantees that content updates, file replacements, or rollbacks can never touch or corrupt user data. Repositories coordinate queries across DAOs seamlessly using reactive Kotlin Coroutines & Flow.

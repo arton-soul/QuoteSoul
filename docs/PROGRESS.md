@@ -11,13 +11,13 @@
 ---
 
 ## Phase 1 — Local Database
-- [ ] Database schema definition
-- [ ] Room database setup (`SoulQuoteDatabase`)
-- [ ] Content entities (quotes, categories, meditations, audio assets, templates)
-- [ ] User entities (favorites, meditation history, settings, downloads)
-- [ ] DAOs and data sources
-- [ ] Seed data bundling (pre-populated database/JSON)
-- [ ] Migration strategy & tests
+- [x] Database schema definition (2026-09-27 | Status: DONE | Two-database physical separation: Content DB & User DB)
+- [x] Room database setup (`SoulQuoteContentDatabase` & `SoulQuoteUserDatabase`) (2026-09-27 | Status: DONE)
+- [x] Content entities (quotes, categories, meditations, templates, app config) (2026-09-27 | Status: DONE)
+- [x] User entities (favorites, meditation history, settings, downloads) (2026-09-27 | Status: DONE)
+- [x] DAOs and data sources (`QuoteDao`, `MeditationDao`, `TemplateDao`, `FavoriteDao`, `UserSettingDao`, etc.) (2026-09-27 | Status: DONE)
+- [x] Seed data bundling (initial_content.json parsed and populated via `DatabaseSeeder`) (2026-09-27 | Status: DONE)
+- [x] Repository implementation & tests (`QuoteRepositoryImpl`, `UserRepositoryImpl`, `QuoteRepositoryTest`, `UserRepositoryTest`) (2026-09-27 | Status: DONE)
 
 ---
 
