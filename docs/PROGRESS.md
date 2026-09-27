@@ -111,11 +111,11 @@
 ---
 
 ## Phase 11 — QA & Hardening
-- [ ] Unit test suite expansion
-- [ ] Room database integration tests
-- [ ] Notification scheduling verification
-- [ ] Audio download interruption & corruption tests
-- [ ] Airplane mode offline-first verification
+- [x] Unit test suite expansion (2026-09-27 | Status: DONE | 13 test suites covering Repositories, UseCases, ViewModels, and Utilities; 100% JVM pass rate)
+- [x] Room database integration tests (2026-09-27 | Status: DONE | RoomMigrationTest verifying SQLite DDL, indices, and non-destructive MIGRATION_1_2)
+- [x] Notification scheduling verification (2026-09-27 | Status: DONE | NotificationSchedulerTest verifying calendar computation, Doze mode exact alarms, and daily rollover)
+- [x] Audio download interruption & corruption tests (2026-09-27 | Status: DONE | MeditationDownloadManagerTest verifying SHA-256 mismatch detection, byte-flip corruption prevention, and partial file cleanup)
+- [x] Airplane mode offline-first verification (2026-09-27 | Status: DONE | Verified on physical Xiaomi Redmi Note 8 Pro in Airplane mode with 100% local persistence and playback)
 
 ---
 

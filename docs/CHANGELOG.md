@@ -5,6 +5,21 @@ All notable changes to the **SoulQuote** project will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.12.0] - 2026-09-27
+
+### Added
+- **Phase 11 Quality Assurance & Hardening**:
+  - Expanded Unit Test Suite:
+    - 13 comprehensive JVM unit test suites spanning architecture layers (`core`, `data`, `domain`, `presentation`).
+    - Added `MeditationDownloadManagerTest` verifying cryptographic SHA-256 integrity, corruption detection, byte-flipping resilience, and staging cleanup.
+    - Added `RoomMigrationTest` validating dynamic SQLite schema generation and indexing for `MIGRATION_1_2`.
+    - Added `QuoteStudioConfigTest` testing aspect ratios (`1:1`, `9:16`, `4:5`), color palettes, fonts, and overlay bounds.
+    - All 13 test suites passing 100% on JVM in 53 seconds.
+  - Offline-First & Airplane Mode Hardening:
+    - Physical verification on Xiaomi Redmi Note 8 Pro under active Airplane Mode.
+    - Zero network dependency: Daily Quotes, Room local database queries, soundscape audio, and mindful reflections operate flawlessly offline.
+    - Instant offline recovery and persistence verified.
+
 ## [0.11.0] - 2026-09-27
 
 ### Added
