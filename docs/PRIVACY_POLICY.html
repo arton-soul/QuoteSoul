@@ -1,0 +1,118 @@
+<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.7; color: #2d3748; max-width: 800px; margin: 0 auto; padding: 20px;">
+
+  <div style="border-bottom: 2px solid #e2e8f0; padding-bottom: 16px; margin-bottom: 24px;">
+    <h1 style="color: #1a202c; font-size: 28px; font-weight: 700; margin-bottom: 8px;">Privacy Policy for SoulQuote</h1>
+    <p style="color: #718096; font-size: 14px; margin: 0;">
+      <strong>Effective Date:</strong> September 27, 2026 | <strong>Last Updated:</strong> September 27, 2026<br/>
+      <strong>Application Name:</strong> SoulQuote (Package: <code>com.dearyoti.soulquote</code>)<br/>
+      <strong>Developer:</strong> Made Sudiartono
+    </p>
+  </div>
+
+  <div style="background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 16px; border-radius: 4px; margin-bottom: 24px;">
+    <h3 style="margin-top: 0; color: #2b6cb0; font-size: 16px;">🌱 Ringkasan Privasi (Privacy Highlights)</h3>
+    <p style="margin: 0; font-size: 14px; color: #2d3748;">
+      Aplikasi <strong>SoulQuote</strong> adalah aplikasi <em>offline-first</em>. Kami <strong>TIDAK MENGUMPULKAN</strong> informasi pribadi apapun, tidak memerlukan pembuatan akun, tidak ada pelacakan analitik pihak ketiga, dan seluruh catatan refleksi jurnal maupun kutipan favorit Anda disimpan <strong>100% secara lokal</strong> di memori ponsel Anda.
+    </p>
+  </div>
+
+  <h2 style="color: #2d3748; font-size: 20px; border-bottom: 1px solid #edf2f7; padding-bottom: 8px;">1. Overview & Privacy Philosophy</h2>
+  <p>
+    Welcome to <strong>SoulQuote</strong> ("we", "our", or "the app"). SoulQuote is an offline-first mobile application designed to offer daily quote inspiration, guided meditation audio, ambient soundscapes, and quote card creation.
+  </p>
+  <p>
+    We believe that true peace of mind requires absolute privacy. Our core architectural principle is <strong>Zero Unconsented Data Collection</strong>. We do not require you to create an account, log in with social media, or share any personal identity.
+  </p>
+
+  <h2 style="color: #2d3748; font-size: 20px; border-bottom: 1px solid #edf2f7; padding-bottom: 8px;">2. Information We Do NOT Collect</h2>
+  <ul style="padding-left: 20px;">
+    <li><strong>No Personally Identifiable Information (PII):</strong> We do NOT collect, store, transmit, or sell your name, email address, phone number, physical address, contacts, device ID, advertising ID, or biometric data.</li>
+    <li><strong>No User Accounts:</strong> The app does not maintain any remote user database. There is no sign-in or registration.</li>
+    <li><strong>No Third-Party Analytics or Tracking:</strong> SoulQuote contains NO tracking SDKs (such as Firebase Analytics, Google Analytics, AppsFlyer, or Adjust) and NO advertising networks.</li>
+  </ul>
+
+  <h2 style="color: #2d3748; font-size: 20px; border-bottom: 1px solid #edf2f7; padding-bottom: 8px;">3. On-Device Data Storage (Reflections & Favorites)</h2>
+  <p>
+    Any data you generate within SoulQuote — including:
+  </p>
+  <ul style="padding-left: 20px;">
+    <li>Mindful journal reflections and thoughts</li>
+    <li>Daily mood check-ins and reflection logs</li>
+    <li>Bookmarked favorite quotes</li>
+    <li>Meditation completion history and streak counters</li>
+    <li>Notification and theme preferences</li>
+  </ul>
+  <p>
+    is stored <strong>exclusively on your device</strong> inside an isolated, private SQLite database (<code>soulquote_user.db</code>). This information never leaves your device unless you explicitly choose to export a backup file.
+  </p>
+
+  <h2 style="color: #2d3748; font-size: 20px; border-bottom: 1px solid #edf2f7; padding-bottom: 8px;">4. Device Permissions & Usage Rationale</h2>
+  <p>SoulQuote requests only minimal device permissions strictly required to execute user-requested features:</p>
+  
+  <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px;">
+    <thead>
+      <tr style="background-color: #f7fafc; text-align: left;">
+        <th style="border: 1px solid #e2e8f0; padding: 10px;">Permission</th>
+        <th style="border: 1px solid #e2e8f0; padding: 10px;">Purpose & Rationale</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="border: 1px solid #e2e8f0; padding: 10px;"><strong>INTERNET & ACCESS_NETWORK_STATE</strong></td>
+        <td style="border: 1px solid #e2e8f0; padding: 10px;">Used solely to check for and download optional public quote packages and guided meditation audio files from static distribution servers (GitHub / Google Drive) upon user request.</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #e2e8f0; padding: 10px;"><strong>POST_NOTIFICATIONS</strong></td>
+        <td style="border: 1px solid #e2e8f0; padding: 10px;">Used on Android 13+ to deliver local daily quote inspirations and meditation reminders at the specific time scheduled by the user.</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #e2e8f0; padding: 10px;"><strong>RECEIVE_BOOT_COMPLETED</strong></td>
+        <td style="border: 1px solid #e2e8f0; padding: 10px;">Allows the app to automatically reschedule your local daily quote reminder alarms when your phone reboots.</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #e2e8f0; padding: 10px;"><strong>SCHEDULE_EXACT_ALARM / USE_EXACT_ALARM</strong></td>
+        <td style="border: 1px solid #e2e8f0; padding: 10px;">Ensures notification alarms fire at the exact minute configured in Settings.</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #e2e8f0; padding: 10px;"><strong>VIBRATE</strong></td>
+        <td style="border: 1px solid #e2e8f0; padding: 10px;">Provides gentle haptic feedback during meditation sessions and alert notifications.</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #e2e8f0; padding: 10px;"><strong>Photo Picker (Scoped Access)</strong></td>
+        <td style="border: 1px solid #e2e8f0; padding: 10px;">When customizing quote cards in Quote Studio, the system Photo Picker allows you to select a background photo. The app only accesses the single photo you explicitly tap and select.</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #e2e8f0; padding: 10px;"><strong>WRITE_EXTERNAL_STORAGE (Android &le; 9)</strong></td>
+        <td style="border: 1px solid #e2e8f0; padding: 10px;">Used exclusively on legacy devices to save exported quote cards to your device photo gallery. On Android 10+, standard MediaStore Scoped Storage is used without broad permissions.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 style="color: #2d3748; font-size: 20px; border-bottom: 1px solid #edf2f7; padding-bottom: 8px;">5. Data Retention, Backup, and Deletion</h2>
+  <ul style="padding-left: 20px;">
+    <li><strong>Full User Control:</strong> You can export a full, unencrypted JSON backup of your personal data at any time via <em>Settings &gt; Cadangan & Privasi Data &gt; Ekspor Cadangan Data</em>.</li>
+    <li><strong>Permanent Deletion:</strong> You can permanently wipe all data stored by SoulQuote at any time by clearing the application storage via <em>Android Settings &gt; Apps &gt; SoulQuote &gt; Storage &gt; Clear Storage</em>, or by uninstalling the application.</li>
+  </ul>
+
+  <h2 style="color: #2d3748; font-size: 20px; border-bottom: 1px solid #edf2f7; padding-bottom: 8px;">6. Children's Privacy (COPPA Compliance)</h2>
+  <p>
+    SoulQuote is safe for general audiences of all ages. Because the application collects zero personally identifiable information from any user, it fully complies with the Children's Online Privacy Protection Act (COPPA) and Google Play Families Policies.
+  </p>
+
+  <h2 style="color: #2d3748; font-size: 20px; border-bottom: 1px solid #edf2f7; padding-bottom: 8px;">7. Changes to This Privacy Policy</h2>
+  <p>
+    We may periodically update this Privacy Policy. Any modifications will be posted on this page with an updated "Last Updated" timestamp. We recommend reviewing this document periodically.
+  </p>
+
+  <h2 style="color: #2d3748; font-size: 20px; border-bottom: 1px solid #edf2f7; padding-bottom: 8px;">8. Contact Us</h2>
+  <p>
+    If you have any questions, inquiries, or concerns regarding this Privacy Policy or your data privacy within SoulQuote, please contact:
+  </p>
+  <div style="background-color: #f7fafc; border: 1px solid #e2e8f0; padding: 16px; border-radius: 6px; font-size: 14px;">
+    <strong>Developer:</strong> Made Sudiartono<br/>
+    <strong>Application:</strong> SoulQuote (<code>com.dearyoti.soulquote</code>)<br/>
+    <strong>GitHub Repository:</strong> <a href="https://github.com/isna-design/soul" target="_blank" style="color: #3182ce; text-decoration: none;">https://github.com/isna-design/soul</a><br/>
+    <strong>Email:</strong> <code>support@soulquote.app</code>
+  </div>
+
+</div>
