@@ -3,6 +3,8 @@ package com.soulquote.app.data.local.seeder
 import android.content.Context
 import com.soulquote.app.data.local.SoulQuoteContentDatabase
 import com.soulquote.app.data.local.entity.content.AppConfigEntity
+import com.soulquote.app.data.local.entity.content.MeditationCategoryEntity
+import com.soulquote.app.data.local.entity.content.MeditationEntity
 import com.soulquote.app.data.local.entity.content.QuoteCategoryEntity
 import com.soulquote.app.data.local.entity.content.QuoteEntity
 import com.soulquote.app.data.local.entity.content.TemplateEntity
@@ -97,6 +99,48 @@ class DatabaseSeeder(
                 }
             }
 
+            val medCategoriesArray = json.optJSONArray("meditationCategories")
+            val medCategories = mutableListOf<MeditationCategoryEntity>()
+            if (medCategoriesArray != null) {
+                for (i in 0 until medCategoriesArray.length()) {
+                    val obj = medCategoriesArray.getJSONObject(i)
+                    medCategories.add(
+                        MeditationCategoryEntity(
+                            id = obj.getString("id"),
+                            name = obj.getString("name"),
+                            slug = obj.getString("slug"),
+                            description = obj.getNullableString("description"),
+                            iconName = obj.getNullableString("iconName"),
+                            sortOrder = obj.optInt("sortOrder", i)
+                        )
+                    )
+                }
+            }
+
+            val meditationsArray = json.optJSONArray("meditations")
+            val meditations = mutableListOf<MeditationEntity>()
+            if (meditationsArray != null) {
+                for (i in 0 until meditationsArray.length()) {
+                    val obj = meditationsArray.getJSONObject(i)
+                    meditations.add(
+                        MeditationEntity(
+                            id = obj.getString("id"),
+                            title = obj.getString("title"),
+                            description = obj.getNullableString("description"),
+                            category = obj.getString("category"),
+                            durationSeconds = obj.getInt("durationSeconds"),
+                            instructor = obj.getNullableString("instructor"),
+                            audioUrl = obj.getString("audioUrl"),
+                            localFileName = obj.getString("localFileName"),
+                            version = obj.optInt("version", 1),
+                            checksum = obj.getString("checksum"),
+                            sizeBytes = obj.getLong("sizeBytes"),
+                            active = obj.optBoolean("active", true)
+                        )
+                    )
+                }
+            }
+
             if (categories.isNotEmpty()) {
                 database.quoteDao().insertCategories(categories)
             }
@@ -105,6 +149,12 @@ class DatabaseSeeder(
             }
             if (templates.isNotEmpty()) {
                 database.templateDao().insertTemplates(templates)
+            }
+            if (medCategories.isNotEmpty()) {
+                database.meditationDao().insertCategories(medCategories)
+            }
+            if (meditations.isNotEmpty()) {
+                database.meditationDao().insertMeditations(meditations)
             }
 
             database.appConfigDao().setConfigValue(

@@ -29,10 +29,15 @@ import com.soulquote.app.presentation.navigation.Screen
 import com.soulquote.app.presentation.navigation.SoulQuoteNavGraph
 import com.soulquote.app.presentation.quotes.QuoteViewModel
 import com.soulquote.app.presentation.quotes.QuoteViewModelFactory
+import com.soulquote.app.presentation.meditation.MeditationViewModel
+import com.soulquote.app.presentation.meditation.MeditationViewModelFactory
 import com.soulquote.app.presentation.settings.SettingsViewModel
 import com.soulquote.app.presentation.settings.SettingsViewModelFactory
 import com.soulquote.app.presentation.studio.StudioViewModel
 import com.soulquote.app.presentation.studio.StudioViewModelFactory
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -54,6 +59,11 @@ class MainActivity : ComponentActivity() {
         StudioViewModelFactory(appContainer)
     }
 
+    private val meditationViewModel: MeditationViewModel by viewModels {
+        val appContainer = (application as SoulQuoteApp).appContainer
+        MeditationViewModelFactory(appContainer)
+    }
+
     private val _navTarget = MutableStateFlow<String?>(null)
     val navTarget: StateFlow<String?> = _navTarget.asStateFlow()
 
@@ -68,6 +78,7 @@ class MainActivity : ComponentActivity() {
                     quoteViewModel = quoteViewModel,
                     settingsViewModel = settingsViewModel,
                     studioViewModel = studioViewModel,
+                    meditationViewModel = meditationViewModel,
                     navTargetState = navTarget,
                     onConsumeNavTarget = { _navTarget.value = null }
                 )
@@ -86,6 +97,18 @@ class MainActivity : ComponentActivity() {
         if (target != null) {
             _navTarget.value = target
         }
+        val playId = intent?.getStringExtra("extra_play_meditation_id")
+        if (playId != null) {
+            lifecycleScope.launch {
+                meditationViewModel.catalogUiState.collect { state ->
+                    val med = state.meditations.find { it.id == playId }
+                    if (med != null) {
+                        meditationViewModel.playMeditation(med)
+                        cancel()
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -94,6 +117,7 @@ fun MainContent(
     quoteViewModel: QuoteViewModel,
     settingsViewModel: SettingsViewModel,
     studioViewModel: StudioViewModel,
+    meditationViewModel: MeditationViewModel,
     navTargetState: StateFlow<String?>,
     onConsumeNavTarget: () -> Unit
 ) {
@@ -120,6 +144,15 @@ fun MainContent(
                 "explore" -> {
                     if (currentRoute != Screen.Explore.route) {
                         navController.navigate(Screen.Explore.route) {
+                            popUpTo(Screen.Home.route) { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                }
+                "meditation" -> {
+                    if (currentRoute != Screen.Meditation.route) {
+                        navController.navigate(Screen.Meditation.route) {
                             popUpTo(Screen.Home.route) { saveState = true }
                             launchSingleTop = true
                             restoreState = true
@@ -197,6 +230,7 @@ fun MainContent(
             viewModel = quoteViewModel,
             settingsViewModel = settingsViewModel,
             studioViewModel = studioViewModel,
+            meditationViewModel = meditationViewModel,
             modifier = Modifier.padding(innerPadding)
         )
     }

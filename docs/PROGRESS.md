@@ -44,13 +44,13 @@
 ---
 
 ## Phase 4 — Meditation
-- [ ] Meditation catalog & category filtering
-- [ ] Meditation session detail view
-- [ ] Audio player engine (Media3 / ExoPlayer)
-- [ ] Background audio downloader & SHA-256 verification
-- [ ] Offline playback support
-- [ ] Playback state tracking (progress, seek, pause)
-- [ ] Meditation history logging
+- [x] Meditation catalog & category filtering (2026-09-27 | Status: DONE | Dynamic category chips and search filter query)
+- [x] Meditation session detail view (2026-09-27 | Status: DONE | Modal player sheet with mindful breathing pulse animation and speed presets)
+- [x] Audio player engine (Media3 / ExoPlayer) (2026-09-27 | Status: DONE | MeditationAudioPlayer with Media3 ExoPlayer, audio focus, 500ms ticker, seek -15/+15s)
+- [x] Background audio downloader & SHA-256 verification (2026-09-27 | Status: DONE | Scoped filesDir/audio/ atomic download with SHA-256 integrity verification)
+- [x] Offline playback support (2026-09-27 | Status: DONE | Offline badge, local file resolver, and bundled raw meditation bell fallback)
+- [x] Playback state tracking (progress, seek, pause) (2026-09-27 | Status: DONE | StateFlow reactive tracking with docked mini-player on catalog screen)
+- [x] Meditation history logging (2026-09-27 | Status: DONE | RecordMeditationSessionUseCase saving completed sessions to Room DB)
 
 ---
 

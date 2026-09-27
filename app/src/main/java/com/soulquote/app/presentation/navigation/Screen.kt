@@ -14,10 +14,10 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector)
     object Explore : Screen("explore", "Explore", Icons.Default.Search)
     object Studio : Screen("studio", "Studio", Icons.Default.Palette)
     object Favorites : Screen("favorites", "Favorites", Icons.Default.Favorite)
-    object Meditation : Screen("meditation", "Meditation", Icons.Default.SelfImprovement)
+    object Meditation : Screen("meditation", "Meditate", Icons.Default.SelfImprovement)
     object Settings : Screen("settings", "Settings", Icons.Default.Settings)
 
     companion object {
-        val bottomNavItems = listOf(Home, Explore, Studio, Favorites, Settings)
+        val bottomNavItems = listOf(Home, Explore, Meditation, Studio, Settings)
     }
 }

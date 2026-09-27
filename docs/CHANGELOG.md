@@ -5,6 +5,29 @@ All notable changes to the **SoulQuote** project will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2026-09-27
+
+### Added
+- **Phase 4 Guided Meditation & Audio Engine**:
+  - `MeditationAudioPlayer`: AndroidX Media3 ExoPlayer wrapper with `C.USAGE_MEDIA` and `C.AUDIO_CONTENT_TYPE_SPEECH`, automatic audio focus and ducking, 500ms ticker, seek relative (-15s/+15s), playback speed multiplier (`0.8x`, `1.0x`, `1.2x`), and completion callback.
+  - `MeditationDownloadManager`: Robust offline audio downloader with atomic `.download` staging, SHA-256 integrity verification, storage in scoped app internal directory `filesDir/audio/`, and graceful fallback to offline bundled soothing bell audio (`meditation_bell_ambient.wav`).
+  - Catalog & Seeding:
+    - Added 4 meditation categories (`mindful_breathing`, `inner_calm`, `spiritual_energy`, `deep_sleep`) and 4 guided meditation tracks to `initial_content.json` (version 3).
+    - Database seeder extended to automatically populate meditation categories and audio tracks.
+  - Domain & Use Cases:
+    - `GetMeditationsUseCase`: Dynamic category and search query filtering.
+    - `GetMeditationCategoriesUseCase`: Active category retrieval sorted by sort order.
+    - `RecordMeditationSessionUseCase`: Room DB logging for completed meditation sessions with completion percentage and duration.
+  - Presentation & UI:
+    - `MeditationCatalogScreen`: Full-featured catalog with search bar, horizontal category filter chips, session cards with offline indicators, and docked mini-player.
+    - `MeditationPlayerDialog`: Modal bottom sheet player featuring mindful breathing pulse circle animation, interactive slider with time formatters, transport controls, and speed selector.
+    - 5-Pillar Navigation: Enhanced BottomNav to `Home`, `Explore`, `Meditate`, `Studio`, `Settings`.
+    - Prominent Guided Meditation shortcut card and Favorites icon on `HomeScreen`.
+  - Testing & Verification:
+    - Unit tests (`GetMeditationsUseCaseTest`) covering filtering by category and full catalog fetching.
+    - All tests passing (`testDebugUnitTest`, `testReleaseUnitTest`).
+    - Verified on physical Xiaomi Redmi Note 8 Pro (`com.dearyoti.soulquote`) with live screenshot confirmation.
+
 ## [0.5.0] - 2026-09-27
 
 ### Added
@@ -32,7 +55,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - **Phase 3 Notification Engine & Reminder Scheduler**:
   - NotificationHelper: Configures high-importance Android Notification Channels (channel_daily_quote_v1, channel_meditation_v1) bound to custom raw audio resources and gentle vibration patterns.
-  - Custom local audio chime files in es/raw: mindful_bell.wav (528 Hz mindful chime) and zen_singing_bowl.wav (432 Hz resonant singing bowl).
+  - Custom local audio chime files in 
+es/raw: mindful_bell.wav (528 Hz mindful chime) and zen_singing_bowl.wav (432 Hz resonant singing bowl).
   - NotificationScheduler: Alarm scheduling service utilizing AlarmManager.setExactAndAllowWhileIdle (with graceful inexact fallback for battery preservation and Android 13+/14+ restrictions).
   - Broadcast Receivers:
     - DailyQuoteNotificationReceiver: Resolves today's inspirational quote from QuoteRepository and delivers BigTextStyle notification.

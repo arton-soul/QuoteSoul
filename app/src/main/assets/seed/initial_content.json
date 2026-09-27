@@ -1,5 +1,5 @@
-﻿{
-    "contentVersion":  2,
+{
+    "contentVersion":  3,
     "categories":  [
                        {
                            "id":  "jiwa_spiritual",
@@ -799,5 +799,97 @@
                           "alignment":  "center",
                           "overlayOpacity":  0.0
                       }
-                  ]
+                  ],
+    "meditationCategories":  [
+                                 {
+                                     "id":  "mindful_breathing",
+                                     "name":  "Mindful Breathing",
+                                     "sortOrder":  0,
+                                     "description":  "Fokus pada nafas untuk meredakan kecemasan dan mengembalikan ketenangan batin.",
+                                     "iconName":  "air",
+                                     "slug":  "mindful-breathing"
+                                 },
+                                 {
+                                     "id":  "inner_calm",
+                                     "name":  "Inner Peace \u0026 Calm",
+                                     "sortOrder":  1,
+                                     "description":  "Menyelami keheningan dalam diri untuk melepas ketegangan pikiran dan emosi.",
+                                     "iconName":  "water_drop",
+                                     "slug":  "inner-peace-calm"
+                                 },
+                                 {
+                                     "id":  "spiritual_energy",
+                                     "name":  "Energi Jiwa \u0026 Roh",
+                                     "sortOrder":  2,
+                                     "description":  "Menyelaras cakra dan menyatukan energi cinta kasih serta cahaya suci roh.",
+                                     "iconName":  "self_improvement",
+                                     "slug":  "energi-jiwa-roh"
+                                 },
+                                 {
+                                     "id":  "deep_sleep",
+                                     "name":  "Deep Rest \u0026 Sleep",
+                                     "sortOrder":  3,
+                                     "description":  "Relaksasi otot dan penenangan gelombang otak menjelang istirahat malam.",
+                                     "iconName":  "bedtime",
+                                     "slug":  "deep-rest-sleep"
+                                 }
+                             ],
+    "meditations":  [
+                        {
+                            "localFileName":  "med_breathing_5min.mp3",
+                            "id":  "med_breathing_5min",
+                            "durationSeconds":  300,
+                            "audioUrl":  "https://assets.soulquote.dearyoti.com/audio/med_breathing_5min.mp3",
+                            "version":  1,
+                            "category":  "mindful_breathing",
+                            "description":  "Sesi meditasi pernafasan mindful selama 5 menit untuk meredakan stres, menstabilkan detak jantung, dan memusatkan kesadaran pada saat ini.",
+                            "instructor":  "Bunda Arsaningsih",
+                            "active":  true,
+                            "title":  "Ketenangan Nafas \u0026 Keheningan Batin",
+                            "sizeBytes":  4800000,
+                            "checksum":  "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                        },
+                        {
+                            "localFileName":  "med_inner_peace_10min.mp3",
+                            "id":  "med_inner_peace_10min",
+                            "durationSeconds":  600,
+                            "audioUrl":  "https://assets.soulquote.dearyoti.com/audio/med_inner_peace_10min.mp3",
+                            "version":  1,
+                            "category":  "inner_calm",
+                            "description":  "Panduan melepaskan beban emosional dan kekhawatiran pikiran, membawa jiwa masuk ke ruang hening penuh kedamaian sejati.",
+                            "instructor":  "Bunda Arsaningsih",
+                            "active":  true,
+                            "title":  "Menyelami Keheningan Jiwa",
+                            "sizeBytes":  9600000,
+                            "checksum":  "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                        },
+                        {
+                            "localFileName":  "med_spiritual_energy_8min.mp3",
+                            "id":  "med_spiritual_energy_8min",
+                            "durationSeconds":  480,
+                            "audioUrl":  "https://assets.soulquote.dearyoti.com/audio/med_spiritual_energy_8min.mp3",
+                            "version":  1,
+                            "category":  "spiritual_energy",
+                            "description":  "Membersihkan rekaman energi negatif dan membuka cakra hati untuk memancarkan cinta kasih tanpa syarat kepada seluruh semesta.",
+                            "instructor":  "Bunda Arsaningsih",
+                            "active":  true,
+                            "title":  "Penyelarasan Cahaya \u0026 Cinta Kasih",
+                            "sizeBytes":  7680000,
+                            "checksum":  "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                        },
+                        {
+                            "localFileName":  "med_deep_sleep_12min.mp3",
+                            "id":  "med_deep_sleep_12min",
+                            "durationSeconds":  720,
+                            "audioUrl":  "https://assets.soulquote.dearyoti.com/audio/med_deep_sleep_12min.mp3",
+                            "version":  1,
+                            "category":  "deep_sleep",
+                            "description":  "Relaksasi tubuh total dari ujung kepala hingga kaki, mengalirkan kedamaian mendalam untuk tidur yang berkualitas dan pulih bugar.",
+                            "instructor":  "SoulQuote Guide",
+                            "active":  true,
+                            "title":  "Istirahat Tenang Tidur Nyenyak",
+                            "sizeBytes":  11520000,
+                            "checksum":  "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                        }
+                    ]
 }
