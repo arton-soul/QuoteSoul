@@ -48,7 +48,8 @@ import java.time.LocalTime
 fun HomeScreen(
     viewModel: QuoteViewModel,
     onNavigateToCategory: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigateToStudio: ((Quote) -> Unit)? = null
 ) {
     val dailyQuote by viewModel.dailyQuote.collectAsState()
     val categories by viewModel.categories.collectAsState()
@@ -67,7 +68,8 @@ fun HomeScreen(
             quote = quote,
             onDismiss = { viewModel.showQuoteDetail(null) },
             onToggleFavorite = { viewModel.toggleFavorite(it) },
-            onShare = { shareQuote(context, it) }
+            onShare = { shareQuote(context, it) },
+            onCustomizeInStudio = onNavigateToStudio
         )
     }
 
@@ -125,7 +127,8 @@ fun HomeScreen(
                     onToggleFavorite = { viewModel.toggleFavorite(it) },
                     onShare = { shareQuote(context, it) },
                     onClick = { viewModel.showQuoteDetail(quote) },
-                    isFeatured = true
+                    isFeatured = true,
+                    onCustomizeInStudio = onNavigateToStudio
                 )
             } ?: run {
                 Card(

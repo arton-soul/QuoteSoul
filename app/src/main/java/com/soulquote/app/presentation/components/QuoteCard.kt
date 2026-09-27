@@ -8,12 +8,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.FormatQuote
+import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -41,7 +43,8 @@ fun QuoteCard(
     onShare: (Quote) -> Unit,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    isFeatured: Boolean = false
+    isFeatured: Boolean = false,
+    onCustomizeInStudio: ((Quote) -> Unit)? = null
 ) {
     val cardColors = if (isFeatured) {
         CardDefaults.cardColors(
@@ -141,6 +144,18 @@ fun QuoteCard(
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                onCustomizeInStudio?.let { onStudio ->
+                    IconButton(onClick = { onStudio(quote) }) {
+                        Icon(
+                            imageVector = Icons.Default.Palette,
+                            contentDescription = "Customize in Studio",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(4.dp))
+                }
+
                 IconButton(onClick = { onShare(quote) }) {
                     Icon(
                         imageVector = Icons.Default.Share,

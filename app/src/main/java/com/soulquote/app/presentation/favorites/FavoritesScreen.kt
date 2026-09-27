@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.soulquote.app.domain.model.Quote
 import com.soulquote.app.presentation.components.QuoteCard
 import com.soulquote.app.presentation.components.QuoteDetailDialog
 import com.soulquote.app.presentation.home.shareQuote
@@ -34,7 +35,8 @@ import com.soulquote.app.presentation.quotes.QuoteViewModel
 @Composable
 fun FavoritesScreen(
     viewModel: QuoteViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigateToStudio: ((Quote) -> Unit)? = null
 ) {
     val favorites by viewModel.favoriteQuotes.collectAsState()
     val selectedQuoteForDetail by viewModel.selectedQuoteForDetail.collectAsState()
@@ -45,7 +47,8 @@ fun FavoritesScreen(
             quote = quote,
             onDismiss = { viewModel.showQuoteDetail(null) },
             onToggleFavorite = { viewModel.toggleFavorite(it) },
-            onShare = { shareQuote(context, it) }
+            onShare = { shareQuote(context, it) },
+            onCustomizeInStudio = onNavigateToStudio
         )
     }
 
@@ -115,7 +118,8 @@ fun FavoritesScreen(
                         quote = quote,
                         onToggleFavorite = { viewModel.toggleFavorite(it) },
                         onShare = { shareQuote(context, it) },
-                        onClick = { viewModel.showQuoteDetail(quote) }
+                        onClick = { viewModel.showQuoteDetail(quote) },
+                        onCustomizeInStudio = onNavigateToStudio
                     )
                 }
             }

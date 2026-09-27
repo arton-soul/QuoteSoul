@@ -1,4 +1,4 @@
-﻿# SoulQuote — Development Progress
+# SoulQuote — Development Progress
 
 ## Phase 0 — Project Foundation
 - [x] Project setup (2026-09-27 | Status: DONE | Clean Compose baseline initialized)
@@ -63,13 +63,14 @@
 ---
 
 ## Phase 6 — Quote Studio
-- [ ] Quote canvas preview with aspect ratios (1:1, 9:16, 4:5)
-- [ ] Background selector (colors, gradients, bundled images, user gallery)
-- [ ] Typography formatting (font family, size, color, alignment)
-- [ ] Text styling (shadows, line heights, opacity)
-- [ ] Overlay controls & watermark toggle
-- [ ] High-resolution bitmap export
-- [ ] Android Sharesheet integration via FileProvider
+- [x] Quote canvas preview with aspect ratios (1:1, 9:16, 4:5) (2026-09-27 | Status: DONE | Responsive preview card with smooth scaling)
+- [x] Background selector (colors, gradients, bundled presets, user gallery) (2026-09-27 | Status: DONE | Mindful solids, atmospheric gradients, and zero-permission PickVisualMedia PhotoPicker)
+- [x] Typography formatting (font family, size, color, alignment) (2026-09-27 | Status: DONE | Serif, Sans, Cursive, Mono with dynamic size slider, alignment and palette)
+- [x] Text styling (shadows, line heights, opacity) (2026-09-27 | Status: DONE | Contrast drop shadows and dimmer overlay slider)
+- [x] Overlay controls & watermark toggle (2026-09-27 | Status: DONE | SoulQuote branding watermark and author visibility toggle)
+- [x] High-resolution bitmap export (2026-09-27 | Status: DONE | 1080p StaticLayout renderer with MediaStore Scoped Storage saving to Pictures/SoulQuote)
+- [x] Android Sharesheet integration via FileProvider (2026-09-27 | Status: DONE | FileProvider authority com.dearyoti.soulquote.fileprovider with ACTION_SEND)
+- [x] Studio screen & seamless navigation integration (2026-09-27 | Status: DONE | Studio BottomNav tab + 1-tap "Customize in Studio" palette shortcut from Home, Explore, and Favorites)
 
 ---
 

@@ -1,4 +1,4 @@
-﻿package com.soulquote.app.presentation
+package com.soulquote.app.presentation
 
 import android.content.Intent
 import android.os.Bundle
@@ -31,6 +31,8 @@ import com.soulquote.app.presentation.quotes.QuoteViewModel
 import com.soulquote.app.presentation.quotes.QuoteViewModelFactory
 import com.soulquote.app.presentation.settings.SettingsViewModel
 import com.soulquote.app.presentation.settings.SettingsViewModelFactory
+import com.soulquote.app.presentation.studio.StudioViewModel
+import com.soulquote.app.presentation.studio.StudioViewModelFactory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -47,6 +49,11 @@ class MainActivity : ComponentActivity() {
         SettingsViewModelFactory(appContainer)
     }
 
+    private val studioViewModel: StudioViewModel by viewModels {
+        val appContainer = (application as SoulQuoteApp).appContainer
+        StudioViewModelFactory(appContainer)
+    }
+
     private val _navTarget = MutableStateFlow<String?>(null)
     val navTarget: StateFlow<String?> = _navTarget.asStateFlow()
 
@@ -60,6 +67,7 @@ class MainActivity : ComponentActivity() {
                 MainContent(
                     quoteViewModel = quoteViewModel,
                     settingsViewModel = settingsViewModel,
+                    studioViewModel = studioViewModel,
                     navTargetState = navTarget,
                     onConsumeNavTarget = { _navTarget.value = null }
                 )
@@ -85,6 +93,7 @@ class MainActivity : ComponentActivity() {
 fun MainContent(
     quoteViewModel: QuoteViewModel,
     settingsViewModel: SettingsViewModel,
+    studioViewModel: StudioViewModel,
     navTargetState: StateFlow<String?>,
     onConsumeNavTarget: () -> Unit
 ) {
@@ -111,6 +120,15 @@ fun MainContent(
                 "explore" -> {
                     if (currentRoute != Screen.Explore.route) {
                         navController.navigate(Screen.Explore.route) {
+                            popUpTo(Screen.Home.route) { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                }
+                "studio" -> {
+                    if (currentRoute != Screen.Studio.route) {
+                        navController.navigate(Screen.Studio.route) {
                             popUpTo(Screen.Home.route) { saveState = true }
                             launchSingleTop = true
                             restoreState = true
@@ -178,6 +196,7 @@ fun MainContent(
             navController = navController,
             viewModel = quoteViewModel,
             settingsViewModel = settingsViewModel,
+            studioViewModel = studioViewModel,
             modifier = Modifier.padding(innerPadding)
         )
     }

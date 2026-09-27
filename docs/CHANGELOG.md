@@ -1,9 +1,31 @@
-﻿# Changelog
+# Changelog
 
 All notable changes to the **SoulQuote** project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.5.0] - 2026-09-27
+
+### Added
+- **Phase 6 Quote Studio Engine & Sharing Pipeline**:
+  - `QuoteImageExporter`: High-resolution 1080p Bitmap canvas renderer using Android `StaticLayout` with typography wrapping, center-cropped bitmap background scaling, contrast drop shadows, dimmer overlay, and optional branding watermark.
+  - Storage & Sharing Pipeline:
+    - Scoped storage MediaStore integration saving high-resolution JPEG directly into `Pictures/SoulQuote` without requiring runtime permissions on Android 10+ (API 29+).
+    - Android Sharesheet (`ACTION_SEND`) via `FileProvider` (`com.dearyoti.soulquote.fileprovider`) storing temporary shares under app cache `shared_quotes/`.
+  - Zero-permission Android Photo Picker (`ActivityResultContracts.PickVisualMedia`) for custom user gallery backgrounds.
+  - Domain State & Customizations (`StudioState.kt`):
+    - Multi-aspect ratios: `1:1` (Square), `9:16` (Story/Status), `4:5` (Portrait).
+    - Presets: Solid mindful palettes and atmospheric linear gradients (Dawn Meditation, Twilight Solitude, Forest Rain, Warm Ochre).
+    - Typography: 4 font families (Serif, Sans, Cursive, Monospace), font size slider, 3 text alignments, and color palettes.
+    - Visual effects: Dimmer overlay slider (0% to 80%), author toggle, and watermark toggle.
+  - UI & Navigation:
+    - Dedicated `Quote Studio` tab in bottom navigation bar (`Screen.Studio`).
+    - 1-tap "Customize in Studio" palette shortcut buttons on `QuoteCard` and `QuoteDetailDialog` across `HomeScreen`, `ExploreQuotesScreen`, and `FavoritesScreen`.
+    - Modal bottom sheet `QuotePickerSheet` to switch quotes directly inside the Studio or roll random quotes.
+  - Unit Tests & Build Verification:
+    - Verified compile and tests passing with zero errors.
+    - Verified on physical Xiaomi Redmi Note 8 Pro (`com.dearyoti.soulquote`).
 
 ## [0.4.0] - 2026-09-27
 

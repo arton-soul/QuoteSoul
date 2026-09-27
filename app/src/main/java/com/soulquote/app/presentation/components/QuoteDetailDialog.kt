@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.FormatQuote
+import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -49,7 +50,8 @@ fun QuoteDetailDialog(
     quote: Quote,
     onDismiss: () -> Unit,
     onToggleFavorite: (Quote) -> Unit,
-    onShare: (Quote) -> Unit
+    onShare: (Quote) -> Unit,
+    onCustomizeInStudio: ((Quote) -> Unit)? = null
 ) {
     val context = LocalContext.current
 
@@ -117,6 +119,19 @@ fun QuoteDetailDialog(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Row {
+                    onCustomizeInStudio?.let { onStudio ->
+                        IconButton(onClick = {
+                            onStudio(quote)
+                            onDismiss()
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Palette,
+                                contentDescription = "Edit in Studio",
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                    }
+
                     IconButton(
                         onClick = {
                             val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager

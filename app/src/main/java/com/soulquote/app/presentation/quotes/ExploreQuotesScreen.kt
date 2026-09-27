@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.soulquote.app.domain.model.Quote
 import com.soulquote.app.presentation.components.QuoteCard
 import com.soulquote.app.presentation.components.QuoteDetailDialog
 import com.soulquote.app.presentation.home.shareQuote
@@ -41,7 +42,8 @@ import com.soulquote.app.presentation.home.shareQuote
 @Composable
 fun ExploreQuotesScreen(
     viewModel: QuoteViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigateToStudio: ((Quote) -> Unit)? = null
 ) {
     val quotes by viewModel.exploreQuotes.collectAsState()
     val categories by viewModel.categories.collectAsState()
@@ -55,7 +57,8 @@ fun ExploreQuotesScreen(
             quote = quote,
             onDismiss = { viewModel.showQuoteDetail(null) },
             onToggleFavorite = { viewModel.toggleFavorite(it) },
-            onShare = { shareQuote(context, it) }
+            onShare = { shareQuote(context, it) },
+            onCustomizeInStudio = onNavigateToStudio
         )
     }
 
@@ -74,24 +77,24 @@ fun ExploreQuotesScreen(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // Search Field
+        // Search Input Field
         OutlinedTextField(
             value = searchQuery,
             onValueChange = { viewModel.updateSearchQuery(it) },
             modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text("Search by quote, author, or tag...") },
+            placeholder = { Text("Search quotes, authors, or tags...") },
             leadingIcon = {
                 Icon(imageVector = Icons.Default.Search, contentDescription = "Search")
             },
             trailingIcon = {
                 if (searchQuery.isNotEmpty()) {
                     IconButton(onClick = { viewModel.updateSearchQuery("") }) {
-                        Icon(imageVector = Icons.Default.Clear, contentDescription = "Clear")
+                        Icon(imageVector = Icons.Default.Clear, contentDescription = "Clear search")
                     }
                 }
             },
-            shape = RoundedCornerShape(14.dp),
             singleLine = true,
+            shape = RoundedCornerShape(14.dp),
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = MaterialTheme.colorScheme.surface,
                 unfocusedContainerColor = MaterialTheme.colorScheme.surface
@@ -102,6 +105,7 @@ fun ExploreQuotesScreen(
 
         // Category Filter Chips
         LazyRow(
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             item {
@@ -116,8 +120,9 @@ fun ExploreQuotesScreen(
                 )
             }
             items(categories) { category ->
+                val isSelected = selectedCategory == category.id
                 ElevatedFilterChip(
-                    selected = selectedCategory == category.id,
+                    selected = isSelected,
                     onClick = { viewModel.selectCategory(category.id) },
                     label = { Text(category.name) },
                     colors = FilterChipDefaults.elevatedFilterChipColors(
@@ -128,7 +133,7 @@ fun ExploreQuotesScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         // Quotes List
         if (quotes.isEmpty()) {
@@ -155,7 +160,8 @@ fun ExploreQuotesScreen(
                         quote = quote,
                         onToggleFavorite = { viewModel.toggleFavorite(it) },
                         onShare = { shareQuote(context, it) },
-                        onClick = { viewModel.showQuoteDetail(quote) }
+                        onClick = { viewModel.showQuoteDetail(quote) },
+                        onCustomizeInStudio = onNavigateToStudio
                     )
                 }
             }
