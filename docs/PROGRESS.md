@@ -22,12 +22,12 @@
 ---
 
 ## Phase 2 — Quote System
-- [ ] Quote list & category browsing
-- [ ] Quote detail view
-- [ ] Random quote generator
-- [ ] Daily quote selection algorithm
-- [ ] Favorite quotes bookmarking
-- [ ] Tags & search filtering
+- [x] Quote list & category browsing (2026-09-27 | Status: DONE | `ExploreQuotesScreen` with category chips and search filter)
+- [x] Quote detail view (2026-09-27 | Status: DONE | `QuoteDetailDialog` with full tags, source, copy to clipboard, and share)
+- [x] Random quote generator (2026-09-27 | Status: DONE | `GetRandomQuoteUseCase` with SQLite random fallback)
+- [x] Daily quote selection algorithm (2026-09-27 | Status: DONE | Timezone-aware epoch day rotation on `HomeScreen`)
+- [x] Favorite quotes bookmarking (2026-09-27 | Status: DONE | Reactive `FavoritesScreen` with bookmarking persistence in user database)
+- [x] Tags & search filtering (2026-09-27 | Status: DONE | Keyword, author, and tag live search in `ExploreQuotesScreen`)
 
 ---
 

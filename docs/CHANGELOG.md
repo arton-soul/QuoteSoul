@@ -5,6 +5,23 @@ All notable changes to the **SoulQuote** project will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-09-27
+
+### Added
+- **Phase 2 Quote System Implementation**.
+- Domain Use Cases: `GetDailyQuoteUseCase`, `GetQuotesUseCase`, `GetFavoriteQuotesUseCase`, `ToggleFavoriteUseCase`, `GetRandomQuoteUseCase`, `GetCategoriesUseCase`.
+- Jetpack Compose UI Screens:
+  - `HomeScreen`: Mindful greeting, Featured Daily Quote Card, category shortcuts, daily reflection prompt.
+  - `ExploreQuotesScreen`: Live search filtering (by quote text, author, or tags), category chips, and quote list.
+  - `FavoritesScreen`: Bookmarked quotes collection with empty state and quick actions.
+  - `SettingsScreen`: Daily quote reminder toggles, appearance preview, and content storage info.
+- UI Components:
+  - `QuoteCard`: Elegant Material 3 card with serif quote styling, author attribution, category chip, favorite toggle, and sharing.
+  - `QuoteDetailDialog`: Modal dialog with complete quote text, source, hashtags, copy to clipboard, and sharesheet integration.
+- Navigation: Jetpack Compose NavigationBar with 4 primary tabs (`Home`, `Explore`, `Favorites`, `Settings`) and `SoulQuoteNavGraph`.
+- ViewModel: `QuoteViewModel` managing UI state via reactive `StateFlow`.
+- Unit tests: `GetDailyQuoteUseCaseTest` verifying daily rotation and random fallback logic.
+
 ## [0.2.0] - 2026-09-27
 
 ### Added

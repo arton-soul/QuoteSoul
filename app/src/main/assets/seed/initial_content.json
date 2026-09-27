@@ -1,0 +1,195 @@
+{
+  "contentVersion": 1,
+  "categories": [
+    {
+      "id": "mindfulness",
+      "name": "Mindfulness",
+      "slug": "mindfulness",
+      "description": "Cultivating presence, awareness, and stillness in the current moment.",
+      "iconName": "spa",
+      "sortOrder": 1
+    },
+    {
+      "id": "stoicism",
+      "name": "Stoicism",
+      "slug": "stoicism",
+      "description": "Timeless wisdom on resilience, emotional mastery, and virtue.",
+      "iconName": "shield",
+      "sortOrder": 2
+    },
+    {
+      "id": "gratitude",
+      "name": "Gratitude",
+      "slug": "gratitude",
+      "description": "Appreciation for life's blessings, abundance, and simple moments.",
+      "iconName": "favorite",
+      "sortOrder": 3
+    },
+    {
+      "id": "inner_peace",
+      "name": "Inner Peace",
+      "slug": "inner-peace",
+      "description": "Finding tranquility amidst life's turbulence and storms.",
+      "iconName": "water_drop",
+      "sortOrder": 4
+    },
+    {
+      "id": "courage",
+      "name": "Courage & Strength",
+      "slug": "courage",
+      "description": "Overcoming fear and standing firm in conviction.",
+      "iconName": "bolt",
+      "sortOrder": 5
+    }
+  ],
+  "quotes": [
+    {
+      "id": "quote_001",
+      "text": "You have power over your mind - not outside events. Realize this, and you will find strength.",
+      "author": "Marcus Aurelius",
+      "category": "stoicism",
+      "tags": "mind,strength,power,stoic",
+      "language": "en",
+      "source": "Meditations",
+      "priority": 10
+    },
+    {
+      "id": "quote_002",
+      "text": "The soul becomes dyed with the color of its thoughts.",
+      "author": "Marcus Aurelius",
+      "category": "mindfulness",
+      "tags": "thoughts,soul,awareness",
+      "language": "en",
+      "source": "Meditations",
+      "priority": 9
+    },
+    {
+      "id": "quote_003",
+      "text": "We suffer more often in imagination than in reality.",
+      "author": "Seneca",
+      "category": "stoicism",
+      "tags": "fear,imagination,calm",
+      "language": "en",
+      "source": "Letters from a Stoic",
+      "priority": 10
+    },
+    {
+      "id": "quote_004",
+      "text": "Silence is an ocean. Speech is a river. When the ocean is searching for you, don't walk into the river.",
+      "author": "Rumi",
+      "category": "inner_peace",
+      "tags": "silence,peace,stillness",
+      "language": "en",
+      "priority": 8
+    },
+    {
+      "id": "quote_005",
+      "text": "Nature does not hurry, yet everything is accomplished.",
+      "author": "Lao Tzu",
+      "category": "mindfulness",
+      "tags": "patience,nature,peace",
+      "language": "en",
+      "source": "Tao Te Ching",
+      "priority": 9
+    },
+    {
+      "id": "quote_006",
+      "text": "When you arise in the morning think of what a privilege it is to be alive, to think, to enjoy, to love.",
+      "author": "Marcus Aurelius",
+      "category": "gratitude",
+      "tags": "morning,life,love,gratitude",
+      "language": "en",
+      "source": "Meditations",
+      "priority": 10
+    },
+    {
+      "id": "quote_007",
+      "text": "Peace comes from within. Do not seek it without.",
+      "author": "Buddha",
+      "category": "inner_peace",
+      "tags": "peace,presence,wisdom",
+      "language": "en",
+      "priority": 9
+    },
+    {
+      "id": "quote_008",
+      "text": "He who is brave is free.",
+      "author": "Seneca",
+      "category": "courage",
+      "tags": "courage,freedom,strength",
+      "language": "en",
+      "priority": 8
+    },
+    {
+      "id": "quote_009",
+      "text": "Wear gratitude like a cloak, and it will feed every corner of your life.",
+      "author": "Rumi",
+      "category": "gratitude",
+      "tags": "gratitude,joy,abundance",
+      "language": "en",
+      "priority": 8
+    },
+    {
+      "id": "quote_010",
+      "text": "Do not spoil what you have by desiring what you have not; remember that what you now have was once among the things you only hoped for.",
+      "author": "Epicurus",
+      "category": "gratitude",
+      "tags": "gratitude,contentment,wisdom",
+      "language": "en",
+      "priority": 9
+    },
+    {
+      "id": "quote_011",
+      "text": "Difficulties strengthen the mind, as labor does the body.",
+      "author": "Seneca",
+      "category": "courage",
+      "tags": "adversity,strength,growth",
+      "language": "en",
+      "priority": 8
+    },
+    {
+      "id": "quote_012",
+      "text": "In the midst of movement and chaos, keep stillness inside of you.",
+      "author": "Deepak Chopra",
+      "category": "inner_peace",
+      "tags": "stillness,calm,balance",
+      "language": "en",
+      "priority": 8
+    }
+  ],
+  "templates": [
+    {
+      "id": "tpl_minimal_dark",
+      "name": "Minimal Obsidian",
+      "backgroundType": "solid",
+      "backgroundValue": "#121413",
+      "fontName": "serif",
+      "fontSizeSp": 22,
+      "textColorHex": "#FBFBF9",
+      "alignment": "center",
+      "overlayOpacity": 0.0
+    },
+    {
+      "id": "tpl_serene_sage",
+      "name": "Serene Sage",
+      "backgroundType": "solid",
+      "backgroundValue": "#38665E",
+      "fontName": "serif",
+      "fontSizeSp": 22,
+      "textColorHex": "#FFFFFF",
+      "alignment": "center",
+      "overlayOpacity": 0.0
+    },
+    {
+      "id": "tpl_warm_dawn",
+      "name": "Warm Dawn",
+      "backgroundType": "gradient",
+      "backgroundValue": "#E8D7C8,#38665E",
+      "fontName": "serif",
+      "fontSizeSp": 20,
+      "textColorHex": "#121413",
+      "alignment": "center",
+      "overlayOpacity": 0.0
+    }
+  ]
+}
