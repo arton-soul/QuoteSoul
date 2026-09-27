@@ -1,195 +1,803 @@
-{
-  "contentVersion": 1,
-  "categories": [
-    {
-      "id": "mindfulness",
-      "name": "Mindfulness",
-      "slug": "mindfulness",
-      "description": "Cultivating presence, awareness, and stillness in the current moment.",
-      "iconName": "spa",
-      "sortOrder": 1
-    },
-    {
-      "id": "stoicism",
-      "name": "Stoicism",
-      "slug": "stoicism",
-      "description": "Timeless wisdom on resilience, emotional mastery, and virtue.",
-      "iconName": "shield",
-      "sortOrder": 2
-    },
-    {
-      "id": "gratitude",
-      "name": "Gratitude",
-      "slug": "gratitude",
-      "description": "Appreciation for life's blessings, abundance, and simple moments.",
-      "iconName": "favorite",
-      "sortOrder": 3
-    },
-    {
-      "id": "inner_peace",
-      "name": "Inner Peace",
-      "slug": "inner-peace",
-      "description": "Finding tranquility amidst life's turbulence and storms.",
-      "iconName": "water_drop",
-      "sortOrder": 4
-    },
-    {
-      "id": "courage",
-      "name": "Courage & Strength",
-      "slug": "courage",
-      "description": "Overcoming fear and standing firm in conviction.",
-      "iconName": "bolt",
-      "sortOrder": 5
-    }
-  ],
-  "quotes": [
-    {
-      "id": "quote_001",
-      "text": "You have power over your mind - not outside events. Realize this, and you will find strength.",
-      "author": "Marcus Aurelius",
-      "category": "stoicism",
-      "tags": "mind,strength,power,stoic",
-      "language": "en",
-      "source": "Meditations",
-      "priority": 10
-    },
-    {
-      "id": "quote_002",
-      "text": "The soul becomes dyed with the color of its thoughts.",
-      "author": "Marcus Aurelius",
-      "category": "mindfulness",
-      "tags": "thoughts,soul,awareness",
-      "language": "en",
-      "source": "Meditations",
-      "priority": 9
-    },
-    {
-      "id": "quote_003",
-      "text": "We suffer more often in imagination than in reality.",
-      "author": "Seneca",
-      "category": "stoicism",
-      "tags": "fear,imagination,calm",
-      "language": "en",
-      "source": "Letters from a Stoic",
-      "priority": 10
-    },
-    {
-      "id": "quote_004",
-      "text": "Silence is an ocean. Speech is a river. When the ocean is searching for you, don't walk into the river.",
-      "author": "Rumi",
-      "category": "inner_peace",
-      "tags": "silence,peace,stillness",
-      "language": "en",
-      "priority": 8
-    },
-    {
-      "id": "quote_005",
-      "text": "Nature does not hurry, yet everything is accomplished.",
-      "author": "Lao Tzu",
-      "category": "mindfulness",
-      "tags": "patience,nature,peace",
-      "language": "en",
-      "source": "Tao Te Ching",
-      "priority": 9
-    },
-    {
-      "id": "quote_006",
-      "text": "When you arise in the morning think of what a privilege it is to be alive, to think, to enjoy, to love.",
-      "author": "Marcus Aurelius",
-      "category": "gratitude",
-      "tags": "morning,life,love,gratitude",
-      "language": "en",
-      "source": "Meditations",
-      "priority": 10
-    },
-    {
-      "id": "quote_007",
-      "text": "Peace comes from within. Do not seek it without.",
-      "author": "Buddha",
-      "category": "inner_peace",
-      "tags": "peace,presence,wisdom",
-      "language": "en",
-      "priority": 9
-    },
-    {
-      "id": "quote_008",
-      "text": "He who is brave is free.",
-      "author": "Seneca",
-      "category": "courage",
-      "tags": "courage,freedom,strength",
-      "language": "en",
-      "priority": 8
-    },
-    {
-      "id": "quote_009",
-      "text": "Wear gratitude like a cloak, and it will feed every corner of your life.",
-      "author": "Rumi",
-      "category": "gratitude",
-      "tags": "gratitude,joy,abundance",
-      "language": "en",
-      "priority": 8
-    },
-    {
-      "id": "quote_010",
-      "text": "Do not spoil what you have by desiring what you have not; remember that what you now have was once among the things you only hoped for.",
-      "author": "Epicurus",
-      "category": "gratitude",
-      "tags": "gratitude,contentment,wisdom",
-      "language": "en",
-      "priority": 9
-    },
-    {
-      "id": "quote_011",
-      "text": "Difficulties strengthen the mind, as labor does the body.",
-      "author": "Seneca",
-      "category": "courage",
-      "tags": "adversity,strength,growth",
-      "language": "en",
-      "priority": 8
-    },
-    {
-      "id": "quote_012",
-      "text": "In the midst of movement and chaos, keep stillness inside of you.",
-      "author": "Deepak Chopra",
-      "category": "inner_peace",
-      "tags": "stillness,calm,balance",
-      "language": "en",
-      "priority": 8
-    }
-  ],
-  "templates": [
-    {
-      "id": "tpl_minimal_dark",
-      "name": "Minimal Obsidian",
-      "backgroundType": "solid",
-      "backgroundValue": "#121413",
-      "fontName": "serif",
-      "fontSizeSp": 22,
-      "textColorHex": "#FBFBF9",
-      "alignment": "center",
-      "overlayOpacity": 0.0
-    },
-    {
-      "id": "tpl_serene_sage",
-      "name": "Serene Sage",
-      "backgroundType": "solid",
-      "backgroundValue": "#38665E",
-      "fontName": "serif",
-      "fontSizeSp": 22,
-      "textColorHex": "#FFFFFF",
-      "alignment": "center",
-      "overlayOpacity": 0.0
-    },
-    {
-      "id": "tpl_warm_dawn",
-      "name": "Warm Dawn",
-      "backgroundType": "gradient",
-      "backgroundValue": "#E8D7C8,#38665E",
-      "fontName": "serif",
-      "fontSizeSp": 20,
-      "textColorHex": "#121413",
-      "alignment": "center",
-      "overlayOpacity": 0.0
-    }
-  ]
+﻿{
+    "contentVersion":  2,
+    "categories":  [
+                       {
+                           "id":  "jiwa_spiritual",
+                           "name":  "Jiwa \u0026 Energi",
+                           "slug":  "jiwa-energi",
+                           "description":  "Misteri jiwa, energi, dan pertumbuhan kesadaran spiritual oleh Bunda Arsaningsih.",
+                           "iconName":  "auto_awesome",
+                           "sortOrder":  0
+                       },
+                       {
+                           "id":  "mindfulness",
+                           "name":  "Mindfulness",
+                           "slug":  "mindfulness",
+                           "description":  "Cultivating presence, awareness, and stillness in the current moment.",
+                           "iconName":  "spa",
+                           "sortOrder":  1
+                       },
+                       {
+                           "id":  "stoicism",
+                           "name":  "Stoicism",
+                           "slug":  "stoicism",
+                           "description":  "Timeless wisdom on resilience, emotional mastery, and virtue.",
+                           "iconName":  "shield",
+                           "sortOrder":  2
+                       },
+                       {
+                           "id":  "gratitude",
+                           "name":  "Gratitude",
+                           "slug":  "gratitude",
+                           "description":  "Appreciation for life\u0027s blessings, abundance, and simple moments.",
+                           "iconName":  "favorite",
+                           "sortOrder":  3
+                       },
+                       {
+                           "id":  "inner_peace",
+                           "name":  "Inner Peace",
+                           "slug":  "inner-peace",
+                           "description":  "Finding tranquility amidst life\u0027s turbulence and storms.",
+                           "iconName":  "water_drop",
+                           "sortOrder":  4
+                       },
+                       {
+                           "id":  "courage",
+                           "name":  "Courage \u0026 Strength",
+                           "slug":  "courage",
+                           "description":  "Overcoming fear and standing firm in conviction.",
+                           "iconName":  "bolt",
+                           "sortOrder":  5
+                       }
+                   ],
+    "quotes":  [
+                   {
+                       "id":  "arsaningsih_001",
+                       "text":  "Roh adalah percikan cahaya Tuhan yang suci, murni, dan tidak membawa rekaman apa pun dalam keberadaannya.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_002",
+                       "text":  "Jiwa adalah roh yang telah mencicipi dunia, membawa segala rekaman pengalaman, pikiran, dan perasaan manusia.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "mindfulness",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_003",
+                       "text":  "Mengenal diri sendiri adalah jalan utama untuk mengenal Tuhan, karena di dalam diri terdapat rahasia sang pencipta.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_004",
+                       "text":  "Kegelapan dalam jiwa hanyalah selubung kemelekatan dan nafsu yang menutupi terangnya cahaya roh di dalam diri.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_005",
+                       "text":  "Setiap pilihan dan tindakan kita terekam abadi dalam jiwa, membentuk rantai karma yang kita bawa melampaui kematian.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_006",
+                       "text":  "Reinkarnasi adalah sekolah bagi jiwa untuk terus belajar dan naik kelas hingga mencapai kesadaran tertinggi.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "mindfulness",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_007",
+                       "text":  "Energi adalah bahasa universal semesta yang mampu menguak misteri yang tidak terjangkau oleh mata fisik.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_008",
+                       "text":  "Kebenaran Tuhan bersifat mutlak dan dapat diterima oleh semua makhluk, melampaui batasan opini manusia.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_009",
+                       "text":  "Pertobatan sejati adalah upaya sadar untuk melepas kegelapan batin dan kembali menuju cahaya dengan bantuan kekuatan Tuhan.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "mindfulness",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_010",
+                       "text":  "Jiwa yang tenang adalah jiwa yang telah memurnikan diri, sehingga cahaya roh di dalamnya bersinar tanpa penghalang ego.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "inner_peace",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_011",
+                       "text":  "Tuhan sering kali memberikan kesulitan agar manusia \"kepepet\" dan akhirnya menemukan kesadaran untuk kembali ke jalan cahaya.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "mindfulness",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_012",
+                       "text":  "Misteri semesta akan tetap tertutup bagi mereka yang membatasi diri hanya pada realitas fisik yang sempit.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_013",
+                       "text":  "Kemurnian hati adalah alat pengukur yang paling akurat untuk memahami kebenaran di balik tabir energi.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_014",
+                       "text":  "Guru adalah penuntun yang membantu jiwa menemukan jalan pulang lebih cepat, menghindarkannya dari pengembaraan beratus tahun dalam kegelapan.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_015",
+                       "text":  "Jangan sia-siakan hidup ini, karena setiap detik adalah kesempatan berharga untuk memutus rantai reinkarnasi.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_016",
+                       "text":  "Akal budi dan kehendak bebas adalah anugerah untuk membantu jiwa memilih jalan kebaikan di tengah dunia.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_017",
+                       "text":  "Raga manusia hanyalah kendaraan bagi jiwa, namun kesehatan raga sangat bergantung pada ketenangan sang \"kusir\" batinnya.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "inner_peace",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_018",
+                       "text":  "Segala sesuatu di alam ini adalah energi, dan hanya dengan kecerdasan spiritual kita bisa menerjemahkan maknanya.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_019",
+                       "text":  "Rasa nyaman atau agitasi saat bertemu seseorang adalah gema dari rekaman jiwa yang telah kita bawa dari masa lalu.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_020",
+                       "text":  "Jiwa tidak pernah mati, ia terus bergerak dari satu dimensi ke dimensi lain membawa bekal karma baik dan buruknya.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_021",
+                       "text":  "Kemelekatan pada dunia adalah beban yang membuat jiwa sulit terbang kembali menuju sang sumber cahaya.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_022",
+                       "text":  "Hati-hati dengan tindakanmu hari ini, karena bisa jadi kamu sedang menyiapkan nasib bagi dirimu sendiri di masa depan.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_023",
+                       "text":  "Spirit Awakening sering kali terasa menyakitkan karena ia adalah proses penghancuran cangkang ego yang keras.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_024",
+                       "text":  "Keikhlasan saat meninggalkan tubuh fisik menentukan apakah sebuah jiwa akan tenang atau terbelenggu dalam kegelapan dunia.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "inner_peace",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_025",
+                       "text":  "Belajar tentang batin tidak harus rumit, yang dibutuhkan hanyalah keterbukaan untuk memperluas realitas melampaui logika fisik.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_026",
+                       "text":  "Energi Tuhan ada di setiap ruang, siapapun yang mau belajar mengukurnya akan menemukan petunjuk-Nya.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_027",
+                       "text":  "Penyatuan kembali dengan Tuhan adalah tujuan akhir dari setiap jiwa yang telah mencapai kemurnian sempurna.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_028",
+                       "text":  "Kesehatan fisik mencerminkan kondisi batin; saat jiwa terluka, tubuh pun akan merasakan beban duka.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "mindfulness",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_029",
+                       "text":  "Jangan percaya begitu saja, lakukan eksperimen dan buktikan kebenaran spiritual dalam perjalanan hidupmu sendiri.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_030",
+                       "text":  "Mari bertumbuh bersama, karena dalam kesadaran kolektif, kita membantu memancarkan cahaya yang lebih terang bagi semesta.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "mindfulness",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_031",
+                       "text":  "Semesta ini penuh dengan misteri yang sering kali tak terjangkau karena keterbatasan ruang dan waktu manusia.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_032",
+                       "text":  "Kebenaran Tuhan bersifat mutlak dan universal, berbeda dengan kebenaran manusia yang sering kali dibumbui kepentingan pribadi atau politik.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_033",
+                       "text":  "Energi adalah bahasa universal yang memungkinkan kita memahami segala bentuk ciptaan di alam semesta ini.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_034",
+                       "text":  "Kecerdasan spiritual sangat dibutuhkan untuk menterjemahkan getaran energi menjadi pemahaman yang nyata.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_035",
+                       "text":  "Mengenal diri sendiri bukan sekadar teori, melainkan langkah awal yang fundamental untuk benar-benar mengenal Tuhan.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_036",
+                       "text":  "Jiwa adalah pengemudi, pikiran adalah kuda yang liar, dan raga adalah keretanya; tanpa pengendalian yang baik, hidup akan terasa menyiksa.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "mindfulness",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_037",
+                       "text":  "Hidup adalah sekolah untuk naik kelas; jika kita menolak belajar tentang batin, kita hanya akan berputar-putar di tingkat yang sama.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_038",
+                       "text":  "Kemurnian hati adalah prasyarat untuk bisa mengukur dan melihat kebenaran di balik tabir energi.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_039",
+                       "text":  "Jangan percaya begitu saja, lakukan eksperimen dan buktikan sendiri kebenaran spiritual dalam perjalanan hidupmu.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_040",
+                       "text":  "Tuhan sering kali memberikan kondisi \u0027kepepet\u0027 agar manusia berhenti mengandalkan ego dan mulai mencari cahaya-Nya.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_041",
+                       "text":  "Pertobatan bukan sekadar ritual fisik, melainkan upaya sadar untuk melepas kegelapan batin dengan melibatkan kekuatan Tuhan.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "mindfulness",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_042",
+                       "text":  "Setiap tindakan kita meninggalkan radiasi, dan radiasi itulah yang terekam abadi dalam jiwa sebagai karma.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_043",
+                       "text":  "Guru spiritual adalah penolong yang dapat membantu jiwa menyelesaikan urusannya lebih cepat, dari hitungan ratusan tahun menjadi hanya beberapa tahun saja.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_044",
+                       "text":  "Raga bisa hancur dan mati, namun jiwa terus membawa rekaman pengalamannya dari satu kehidupan ke kehidupan lainnya.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "mindfulness",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_045",
+                       "text":  "De javu atau rasa nyaman yang tiba-tiba saat bertemu seseorang adalah bukti adanya rekaman jiwa yang tersimpan sangat dalam.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_046",
+                       "text":  "Hati-hati dengan kutukan atau niat buruk, karena bisa jadi kamu sedang mengutuk dirimu sendiri di masa depan melalui rantai reinkarnasi.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_047",
+                       "text":  "Spiritual Awakening sering kali menyakitkan karena ia adalah proses paksa untuk menghancurkan cangkang kenyamanan duniawi yang melenakan.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_048",
+                       "text":  "Tujuan akhir jiwa adalah penyatuan kembali dengan Sang Sumber Cahaya, di mana tidak ada lagi kemelekatan yang membungkus kesadaran.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "mindfulness",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_049",
+                       "text":  "Kemelekatan pada dunia adalah beban yang membuat jiwa sulit menemukan jalan pulang dan terjebak dalam kegelapan.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_050",
+                       "text":  "Pengetahuan esoteris (energi) meluaskan realitas kita melampaui batasan fisik yang sempit.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_051",
+                       "text":  "Kesalahan dalam membagikan ilmu batin adalah beban berat, karena dampaknya akan dibawa hingga kehidupan-kehidupan berikutnya.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_052",
+                       "text":  "Membantu orang lain bertumbuh adalah \u0027passive income\u0027 spiritual yang akan mendatangkan kebaikan bagi jiwa kita sendiri.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_053",
+                       "text":  "Netralitas pikiran adalah kunci; saat kita terlalu melekat pada hasil, kita justru bisa mengaburkan kebenaran dari objek yang kita amati.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "mindfulness",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_054",
+                       "text":  "Rekaman jiwa membentuk DNA kita; apa yang kita bawa dari masa lalu menentukan kecenderungan karakter kita saat ini.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_055",
+                       "text":  "Jiwa tidak memiliki jenis kelamin fisik, ia adalah kesadaran yang terus bertumbuh menuju kematangan batin.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "mindfulness",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_056",
+                       "text":  "Kematian hanyalah proses keluarnya jiwa dari raga; kesadaran tidak ikut terkubur bersama tanah.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "mindfulness",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_057",
+                       "text":  "Dunia batin adalah realitas yang tak terbatas, berbeda dengan dunia fisik yang selalu dibatasi oleh ruang dan waktu.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_058",
+                       "text":  "Rasa syukur kepada donatur batin (mereka yang berbagi ilmu dan kasih) adalah energi positif yang terus mengalir dalam kemanusiaan.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "gratitude",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_059",
+                       "text":  "Jangan biarkan jiwamu menjadi \u0027gentayangan\u0027 karena ketidaktahuan akan jalan pulang; carilah cahaya selagi masih hidup dalam raga.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "mindfulness",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "arsaningsih_060",
+                       "text":  "Penyatuan dengan kekuatan Tuhan terjadi saat cahaya roh di dalam diri tidak lagi tertutupi oleh kabut ego dan nafsu.",
+                       "author":  "Bunda Arsaningsih",
+                       "category":  "jiwa_spiritual",
+                       "tags":  "jiwa,spiritual,energi,kesadaran",
+                       "language":  "id",
+                       "source":  "Misteri Jiwa \u0026 Pertumbuhan Spiritual",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "quote_001",
+                       "text":  "You have power over your mind - not outside events. Realize this, and you will find strength.",
+                       "author":  "Marcus Aurelius",
+                       "category":  "stoicism",
+                       "tags":  "mind,strength,power,stoic",
+                       "language":  "en",
+                       "source":  "Meditations",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "quote_002",
+                       "text":  "The soul becomes dyed with the color of its thoughts.",
+                       "author":  "Marcus Aurelius",
+                       "category":  "mindfulness",
+                       "tags":  "thoughts,soul,awareness",
+                       "language":  "en",
+                       "source":  "Meditations",
+                       "priority":  9
+                   },
+                   {
+                       "id":  "quote_003",
+                       "text":  "We suffer more often in imagination than in reality.",
+                       "author":  "Seneca",
+                       "category":  "stoicism",
+                       "tags":  "fear,imagination,calm",
+                       "language":  "en",
+                       "source":  "Letters from a Stoic",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "quote_004",
+                       "text":  "Silence is an ocean. Speech is a river. When the ocean is searching for you, don\u0027t walk into the river.",
+                       "author":  "Rumi",
+                       "category":  "inner_peace",
+                       "tags":  "silence,peace,stillness",
+                       "language":  "en",
+                       "priority":  8
+                   },
+                   {
+                       "id":  "quote_005",
+                       "text":  "Nature does not hurry, yet everything is accomplished.",
+                       "author":  "Lao Tzu",
+                       "category":  "mindfulness",
+                       "tags":  "patience,nature,peace",
+                       "language":  "en",
+                       "source":  "Tao Te Ching",
+                       "priority":  9
+                   },
+                   {
+                       "id":  "quote_006",
+                       "text":  "When you arise in the morning think of what a privilege it is to be alive, to think, to enjoy, to love.",
+                       "author":  "Marcus Aurelius",
+                       "category":  "gratitude",
+                       "tags":  "morning,life,love,gratitude",
+                       "language":  "en",
+                       "source":  "Meditations",
+                       "priority":  10
+                   },
+                   {
+                       "id":  "quote_007",
+                       "text":  "Peace comes from within. Do not seek it without.",
+                       "author":  "Buddha",
+                       "category":  "inner_peace",
+                       "tags":  "peace,presence,wisdom",
+                       "language":  "en",
+                       "priority":  9
+                   },
+                   {
+                       "id":  "quote_008",
+                       "text":  "He who is brave is free.",
+                       "author":  "Seneca",
+                       "category":  "courage",
+                       "tags":  "courage,freedom,strength",
+                       "language":  "en",
+                       "priority":  8
+                   },
+                   {
+                       "id":  "quote_009",
+                       "text":  "Wear gratitude like a cloak, and it will feed every corner of your life.",
+                       "author":  "Rumi",
+                       "category":  "gratitude",
+                       "tags":  "gratitude,joy,abundance",
+                       "language":  "en",
+                       "priority":  8
+                   },
+                   {
+                       "id":  "quote_010",
+                       "text":  "Do not spoil what you have by desiring what you have not; remember that what you now have was once among the things you only hoped for.",
+                       "author":  "Epicurus",
+                       "category":  "gratitude",
+                       "tags":  "gratitude,contentment,wisdom",
+                       "language":  "en",
+                       "priority":  9
+                   },
+                   {
+                       "id":  "quote_011",
+                       "text":  "Difficulties strengthen the mind, as labor does the body.",
+                       "author":  "Seneca",
+                       "category":  "courage",
+                       "tags":  "adversity,strength,growth",
+                       "language":  "en",
+                       "priority":  8
+                   },
+                   {
+                       "id":  "quote_012",
+                       "text":  "In the midst of movement and chaos, keep stillness inside of you.",
+                       "author":  "Deepak Chopra",
+                       "category":  "inner_peace",
+                       "tags":  "stillness,calm,balance",
+                       "language":  "en",
+                       "priority":  8
+                   }
+               ],
+    "templates":  [
+                      {
+                          "id":  "tpl_minimal_dark",
+                          "name":  "Minimal Obsidian",
+                          "backgroundType":  "solid",
+                          "backgroundValue":  "#121413",
+                          "fontName":  "serif",
+                          "fontSizeSp":  22,
+                          "textColorHex":  "#FBFBF9",
+                          "alignment":  "center",
+                          "overlayOpacity":  0.0
+                      },
+                      {
+                          "id":  "tpl_serene_sage",
+                          "name":  "Serene Sage",
+                          "backgroundType":  "solid",
+                          "backgroundValue":  "#38665E",
+                          "fontName":  "serif",
+                          "fontSizeSp":  22,
+                          "textColorHex":  "#FFFFFF",
+                          "alignment":  "center",
+                          "overlayOpacity":  0.0
+                      },
+                      {
+                          "id":  "tpl_warm_dawn",
+                          "name":  "Warm Dawn",
+                          "backgroundType":  "gradient",
+                          "backgroundValue":  "#E8D7C8,#38665E",
+                          "fontName":  "serif",
+                          "fontSizeSp":  20,
+                          "textColorHex":  "#121413",
+                          "alignment":  "center",
+                          "overlayOpacity":  0.0
+                      }
+                  ]
 }

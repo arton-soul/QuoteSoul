@@ -19,11 +19,6 @@ class DatabaseSeeder(
     }
 
     suspend fun seedIfNecessary() = withContext(Dispatchers.IO) {
-        val currentVersion = database.appConfigDao().getConfigValue("content_version")
-        if (currentVersion != null) {
-            return@withContext
-        }
-
         try {
             val jsonString = context.assets.open("seed/initial_content.json")
                 .bufferedReader()
@@ -31,6 +26,11 @@ class DatabaseSeeder(
 
             val json = JSONObject(jsonString)
             val contentVersion = json.optInt("contentVersion", 1)
+
+            val currentVersion = database.appConfigDao().getConfigValue("content_version")?.toIntOrNull() ?: 0
+            if (currentVersion >= contentVersion) {
+                return@withContext
+            }
 
             val categoriesArray = json.optJSONArray("categories")
             val categories = mutableListOf<QuoteCategoryEntity>()

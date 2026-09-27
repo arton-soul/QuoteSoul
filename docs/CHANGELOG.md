@@ -5,6 +5,20 @@ All notable changes to the **SoulQuote** project will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.1] - 2026-09-27
+
+### Added
+- Ingested 60 inspirational quotes by Bunda Arsaningsih from `quotesoul.md` with attribution and new category `jiwa_spiritual` ("Jiwa & Energi"). Total quote seed expanded to 72 quotes across 5 categories.
+- Upgraded `DatabaseSeeder` with incremental version checking (`content_version` config comparison) for non-destructive seed updates.
+
+### Changed
+- Updated `applicationId` to `com.dearyoti.soulquote`.
+- Migrated annotation processing from KAPT to KSP (`com.google.devtools.ksp:2.2.21-2.0.5`) for modern, robust Kotlin 2.2.21 Room 2.8.4 code generation.
+
+### Verified
+- Built and installed debug APK to physical device Xiaomi Redmi Note 8 Pro (`begonia`).
+- Verified on-device database seeding and Jetpack Compose UI rendering without crashes.
+
 ## [0.3.0] - 2026-09-27
 
 ### Added

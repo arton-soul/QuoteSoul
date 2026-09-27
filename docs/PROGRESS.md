@@ -28,6 +28,8 @@
 - [x] Daily quote selection algorithm (2026-09-27 | Status: DONE | Timezone-aware epoch day rotation on `HomeScreen`)
 - [x] Favorite quotes bookmarking (2026-09-27 | Status: DONE | Reactive `FavoritesScreen` with bookmarking persistence in user database)
 - [x] Tags & search filtering (2026-09-27 | Status: DONE | Keyword, author, and tag live search in `ExploreQuotesScreen`)
+- [x] Quote seed expansion (2026-09-27 | Status: DONE | Ingested 60 quotes from Bunda Arsaningsih, totaling 72 quotes in Content DB)
+- [x] Physical device execution & verification (2026-09-27 | Status: DONE | Deployed & verified on Xiaomi Redmi Note 8 Pro with package `com.dearyoti.soulquote`)
 
 ---
 
