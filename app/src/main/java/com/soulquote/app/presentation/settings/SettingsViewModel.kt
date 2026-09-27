@@ -3,6 +3,8 @@ package com.soulquote.app.presentation.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.soulquote.app.core.backup.UserDataBackupManager
+import com.soulquote.app.core.backup.UserDataStats
 import com.soulquote.app.core.content.ContentStats
 import com.soulquote.app.core.content.ContentUpdateManager
 import com.soulquote.app.core.content.UpdateCheckResult
@@ -20,6 +22,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.io.File
 
 data class ContentUpdateUiState(
     val currentVersion: Int = 3,
@@ -36,11 +39,22 @@ data class ContentUpdateUiState(
     val isNetworkConnected: Boolean = true
 )
 
+data class BackupUiState(
+    val favoritesCount: Int = 0,
+    val historyCount: Int = 0,
+    val settingsCount: Int = 0,
+    val isExporting: Boolean = false,
+    val isRestoring: Boolean = false,
+    val lastBackupFile: File? = null,
+    val backupMessage: String? = null
+)
+
 class SettingsViewModel(
     private val userRepository: UserRepository,
     private val notificationScheduler: NotificationScheduler,
     private val notificationHelper: NotificationHelper,
-    private val contentUpdateManager: ContentUpdateManager
+    private val contentUpdateManager: ContentUpdateManager,
+    private val userDataBackupManager: UserDataBackupManager
 ) : ViewModel() {
 
     val userSettings: StateFlow<UserSettings> = userRepository.getUserSettings()
@@ -53,8 +67,12 @@ class SettingsViewModel(
     private val _contentUpdateUiState = MutableStateFlow(ContentUpdateUiState())
     val contentUpdateUiState: StateFlow<ContentUpdateUiState> = _contentUpdateUiState.asStateFlow()
 
+    private val _backupUiState = MutableStateFlow(BackupUiState())
+    val backupUiState: StateFlow<BackupUiState> = _backupUiState.asStateFlow()
+
     init {
         refreshContentStats()
+        refreshBackupStats()
     }
 
     fun refreshContentStats() {
@@ -278,6 +296,73 @@ class SettingsViewModel(
         }
     }
 
+    fun refreshBackupStats() {
+        viewModelScope.launch {
+            val stats = userDataBackupManager.getUserDataStats()
+            _backupUiState.update {
+                it.copy(
+                    favoritesCount = stats.favoritesCount,
+                    historyCount = stats.historyCount,
+                    settingsCount = stats.settingsCount
+                )
+            }
+        }
+    }
+
+    fun exportBackup(onFileReady: ((File) -> Unit)? = null) {
+        viewModelScope.launch {
+            _backupUiState.update { it.copy(isExporting = true, backupMessage = null) }
+            val result = userDataBackupManager.createBackupFile()
+            if (result.isSuccess) {
+                val file = result.getOrThrow()
+                refreshBackupStats()
+                _backupUiState.update {
+                    it.copy(
+                        isExporting = false,
+                        lastBackupFile = file,
+                        backupMessage = "Berkas cadangan berhasil dibuat: ${file.name}"
+                    )
+                }
+                onFileReady?.invoke(file)
+            } else {
+                _backupUiState.update {
+                    it.copy(
+                        isExporting = false,
+                        backupMessage = "Gagal membuat cadangan: ${result.exceptionOrNull()?.message}"
+                    )
+                }
+            }
+        }
+    }
+
+    fun restoreBackup(backupJson: String, replaceExisting: Boolean = false) {
+        viewModelScope.launch {
+            _backupUiState.update { it.copy(isRestoring = true, backupMessage = null) }
+            val result = userDataBackupManager.restoreUserData(backupJson, replaceExisting)
+            if (result.isSuccess) {
+                val res = result.getOrThrow()
+                refreshBackupStats()
+                _backupUiState.update {
+                    it.copy(
+                        isRestoring = false,
+                        backupMessage = "Pemulihan berhasil: ${res.favoritesRestored} favorit, ${res.historyRestored} riwayat meditasi."
+                    )
+                }
+            } else {
+                _backupUiState.update {
+                    it.copy(
+                        isRestoring = false,
+                        backupMessage = "Gagal memulihkan: ${result.exceptionOrNull()?.message}"
+                    )
+                }
+            }
+        }
+    }
+
+    fun dismissBackupMessage() {
+        _backupUiState.update { it.copy(backupMessage = null) }
+    }
+
     fun triggerTestDailyQuoteNotification() {
         notificationHelper.showDailyQuoteNotification(
             quoteId = "test_quote",
@@ -308,7 +393,8 @@ class SettingsViewModelFactory(
                 userRepository = appContainer.userRepository,
                 notificationScheduler = appContainer.notificationScheduler,
                 notificationHelper = appContainer.notificationHelper,
-                contentUpdateManager = appContainer.contentUpdateManager
+                contentUpdateManager = appContainer.contentUpdateManager,
+                userDataBackupManager = appContainer.userDataBackupManager
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

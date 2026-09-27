@@ -94,9 +94,9 @@
 ---
 
 ## Phase 9 — User Data Backup
-- [ ] User data export to JSON/zip
-- [ ] User data restore & validation
-- [ ] Strict isolation from developer content updates
+- [x] User data export to JSON/zip (2026-09-27 | Status: DONE | UserDataBackupManager with timestamped JSON export, SHA-256 integrity checksum, FileProvider sharing via Android Sharesheet)
+- [x] User data restore & validation (2026-09-27 | Status: DONE | Schema validation, checksum verification, atomic Room transaction with rollback, SAF file picker integration)
+- [x] Strict isolation from developer content updates (2026-09-27 | Status: DONE | Physical separation: User DB soulquote_user.db isolated from Content DB soulquote_content.db, zero telemetry, 100% private)
 
 ---
 

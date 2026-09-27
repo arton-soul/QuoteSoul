@@ -5,6 +5,27 @@ All notable changes to the **SoulQuote** project will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.10.0] - 2026-09-27
+
+### Added
+- **Phase 9 User Data Backup & Privacy**:
+  - `UserDataBackupManager`:
+    - Full export of user private data: bookmarks/favorites, meditation history, and user preferences into timestamped JSON files (`soulquote_backup_YYYYMMDD_HHmmss.json`).
+    - Embedded cryptographic SHA-256 integrity checksum for tamper prevention.
+    - Zero telemetry and 100% on-device private data isolation: only queries `soulquote_user.db`, completely avoiding `soulquote_content.db`.
+    - Android Sharesheet integration: file generated in isolated `cacheDir/backup/` shared via `FileProvider` (`ACTION_SEND`) without demanding broad storage permissions.
+    - Full restore mechanism: JSON parsing, integrity validation, version/schema check, and atomic database replacement inside `userDatabase.withTransaction`.
+  - Batch DAO Queries:
+    - Extended `FavoriteDao`, `MeditationHistoryDao`, and `UserSettingDao` with batch select, insert, and clear routines.
+  - UI Enhancements in `SettingsScreen`:
+    - Added "Cadangan & Privasi Data" Card with "100% Privat" security badge.
+    - Real-time display of user data footprint: `X Kutipan Disimpan • Y Sesi Meditasi`.
+    - 1-tap "Ekspor JSON" triggering system share sheet to Google Drive, WhatsApp, Telegram, or File Manager.
+    - 1-tap "Pulihkan" opening SAF system file picker (`application/json`) with success/failure feedback alert banners.
+  - Unit Tests:
+    - Added `UserDataBackupTest` testing JSON serialization, deserialization, stats, and restore operations.
+    - JVM tests pass 100%.
+
 ## [0.9.0] - 2026-09-27
 
 ### Added

@@ -116,9 +116,20 @@ class QuoteRepositoryTest {
             favoriteIds.add(favorite.quoteId)
             favoriteIdsFlow.value = favoriteIds.toList()
         }
+        override suspend fun insertFavorites(favorites: List<FavoriteEntity>) {
+            favorites.forEach { favoriteIds.add(it.quoteId) }
+            favoriteIdsFlow.value = favoriteIds.toList()
+        }
+        override suspend fun getAllFavoritesList(): List<FavoriteEntity> {
+            return favoriteIds.map { FavoriteEntity("fav_$it", it) }
+        }
         override suspend fun removeFavorite(quoteId: String) {
             favoriteIds.remove(quoteId)
             favoriteIdsFlow.value = favoriteIds.toList()
+        }
+        override suspend fun clearFavorites() {
+            favoriteIds.clear()
+            favoriteIdsFlow.value = emptyList()
         }
     }
 }

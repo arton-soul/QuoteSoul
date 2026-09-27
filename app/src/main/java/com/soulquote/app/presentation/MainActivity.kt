@@ -135,6 +135,10 @@ class MainActivity : ComponentActivity() {
         } else if (contentAction == "apply") {
             settingsViewModel.applyContentUpdate()
         }
+        val backupAction = intent?.getStringExtra("extra_backup_action")
+        if (backupAction == "export") {
+            settingsViewModel.exportBackup()
+        }
     }
 }
 
