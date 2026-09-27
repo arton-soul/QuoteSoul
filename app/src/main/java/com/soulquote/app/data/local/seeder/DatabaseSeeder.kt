@@ -8,6 +8,7 @@ import com.soulquote.app.data.local.entity.content.MeditationEntity
 import com.soulquote.app.data.local.entity.content.QuoteCategoryEntity
 import com.soulquote.app.data.local.entity.content.QuoteEntity
 import com.soulquote.app.data.local.entity.content.TemplateEntity
+import com.soulquote.app.BuildConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -160,6 +161,13 @@ class DatabaseSeeder(
             database.appConfigDao().setConfigValue(
                 AppConfigEntity("content_version", contentVersion.toString())
             )
+
+            val existingRemoteUrl = database.appConfigDao().getConfigValue("remote_manifest_url")
+            if (existingRemoteUrl.isNullOrBlank()) {
+                database.appConfigDao().setConfigValue(
+                    AppConfigEntity("remote_manifest_url", BuildConfig.DEFAULT_REMOTE_MANIFEST_URL)
+                )
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }

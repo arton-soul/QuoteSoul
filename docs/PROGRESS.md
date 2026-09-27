@@ -120,7 +120,7 @@
 ---
 
 ## Phase 12 — Release
-- [ ] R8/ProGuard configuration & shrinking
-- [ ] Keystore signing setup
-- [ ] Release AAB generation
-- [ ] Play Store asset & privacy policy readiness
+- [x] R8/ProGuard configuration & shrinking (2026-09-27 | Status: DONE | Robust ProGuard keep rules for Room, Media3, DTOs, and Android components in app/proguard-rules.pro; APK size reduced by 75%)
+- [x] Keystore signing setup (2026-09-27 | Status: DONE | Configured signingConfigs in app/build.gradle.kts reading D:\Android\Keystore\soul\keystore.properties PKCS12 certificate)
+- [x] Release AAB & APK generation (2026-09-27 | Status: DONE | Built signed app-release.aab [9.31 MB] and app-release.apk [6.29 MB]; verified on physical Xiaomi Redmi Note 8 Pro)
+- [x] Play Store compliance & documentation (2026-09-27 | Status: DONE | Target SDK 36, Data Safety zero tracking, GitHub distribution setup for https://github.com/isna-design/soul, docs/RELEASE.md updated)

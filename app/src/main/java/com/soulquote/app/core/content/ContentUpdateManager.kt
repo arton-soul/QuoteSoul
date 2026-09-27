@@ -63,7 +63,8 @@ class ContentUpdateManager(
     }
 
     suspend fun getRemoteManifestUrl(): String? = withContext(Dispatchers.IO) {
-        database.appConfigDao().getConfigValue("remote_manifest_url")
+        val configured = database.appConfigDao().getConfigValue("remote_manifest_url")
+        if (!configured.isNullOrBlank()) configured else BuildConfig.DEFAULT_REMOTE_MANIFEST_URL
     }
 
     suspend fun setRemoteManifestUrl(url: String?) = withContext(Dispatchers.IO) {
@@ -94,7 +95,9 @@ class ContentUpdateManager(
             val manifestJson: String? = if (manifestJsonOverride != null) {
                 manifestJsonOverride
             } else {
-                val targetUrl = remoteUrlOrId ?: database.appConfigDao().getConfigValue("remote_manifest_url")
+                val targetUrl = remoteUrlOrId
+                    ?: database.appConfigDao().getConfigValue("remote_manifest_url")
+                    ?: BuildConfig.DEFAULT_REMOTE_MANIFEST_URL
                 if (!targetUrl.isNullOrBlank()) {
                     if (driveClient.isNetworkAvailable()) {
                         val fetchResult = driveClient.fetchManifestString(targetUrl)

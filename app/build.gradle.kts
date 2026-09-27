@@ -6,6 +6,27 @@ plugins {
     id("androidx.room")
 }
 
+val keystoreCandidateFiles = listOf(
+    rootProject.file("keystore.properties"),
+    File("D:/Android/Keystore/soul/keystore.properties")
+)
+val keystorePropertiesFile = keystoreCandidateFiles.firstOrNull { it.exists() }
+
+val keystoreProps = mutableMapOf<String, String>()
+if (keystorePropertiesFile != null && keystorePropertiesFile.exists()) {
+    keystorePropertiesFile.bufferedReader().useLines { lines ->
+        lines.forEach { rawLine ->
+            val line = rawLine.trim()
+            if (line.isNotEmpty() && !line.startsWith("#") && line.contains("=")) {
+                val idx = line.indexOf('=')
+                val key = line.substring(0, idx).trim()
+                val value = line.substring(idx + 1).trim()
+                keystoreProps[key] = value
+            }
+        }
+    }
+}
+
 android {
     namespace = "com.soulquote.app"
     compileSdk = 36
@@ -18,6 +39,25 @@ android {
         versionName = "0.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField(
+            "String",
+            "DEFAULT_REMOTE_MANIFEST_URL",
+            "\"https://raw.githubusercontent.com/isna-design/soul/main/distribution/content_manifest.json\""
+        )
+    }
+
+    signingConfigs {
+        if (keystoreProps.isNotEmpty()) {
+            create("release") {
+                val storeFilePath = keystoreProps["storeFile"] ?: ""
+                val storeF = File(storeFilePath)
+                storeFile = if (storeF.isAbsolute) storeF else rootProject.file(storeFilePath)
+                storePassword = keystoreProps["storePassword"]
+                keyAlias = keystoreProps["keyAlias"]
+                keyPassword = keystoreProps["keyPassword"]
+            }
+        }
     }
 
     buildTypes {
@@ -27,6 +67,9 @@ android {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
+            if (keystoreProps.isNotEmpty()) {
+                signingConfig = signingConfigs.getByName("release")
+            }
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

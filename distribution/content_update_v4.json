@@ -1,0 +1,110 @@
+{
+  "contentVersion": 4,
+  "categories": [
+    {
+      "id": "jiwa_spiritual",
+      "name": "Jiwa & Energi",
+      "slug": "jiwa-energi",
+      "description": "Misteri jiwa, energi, dan pertumbuhan kesadaran spiritual oleh Bunda Arsaningsih.",
+      "iconName": "auto_awesome",
+      "sortOrder": 0
+    },
+    {
+      "id": "mindfulness",
+      "name": "Mindfulness",
+      "slug": "mindfulness",
+      "description": "Cultivating presence, awareness, and stillness in the current moment.",
+      "iconName": "spa",
+      "sortOrder": 1
+    },
+    {
+      "id": "stoicism",
+      "name": "Stoicism",
+      "slug": "stoicism",
+      "description": "Timeless wisdom on resilience, emotional mastery, and virtue.",
+      "iconName": "shield",
+      "sortOrder": 2
+    },
+    {
+      "id": "gratitude",
+      "name": "Gratitude",
+      "slug": "gratitude",
+      "description": "Appreciation for life's blessings, abundance, and simple moments.",
+      "iconName": "favorite",
+      "sortOrder": 3
+    },
+    {
+      "id": "inner_peace",
+      "name": "Inner Peace",
+      "slug": "inner-peace",
+      "description": "Finding tranquility amidst life's turbulence and storms.",
+      "iconName": "water_drop",
+      "sortOrder": 4
+    }
+  ],
+  "quotes": [
+    {
+      "id": "arsaningsih_061",
+      "text": "Ketika batin hening, cinta kasih mengalir tanpa syarat, melenyapkan segala rasa takut dan dendam.",
+      "author": "Bunda Arsaningsih",
+      "category": "jiwa_spiritual",
+      "tags": "hening,cinta kasih,kedamaian",
+      "language": "id",
+      "active": true,
+      "source": "Misteri Jiwa & Pertumbuhan Spiritual",
+      "attribution": "Bunda Arsaningsih",
+      "priority": 10
+    },
+    {
+      "id": "arsaningsih_062",
+      "text": "Bersyukur pada setiap hembusan nafas adalah jembatan paling nyata menuju kesadaran Ilahi.",
+      "author": "Bunda Arsaningsih",
+      "category": "gratitude",
+      "tags": "syukur,nafas,kesadaran",
+      "language": "id",
+      "active": true,
+      "source": "Misteri Jiwa & Pertumbuhan Spiritual",
+      "attribution": "Bunda Arsaningsih",
+      "priority": 9
+    },
+    {
+      "id": "arsaningsih_063",
+      "text": "Kedamaian sejati tidak ditemukan di luar, melainkan dipancarkan dari kejernihan jiwa di dalam diri.",
+      "author": "Bunda Arsaningsih",
+      "category": "inner_peace",
+      "tags": "kedamaian,jiwa,jernih",
+      "language": "id",
+      "active": true,
+      "source": "Misteri Jiwa & Pertumbuhan Spiritual",
+      "attribution": "Bunda Arsaningsih",
+      "priority": 9
+    },
+    {
+      "id": "arsaningsih_064",
+      "text": "Lepaskan keterikatan pada apa yang tak dapat kamu kendalikan, dan biarkan semesta menuntun langkahmu.",
+      "author": "Bunda Arsaningsih",
+      "category": "stoicism",
+      "tags": "ikhlas,pasrah,kendali",
+      "language": "id",
+      "active": true,
+      "source": "Misteri Jiwa & Pertumbuhan Spiritual",
+      "attribution": "Bunda Arsaningsih",
+      "priority": 8
+    },
+    {
+      "id": "arsaningsih_065",
+      "text": "Setiap senyuman tulus yang kamu berikan adalah doa tanpa kata yang menyembuhkan sekelilingmu.",
+      "author": "Bunda Arsaningsih",
+      "category": "mindfulness",
+      "tags": "senyum,doa,cinta",
+      "language": "id",
+      "active": true,
+      "source": "Misteri Jiwa & Pertumbuhan Spiritual",
+      "attribution": "Bunda Arsaningsih",
+      "priority": 8
+    }
+  ],
+  "templates": [],
+  "meditationCategories": [],
+  "meditations": []
+}
