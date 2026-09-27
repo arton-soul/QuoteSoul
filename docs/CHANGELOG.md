@@ -1,9 +1,31 @@
-# Changelog
+﻿# Changelog
 
 All notable changes to the **SoulQuote** project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.4.0] - 2026-09-27
+
+### Added
+- **Phase 3 Notification Engine & Reminder Scheduler**:
+  - NotificationHelper: Configures high-importance Android Notification Channels (channel_daily_quote_v1, channel_meditation_v1) bound to custom raw audio resources and gentle vibration patterns.
+  - Custom local audio chime files in es/raw: mindful_bell.wav (528 Hz mindful chime) and zen_singing_bowl.wav (432 Hz resonant singing bowl).
+  - NotificationScheduler: Alarm scheduling service utilizing AlarmManager.setExactAndAllowWhileIdle (with graceful inexact fallback for battery preservation and Android 13+/14+ restrictions).
+  - Broadcast Receivers:
+    - DailyQuoteNotificationReceiver: Resolves today's inspirational quote from QuoteRepository and delivers BigTextStyle notification.
+    - MeditationReminderReceiver: Fires mindful meditation reminders and automatically rolls over to the next day.
+    - BootReceiver: Reschedules active alarms on device reboot (BOOT_COMPLETED, MY_PACKAGE_REPLACED, QUICKBOOT_POWERON).
+  - Interactive SettingsScreen UI:
+    - Switches for Daily Quote and Meditation Reminder.
+    - Material 3 TimePickerDialog integration for customizable notification triggers.
+    - Dedicated audio and notification test buttons (Test Bell, Test Bowl).
+  - Unit tests: NotificationSchedulerTest testing next trigger calculations and 24-hour rollover logic.
+
+### Verified
+- Built and verified APK on connected physical device Xiaomi Redmi Note 8 Pro (egonia).
+- Verified Notification Channels, audio playback, BigTextStyle notification display, and Settings UI via live ADB broadcast and log dump inspection.
+
 
 ## [0.3.1] - 2026-09-27
 

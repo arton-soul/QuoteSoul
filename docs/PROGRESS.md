@@ -1,4 +1,4 @@
-# SoulQuote — Development Progress
+﻿# SoulQuote — Development Progress
 
 ## Phase 0 — Project Foundation
 - [x] Project setup (2026-09-27 | Status: DONE | Clean Compose baseline initialized)
@@ -34,12 +34,12 @@
 ---
 
 ## Phase 3 — Notification
-- [ ] Daily quote notification scheduling
-- [ ] Custom notification sound (`mindful_bell.ogg`)
-- [ ] Meditation reminder scheduler
-- [ ] Notification settings UI
-- [ ] Android 13+ POST_NOTIFICATIONS permission handling
-- [ ] Exact alarm scheduling with inexact fallback
+- [x] Daily quote notification scheduling (2026-09-27 | Status: DONE | NotificationScheduler & DailyQuoteNotificationReceiver with epoch day rotation)
+- [x] Custom notification sound (mindful_bell.wav 528Hz & zen_singing_bowl.wav 432Hz) (2026-09-27 | Status: DONE | Local raw resources configured in Notification Channels)
+- [x] Meditation reminder scheduler (2026-09-27 | Status: DONE | MeditationReminderReceiver with daily rollover)
+- [x] Notification settings UI (2026-09-27 | Status: DONE | Interactive SettingsScreen with time picker dialogs and test triggers)
+- [x] Android 13+ POST_NOTIFICATIONS permission handling (2026-09-27 | Status: DONE | Registered in Manifest & checked in UI/helper)
+- [x] Exact alarm scheduling with inexact fallback (2026-09-27 | Status: DONE | canScheduleExactAlarms check with setExactAndAllowWhileIdle and inexact fallback)
 
 ---
 

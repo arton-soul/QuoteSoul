@@ -18,6 +18,8 @@ interface AppContainer {
     val meditationRepository: MeditationRepository
     val userRepository: UserRepository
     val databaseSeeder: DatabaseSeeder
+    val notificationHelper: com.soulquote.app.core.notification.NotificationHelper
+    val notificationScheduler: com.soulquote.app.core.notification.NotificationScheduler
 }
 
 class DefaultAppContainer(private val context: Context) : AppContainer {
@@ -57,5 +59,13 @@ class DefaultAppContainer(private val context: Context) : AppContainer {
             context = context,
             database = contentDatabase
         )
+    }
+
+    override val notificationHelper: com.soulquote.app.core.notification.NotificationHelper by lazy {
+        com.soulquote.app.core.notification.NotificationHelper(context)
+    }
+
+    override val notificationScheduler: com.soulquote.app.core.notification.NotificationScheduler by lazy {
+        com.soulquote.app.core.notification.NotificationScheduler(context)
     }
 }

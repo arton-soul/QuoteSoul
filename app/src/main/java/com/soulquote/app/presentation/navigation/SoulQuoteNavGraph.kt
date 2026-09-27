@@ -1,4 +1,4 @@
-package com.soulquote.app.presentation.navigation
+﻿package com.soulquote.app.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -10,11 +10,13 @@ import com.soulquote.app.presentation.home.HomeScreen
 import com.soulquote.app.presentation.quotes.ExploreQuotesScreen
 import com.soulquote.app.presentation.quotes.QuoteViewModel
 import com.soulquote.app.presentation.settings.SettingsScreen
+import com.soulquote.app.presentation.settings.SettingsViewModel
 
 @Composable
 fun SoulQuoteNavGraph(
     navController: NavHostController,
     viewModel: QuoteViewModel,
+    settingsViewModel: SettingsViewModel,
     modifier: Modifier = Modifier
 ) {
     NavHost(
@@ -47,7 +49,9 @@ fun SoulQuoteNavGraph(
         }
 
         composable(Screen.Settings.route) {
-            SettingsScreen()
+            SettingsScreen(
+                viewModel = settingsViewModel
+            )
         }
     }
 }

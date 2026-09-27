@@ -1,3 +1,7 @@
-<resources>
+﻿<resources>
     <string name="app_name">SoulQuote</string>
+    <string name="channel_daily_quote_name">Daily Inspiration</string>
+    <string name="channel_daily_quote_desc">Daily mindful quotes and reflections</string>
+    <string name="channel_meditation_name">Meditation Reminder</string>
+    <string name="channel_meditation_desc">Reminders for daily mindfulness and meditation sessions</string>
 </resources>
