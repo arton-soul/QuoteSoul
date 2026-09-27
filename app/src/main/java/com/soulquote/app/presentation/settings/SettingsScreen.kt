@@ -378,6 +378,24 @@ fun SettingsScreen(
                     )
                 }
 
+                Spacer(modifier = Modifier.height(6.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = "Kanal Distribusi", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.outline)
+                    Text(
+                        text = if (contentUpdateState.remoteManifestUrl.isNullOrBlank())
+                            "Google Drive (Auto/Local)"
+                        else
+                            "Google Drive Cloud",
+                        style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+
                 // Status Message Banner (if available)
                 contentUpdateState.statusMessage?.let { msg ->
                     Spacer(modifier = Modifier.height(12.dp))

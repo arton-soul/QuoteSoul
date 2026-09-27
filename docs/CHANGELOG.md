@@ -5,6 +5,34 @@ All notable changes to the **SoulQuote** project will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0] - 2026-09-27
+
+### Added
+- **Phase 8 Google Drive Content Distribution**:
+  - `GoogleDriveUrlResolver`:
+    - Robust extraction of Google Drive File IDs across multiple URL structures (`/file/d/...`, `/open?id=...`, `/uc?id=...`, raw ID).
+    - Automatic direct download endpoint resolution (`https://drive.google.com/uc?export=download&id=...`).
+    - Detection of Google Drive quota exceeded responses in localized HTML / plain text.
+    - Detection of Google Drive virus scan warning pages on large files with `confirm` token extraction.
+  - `DriveContentClient`:
+    - Resilient network client with automated multi-hop redirect following and cookie management.
+    - Exponential backoff retry loop (up to 3 attempts with 1s, 2s, 4s progressive delays).
+    - Network availability checks (`NET_CAPABILITY_INTERNET`) via Android `ConnectivityManager`.
+    - Distinct error classification: `NoInternetConnection`, `StorageQuotaExceeded`, `Timeout`, `FileNotFound`, and `HttpError`.
+    - Progress reporting callback during streaming downloads.
+  - `ContentUpdateManager` Integration:
+    - Extended with `DriveContentClient` for cloud distribution.
+    - Seamless fallback: if remote Google Drive quota is exceeded or device is offline, automatically falls back to bundled asset manifest and cached packages.
+    - Configurable remote distribution endpoint persistence in `app_content_config` table.
+  - UI Enhancements in `SettingsScreen`:
+    - Display of "Kanal Distribusi" (`Google Drive (Auto/Local)` or `Google Drive Cloud`).
+    - Clear user feedback banners for cloud updates and quota alerts.
+  - Unit Tests:
+    - Added `GoogleDriveUrlResolverTest` covering URL formats, direct links, quota alerts, and token extraction.
+    - Added `ContentUpdateTest` exception classification tests.
+    - All tests passing 100% on JVM.
+    - Live verification on connected physical Xiaomi Redmi Note 8 Pro (`com.dearyoti.soulquote`).
+
 ## [0.8.0] - 2026-09-27
 
 ### Added

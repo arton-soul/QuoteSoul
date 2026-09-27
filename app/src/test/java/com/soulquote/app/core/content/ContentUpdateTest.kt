@@ -127,4 +127,22 @@ class ContentUpdateTest {
         val isNotNewer = manifest.contentVersion > sameVersion
         assertTrue(!isNotNewer)
     }
+
+    @Test
+    fun testDriveExceptions() {
+        val noInternet = DriveNetworkException.NoInternetConnection()
+        assertTrue(noInternet.message?.contains("koneksi internet") == true)
+
+        val quotaExceeded = DriveNetworkException.StorageQuotaExceeded()
+        assertTrue(quotaExceeded.message?.contains("kuota unduhan") == true)
+
+        val quotaResult = UpdateCheckResult.QuotaExceeded("Quota exceeded test")
+        assertEquals("Quota exceeded test", quotaResult.message)
+
+        val timeout = DriveNetworkException.Timeout()
+        assertTrue(timeout.message?.contains("timeout") == true)
+
+        val notFound = DriveNetworkException.FileNotFound("file123")
+        assertTrue(notFound.message?.contains("file123") == true)
+    }
 }

@@ -31,7 +31,9 @@ data class ContentUpdateUiState(
     val updateProgress: Float = 0f,
     val updateStepDescription: String? = null,
     val statusMessage: String? = null,
-    val isUpToDate: Boolean = false
+    val isUpToDate: Boolean = false,
+    val remoteManifestUrl: String? = null,
+    val isNetworkConnected: Boolean = true
 )
 
 class SettingsViewModel(
@@ -58,33 +60,49 @@ class SettingsViewModel(
     fun refreshContentStats() {
         viewModelScope.launch {
             val stats = contentUpdateManager.getContentStats()
+            val remoteUrl = contentUpdateManager.getRemoteManifestUrl()
+            val networkAvailable = contentUpdateManager.isNetworkAvailable()
             _contentUpdateUiState.update {
                 it.copy(
                     currentVersion = stats.contentVersion,
                     totalQuotes = stats.totalQuotes,
-                    totalMeditations = stats.totalMeditations
+                    totalMeditations = stats.totalMeditations,
+                    remoteManifestUrl = remoteUrl,
+                    isNetworkConnected = networkAvailable
                 )
             }
         }
     }
 
-    fun checkForUpdates() {
+    fun setRemoteDistributionUrl(url: String?) {
+        viewModelScope.launch {
+            contentUpdateManager.setRemoteManifestUrl(url)
+            val updatedUrl = contentUpdateManager.getRemoteManifestUrl()
+            _contentUpdateUiState.update {
+                it.copy(remoteManifestUrl = updatedUrl)
+            }
+        }
+    }
+
+    fun checkForUpdates(customRemoteUrl: String? = null) {
         viewModelScope.launch {
             _contentUpdateUiState.update {
                 it.copy(
                     isChecking = true,
                     statusMessage = null,
                     isUpToDate = false,
-                    updateAvailable = null
+                    updateAvailable = null,
+                    isNetworkConnected = contentUpdateManager.isNetworkAvailable()
                 )
             }
-            when (val result = contentUpdateManager.checkForUpdates()) {
+            when (val result = contentUpdateManager.checkForUpdates(remoteUrlOrId = customRemoteUrl)) {
                 is UpdateCheckResult.UpdateAvailable -> {
+                    val sourceLabel = if (result.isFromCloud) " (Google Drive Cloud)" else ""
                     _contentUpdateUiState.update {
                         it.copy(
                             isChecking = false,
                             updateAvailable = result.manifest,
-                            statusMessage = "Pembaruan v${result.manifest.contentVersion} tersedia!"
+                            statusMessage = "Pembaruan v${result.manifest.contentVersion} tersedia$sourceLabel!"
                         )
                     }
                 }
@@ -102,6 +120,14 @@ class SettingsViewModel(
                         it.copy(
                             isChecking = false,
                             statusMessage = "Pembaruan aplikasi diperlukan (versi minimal ${result.minAppVersion})"
+                        )
+                    }
+                }
+                is UpdateCheckResult.QuotaExceeded -> {
+                    _contentUpdateUiState.update {
+                        it.copy(
+                            isChecking = false,
+                            statusMessage = result.message
                         )
                     }
                 }

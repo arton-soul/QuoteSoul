@@ -86,10 +86,10 @@
 ---
 
 ## Phase 8 — Google Drive
-- [ ] Google Drive distribution endpoint integration
-- [ ] Manifest and package download client
-- [ ] Resilient retry and timeout handling
-- [ ] Storage quota fallback support
+- [x] Google Drive distribution endpoint integration (2026-09-27 | Status: DONE | GoogleDriveUrlResolver with Drive file ID extraction, direct uc/download resolution, virus scan warning token handling)
+- [x] Manifest and package download client (2026-09-27 | Status: DONE | DriveContentClient supporting manual multi-redirect following, cookie persistence, and streaming to cache staging)
+- [x] Resilient retry and timeout handling (2026-09-27 | Status: DONE | Exponential backoff retry loop with 1s/2s/4s delays, 15s connect / 30s read timeouts)
+- [x] Storage quota fallback support (2026-09-27 | Status: DONE | Drive quota exceeded detection with graceful fallback to bundled asset package or local cache)
 
 ---
 

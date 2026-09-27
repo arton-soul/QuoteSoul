@@ -9,15 +9,13 @@ import com.soulquote.app.data.remote.model.ContentManifest
 import com.soulquote.app.data.remote.model.ContentPackage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.InputStream
-import java.net.HttpURLConnection
-import java.net.URL
 import java.security.MessageDigest
 
 data class ContentStats(
@@ -27,9 +25,10 @@ data class ContentStats(
 )
 
 sealed class UpdateCheckResult {
-    data class UpdateAvailable(val manifest: ContentManifest) : UpdateCheckResult()
+    data class UpdateAvailable(val manifest: ContentManifest, val isFromCloud: Boolean = false) : UpdateCheckResult()
     data class UpToDate(val currentVersion: Int) : UpdateCheckResult()
     data class AppUpdateRequired(val minAppVersion: Int) : UpdateCheckResult()
+    data class QuotaExceeded(val message: String) : UpdateCheckResult()
     data class Error(val message: String) : UpdateCheckResult()
 }
 
@@ -50,7 +49,8 @@ sealed class UpdateProgress {
 
 class ContentUpdateManager(
     private val context: Context,
-    private val database: SoulQuoteContentDatabase
+    private val database: SoulQuoteContentDatabase,
+    val driveClient: DriveContentClient = DriveContentClient(context)
 ) {
     private val stagingDir: File by lazy {
         File(context.cacheDir, "staging").apply {
@@ -61,6 +61,18 @@ class ContentUpdateManager(
     suspend fun getCurrentContentVersion(): Int = withContext(Dispatchers.IO) {
         database.appConfigDao().getConfigValue("content_version")?.toIntOrNull() ?: 1
     }
+
+    suspend fun getRemoteManifestUrl(): String? = withContext(Dispatchers.IO) {
+        database.appConfigDao().getConfigValue("remote_manifest_url")
+    }
+
+    suspend fun setRemoteManifestUrl(url: String?) = withContext(Dispatchers.IO) {
+        database.appConfigDao().setConfigValue(
+            AppConfigEntity("remote_manifest_url", url?.trim() ?: "")
+        )
+    }
+
+    fun isNetworkAvailable(): Boolean = driveClient.isNetworkAvailable()
 
     suspend fun getContentStats(): ContentStats = withContext(Dispatchers.IO) {
         val version = getCurrentContentVersion()
@@ -73,9 +85,41 @@ class ContentUpdateManager(
         )
     }
 
-    suspend fun checkForUpdates(manifestJsonOverride: String? = null): UpdateCheckResult = withContext(Dispatchers.IO) {
+    suspend fun checkForUpdates(
+        remoteUrlOrId: String? = null,
+        manifestJsonOverride: String? = null
+    ): UpdateCheckResult = withContext(Dispatchers.IO) {
         try {
-            val manifestJson = manifestJsonOverride ?: loadDefaultManifestJson()
+            var isFromCloud = false
+            val manifestJson: String? = if (manifestJsonOverride != null) {
+                manifestJsonOverride
+            } else {
+                val targetUrl = remoteUrlOrId ?: database.appConfigDao().getConfigValue("remote_manifest_url")
+                if (!targetUrl.isNullOrBlank()) {
+                    if (driveClient.isNetworkAvailable()) {
+                        val fetchResult = driveClient.fetchManifestString(targetUrl)
+                        if (fetchResult.isSuccess) {
+                            isFromCloud = true
+                            fetchResult.getOrNull()
+                        } else {
+                            val ex = fetchResult.exceptionOrNull()
+                            if (ex is DriveNetworkException.StorageQuotaExceeded) {
+                                return@withContext UpdateCheckResult.QuotaExceeded(
+                                    "Batas kuota unduhan server Google Drive tercapai untuk berkas ini."
+                                )
+                            }
+                            // Fallback to local asset if remote fails
+                            loadDefaultManifestJson()
+                        }
+                    } else {
+                        // Offline fallback to local asset
+                        loadDefaultManifestJson()
+                    }
+                } else {
+                    loadDefaultManifestJson()
+                }
+            }
+
             if (manifestJson == null) {
                 return@withContext UpdateCheckResult.UpToDate(getCurrentContentVersion())
             }
@@ -88,7 +132,7 @@ class ContentUpdateManager(
             }
 
             if (manifest.contentVersion > currentVersion) {
-                UpdateCheckResult.UpdateAvailable(manifest)
+                UpdateCheckResult.UpdateAvailable(manifest, isFromCloud = isFromCloud)
             } else {
                 UpdateCheckResult.UpToDate(currentVersion)
             }
@@ -110,73 +154,127 @@ class ContentUpdateManager(
     fun applyUpdate(
         manifest: ContentManifest,
         customInputStreamProvider: (suspend () -> InputStream)? = null
-    ): Flow<UpdateProgress> = flow {
-        emit(UpdateProgress.Downloading(0f))
+    ): Flow<UpdateProgress> = channelFlow {
+        send(UpdateProgress.Downloading(0f))
 
         val stagingFile = File(stagingDir, "content_update_v${manifest.contentVersion}.tmp")
         try {
             // 1. Download to staging
-            val inputStream: InputStream = if (customInputStreamProvider != null) {
-                customInputStreamProvider()
-            } else if (manifest.packageUrl.startsWith("http://") || manifest.packageUrl.startsWith("https://")) {
-                val url = URL(manifest.packageUrl)
-                val conn = (url.openConnection() as HttpURLConnection).apply {
-                    connectTimeout = 15000
-                    readTimeout = 15000
-                    instanceFollowRedirects = true
+            if (customInputStreamProvider != null) {
+                val inputStream = customInputStreamProvider()
+                val outputStream = FileOutputStream(stagingFile)
+                val buffer = ByteArray(8192)
+                var bytesRead: Int
+                var totalRead = 0L
+                val expectedSize = if (manifest.packageSizeBytes > 0) manifest.packageSizeBytes else 50000L
+
+                inputStream.use { input ->
+                    outputStream.use { output ->
+                        while (input.read(buffer).also { bytesRead = it } != -1) {
+                            output.write(buffer, 0, bytesRead)
+                            totalRead += bytesRead
+                            val progress = (totalRead.toFloat() / expectedSize).coerceIn(0.1f, 0.95f)
+                            send(UpdateProgress.Downloading(progress))
+                        }
+                    }
                 }
-                conn.inputStream
             } else if (manifest.packageUrl.startsWith("asset://")) {
                 val assetPath = manifest.packageUrl.removePrefix("asset://")
-                context.assets.open(assetPath)
+                val inputStream = context.assets.open(assetPath)
+                val outputStream = FileOutputStream(stagingFile)
+                val buffer = ByteArray(8192)
+                var bytesRead: Int
+                var totalRead = 0L
+                val expectedSize = if (manifest.packageSizeBytes > 0) manifest.packageSizeBytes else 50000L
+
+                inputStream.use { input ->
+                    outputStream.use { output ->
+                        while (input.read(buffer).also { bytesRead = it } != -1) {
+                            output.write(buffer, 0, bytesRead)
+                            totalRead += bytesRead
+                            val progress = (totalRead.toFloat() / expectedSize).coerceIn(0.1f, 0.95f)
+                            send(UpdateProgress.Downloading(progress))
+                        }
+                    }
+                }
+            } else if (manifest.packageUrl.startsWith("http://") ||
+                manifest.packageUrl.startsWith("https://") ||
+                GoogleDriveUrlResolver.isGoogleDriveUrl(manifest.packageUrl)
+            ) {
+                // Cloud / Google Drive resilient download with retries and redirect following
+                val downloadResult = driveClient.downloadPackageToFile(
+                    urlOrId = manifest.packageUrl,
+                    targetFile = stagingFile,
+                    expectedSizeBytes = manifest.packageSizeBytes,
+                    onProgress = { progress ->
+                        trySend(UpdateProgress.Downloading(progress))
+                    }
+                )
+
+                if (downloadResult.isFailure) {
+                    val ex = downloadResult.exceptionOrNull()
+                    stagingFile.delete()
+                    val errorMsg = when (ex) {
+                        is DriveNetworkException.StorageQuotaExceeded ->
+                            "Batas kuota unduhan server Google Drive tercapai."
+                        is DriveNetworkException.NoInternetConnection ->
+                            "Tidak ada koneksi internet saat mengunduh paket pembaruan."
+                        is DriveNetworkException.Timeout ->
+                            "Waktu koneksi habis saat mengunduh paket pembaruan dari server."
+                        is DriveNetworkException.FileNotFound ->
+                            "Berkas paket tidak ditemukan di server Google Drive."
+                        else -> ex?.message ?: "Gagal mengunduh paket pembaruan dari server."
+                    }
+                    send(UpdateProgress.Failed(errorMsg))
+                    return@channelFlow
+                }
             } else {
                 // Fallback check assets
-                context.assets.open("seed/content_update_v4.json")
-            }
+                val inputStream = context.assets.open("seed/content_update_v4.json")
+                val outputStream = FileOutputStream(stagingFile)
+                val buffer = ByteArray(8192)
+                var bytesRead: Int
+                var totalRead = 0L
+                val expectedSize = if (manifest.packageSizeBytes > 0) manifest.packageSizeBytes else 50000L
 
-            val outputStream = FileOutputStream(stagingFile)
-            val buffer = ByteArray(8192)
-            var bytesRead: Int
-            var totalRead = 0L
-            val expectedSize = if (manifest.packageSizeBytes > 0) manifest.packageSizeBytes else 50000L
-
-            inputStream.use { input ->
-                outputStream.use { output ->
-                    while (input.read(buffer).also { bytesRead = it } != -1) {
-                        output.write(buffer, 0, bytesRead)
-                        totalRead += bytesRead
-                        val progress = (totalRead.toFloat() / expectedSize).coerceIn(0.1f, 0.95f)
-                        emit(UpdateProgress.Downloading(progress))
+                inputStream.use { input ->
+                    outputStream.use { output ->
+                        while (input.read(buffer).also { bytesRead = it } != -1) {
+                            output.write(buffer, 0, bytesRead)
+                            totalRead += bytesRead
+                            val progress = (totalRead.toFloat() / expectedSize).coerceIn(0.1f, 0.95f)
+                            send(UpdateProgress.Downloading(progress))
+                        }
                     }
                 }
             }
 
-            emit(UpdateProgress.Downloading(1.0f))
+            send(UpdateProgress.Downloading(1.0f))
 
             // 2. Checksum Verification (SHA-256)
-            emit(UpdateProgress.VerifyingChecksum)
+            send(UpdateProgress.VerifyingChecksum)
             val actualChecksum = calculateSha256(stagingFile)
             val expectedChecksum = manifest.packageChecksumSha256.trim().lowercase()
 
             if (expectedChecksum.isNotBlank() && actualChecksum != expectedChecksum) {
                 stagingFile.delete()
-                emit(UpdateProgress.Failed("Integritas berkas gagal: Checksum SHA-256 tidak cocok ($actualChecksum != $expectedChecksum)"))
-                return@flow
+                send(UpdateProgress.Failed("Integritas berkas gagal: Checksum SHA-256 tidak cocok ($actualChecksum != $expectedChecksum)"))
+                return@channelFlow
             }
 
             // 3. Validation & Parsing
-            emit(UpdateProgress.Validating)
+            send(UpdateProgress.Validating)
             val packageJson = stagingFile.readText()
             val contentPackage = ContentPackage.fromJson(packageJson)
 
             if (contentPackage.contentVersion < manifest.contentVersion) {
                 stagingFile.delete()
-                emit(UpdateProgress.Failed("Versi paket (${contentPackage.contentVersion}) tidak sesuai dengan manifes (${manifest.contentVersion})"))
-                return@flow
+                send(UpdateProgress.Failed("Versi paket (${contentPackage.contentVersion}) tidak sesuai dengan manifes (${manifest.contentVersion})"))
+                return@channelFlow
             }
 
             // 4. Atomic Database Transaction with Rollback Protection
-            emit(UpdateProgress.ApplyingDatabaseTransaction)
+            send(UpdateProgress.ApplyingDatabaseTransaction)
             database.withTransaction {
                 if (contentPackage.categories.isNotEmpty()) {
                     database.quoteDao().insertCategories(contentPackage.categories)
@@ -204,7 +302,7 @@ class ContentUpdateManager(
             val totalQuotes = database.quoteDao().getActiveQuoteCount()
             val totalMeditations = database.meditationDao().getActiveMeditationCount()
 
-            emit(
+            send(
                 UpdateProgress.Success(
                     newVersion = manifest.contentVersion,
                     totalQuotes = totalQuotes,
@@ -213,7 +311,7 @@ class ContentUpdateManager(
             )
         } catch (e: Exception) {
             stagingFile.delete()
-            emit(UpdateProgress.Failed("Gagal menerapkan pembaruan: ${e.message}"))
+            send(UpdateProgress.Failed("Gagal menerapkan pembaruan: ${e.message}"))
         }
     }.flowOn(Dispatchers.IO)
 
