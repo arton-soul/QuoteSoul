@@ -1,5 +1,6 @@
 ﻿package com.soulquote.app.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,9 +17,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.soulquote.app.SoulQuoteApp
@@ -30,6 +31,9 @@ import com.soulquote.app.presentation.quotes.QuoteViewModel
 import com.soulquote.app.presentation.quotes.QuoteViewModelFactory
 import com.soulquote.app.presentation.settings.SettingsViewModel
 import com.soulquote.app.presentation.settings.SettingsViewModelFactory
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class MainActivity : ComponentActivity() {
 
@@ -43,19 +47,36 @@ class MainActivity : ComponentActivity() {
         SettingsViewModelFactory(appContainer)
     }
 
+    private val _navTarget = MutableStateFlow<String?>(null)
+    val navTarget: StateFlow<String?> = _navTarget.asStateFlow()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val navTarget = intent?.getStringExtra(NotificationHelper.EXTRA_NAV_TARGET)
+        handleNavIntent(intent)
 
         setContent {
             SoulQuoteTheme {
                 MainContent(
                     quoteViewModel = quoteViewModel,
                     settingsViewModel = settingsViewModel,
-                    initialNavTarget = navTarget
+                    navTargetState = navTarget,
+                    onConsumeNavTarget = { _navTarget.value = null }
                 )
             }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleNavIntent(intent)
+    }
+
+    private fun handleNavIntent(intent: Intent?) {
+        val target = intent?.getStringExtra(NotificationHelper.EXTRA_NAV_TARGET)
+        if (target != null) {
+            _navTarget.value = target
         }
     }
 }
@@ -64,17 +85,49 @@ class MainActivity : ComponentActivity() {
 fun MainContent(
     quoteViewModel: QuoteViewModel,
     settingsViewModel: SettingsViewModel,
-    initialNavTarget: String? = null
+    navTargetState: StateFlow<String?>,
+    onConsumeNavTarget: () -> Unit
 ) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+    val targetRoute by navTargetState.collectAsState()
 
-    LaunchedEffect(initialNavTarget) {
-        if (initialNavTarget == "settings") {
-            navController.navigate(Screen.Settings.route) {
-                launchSingleTop = true
+    LaunchedEffect(targetRoute) {
+        targetRoute?.let { target ->
+            when (target) {
+                "home" -> {
+                    navController.popBackStack(Screen.Home.route, inclusive = false)
+                }
+                "settings" -> {
+                    if (currentRoute != Screen.Settings.route) {
+                        navController.navigate(Screen.Settings.route) {
+                            popUpTo(Screen.Home.route) { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                }
+                "explore" -> {
+                    if (currentRoute != Screen.Explore.route) {
+                        navController.navigate(Screen.Explore.route) {
+                            popUpTo(Screen.Home.route) { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                }
+                "favorites" -> {
+                    if (currentRoute != Screen.Favorites.route) {
+                        navController.navigate(Screen.Favorites.route) {
+                            popUpTo(Screen.Home.route) { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                }
             }
+            onConsumeNavTarget()
         }
     }
 
@@ -91,12 +144,16 @@ fun MainContent(
                         selected = selected,
                         onClick = {
                             if (currentRoute != screen.route) {
-                                navController.navigate(screen.route) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
+                                if (screen.route == Screen.Home.route) {
+                                    navController.popBackStack(Screen.Home.route, inclusive = false)
+                                } else {
+                                    navController.navigate(screen.route) {
+                                        popUpTo(Screen.Home.route) {
+                                            saveState = true
+                                        }
+                                        launchSingleTop = true
+                                        restoreState = true
                                     }
-                                    launchSingleTop = true
-                                    restoreState = true
                                 }
                             }
                         },
