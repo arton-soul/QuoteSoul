@@ -38,7 +38,8 @@ fun List<UserSettingEntity>.toUserSettings(): UserSettings {
         vibrationEnabled = map["vibrationEnabled"]?.toBooleanStrictOrNull() ?: true,
         themeMode = map["themeMode"] ?: "system",
         ambientAudioVolume = map["ambientAudioVolume"]?.toFloatOrNull() ?: 0.5f,
-        ambientAutoPlay = map["ambientAutoPlay"]?.toBooleanStrictOrNull() ?: false
+        ambientAutoPlay = map["ambientAutoPlay"]?.toBooleanStrictOrNull() ?: false,
+        language = map["language"] ?: "in"
     )
 }
 
@@ -54,6 +55,7 @@ fun UserSettings.toEntityList(): List<UserSettingEntity> {
         UserSettingEntity("vibrationEnabled", vibrationEnabled.toString()),
         UserSettingEntity("themeMode", themeMode),
         UserSettingEntity("ambientAudioVolume", ambientAudioVolume.toString()),
-        UserSettingEntity("ambientAutoPlay", ambientAutoPlay.toString())
+        UserSettingEntity("ambientAutoPlay", ambientAutoPlay.toString()),
+        UserSettingEntity("language", language)
     )
 }

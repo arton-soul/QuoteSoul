@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">SoulQuote</string>
+    <string name="channel_daily_quote_name">Daily Inspiration</string>
+    <string name="channel_daily_quote_desc">Daily mindful quotes and reflections</string>
+    <string name="channel_meditation_name">Meditation Reminder</string>
+    <string name="channel_meditation_desc">Reminders for daily mindfulness and meditation sessions</string>
+    <string name="widget_daily_quote_name">SoulQuote • Daily Quote</string>
+    <string name="widget_daily_quote_desc">Mindful quote widget updated daily on your home screen.</string>
+</resources>

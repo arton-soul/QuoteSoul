@@ -11,7 +11,8 @@ data class UserSettings(
     val vibrationEnabled: Boolean = true,
     val themeMode: String = "system",
     val ambientAudioVolume: Float = 0.5f,
-    val ambientAutoPlay: Boolean = false
+    val ambientAutoPlay: Boolean = false,
+    val language: String = "in"
 )
 
 data class MeditationHistoryItem(

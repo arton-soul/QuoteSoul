@@ -87,17 +87,44 @@ class MainActivity : ComponentActivity() {
         handleNavIntent(intent)
 
         setContent {
-            SoulQuoteTheme {
-                MainContent(
-                    quoteViewModel = quoteViewModel,
-                    settingsViewModel = settingsViewModel,
-                    studioViewModel = studioViewModel,
-                    meditationViewModel = meditationViewModel,
-                    ambientViewModel = ambientViewModel,
-                    journalViewModel = journalViewModel,
-                    navTargetState = navTarget,
-                    onConsumeNavTarget = { _navTarget.value = null }
-                )
+            val settings by settingsViewModel.userSettings.collectAsState()
+            val appLanguage = androidx.compose.runtime.remember(settings.language) {
+                com.soulquote.app.core.localization.AppLanguage.fromCode(settings.language)
+            }
+            val strings = androidx.compose.runtime.remember(appLanguage) {
+                if (appLanguage == com.soulquote.app.core.localization.AppLanguage.ENGLISH) {
+                    com.soulquote.app.core.localization.EnglishStrings
+                } else {
+                    com.soulquote.app.core.localization.IndonesianStrings
+                }
+            }
+
+            androidx.compose.runtime.LaunchedEffect(appLanguage) {
+                val locale = if (appLanguage == com.soulquote.app.core.localization.AppLanguage.ENGLISH) {
+                    java.util.Locale.ENGLISH
+                } else {
+                    java.util.Locale.forLanguageTag("id-ID")
+                }
+                java.util.Locale.setDefault(locale)
+                val config = resources.configuration
+                config.setLocale(locale)
+            }
+
+            androidx.compose.runtime.CompositionLocalProvider(
+                com.soulquote.app.core.localization.LocalAppStrings provides strings
+            ) {
+                SoulQuoteTheme {
+                    MainContent(
+                        quoteViewModel = quoteViewModel,
+                        settingsViewModel = settingsViewModel,
+                        studioViewModel = studioViewModel,
+                        meditationViewModel = meditationViewModel,
+                        ambientViewModel = ambientViewModel,
+                        journalViewModel = journalViewModel,
+                        navTargetState = navTarget,
+                        onConsumeNavTarget = { _navTarget.value = null }
+                    )
+                }
             }
         }
     }
@@ -284,6 +311,8 @@ fun MainContent(
         }
     }
 
+    val strings = com.soulquote.app.core.localization.LocalAppStrings.current
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
@@ -293,6 +322,7 @@ fun MainContent(
             ) {
                 Screen.bottomNavItems.forEach { screen ->
                     val selected = currentRoute == screen.route
+                    val title = screen.getTitle(strings)
                     NavigationBarItem(
                         selected = selected,
                         onClick = {
@@ -313,10 +343,10 @@ fun MainContent(
                         icon = {
                             Icon(
                                 imageVector = screen.icon,
-                                contentDescription = screen.title
+                                contentDescription = title
                             )
                         },
-                        label = { Text(screen.title) },
+                        label = { Text(title) },
                         colors = NavigationBarItemDefaults.colors(
                             selectedIconColor = MaterialTheme.colorScheme.primary,
                             selectedTextColor = MaterialTheme.colorScheme.primary,

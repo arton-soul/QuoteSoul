@@ -1,4 +1,4 @@
-﻿package com.soulquote.app.core.notification
+package com.soulquote.app.core.notification
 
 import android.Manifest
 import android.app.NotificationChannel
@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.AudioAttributes
+import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
@@ -33,12 +34,12 @@ class NotificationHelper(private val context: Context) {
                 .build()
 
             val mindfulBellUri = Uri.parse(
-                "${ContentResolver.SCHEME_ANDROID_RESOURCE}://${context.packageName}/raw/mindful_bell"
+                "${ContentResolver.SCHEME_ANDROID_RESOURCE}://${context.packageName}/${R.raw.mindful_bell}"
             )
             val dailyQuoteChannel = NotificationChannel(
                 CHANNEL_DAILY_QUOTE_ID,
                 context.getString(R.string.channel_daily_quote_name),
-                NotificationManager.IMPORTANCE_DEFAULT
+                NotificationManager.IMPORTANCE_HIGH
             ).apply {
                 description = context.getString(R.string.channel_daily_quote_desc)
                 enableVibration(true)
@@ -47,7 +48,7 @@ class NotificationHelper(private val context: Context) {
             }
 
             val zenBowlUri = Uri.parse(
-                "${ContentResolver.SCHEME_ANDROID_RESOURCE}://${context.packageName}/raw/zen_singing_bowl"
+                "${ContentResolver.SCHEME_ANDROID_RESOURCE}://${context.packageName}/${R.raw.zen_singing_bowl}"
             )
             val meditationChannel = NotificationChannel(
                 CHANNEL_MEDITATION_ID,
@@ -63,6 +64,32 @@ class NotificationHelper(private val context: Context) {
             val systemNotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             systemNotificationManager.createNotificationChannel(dailyQuoteChannel)
             systemNotificationManager.createNotificationChannel(meditationChannel)
+        }
+    }
+
+    fun playBellSound() {
+        try {
+            val player = MediaPlayer.create(context, R.raw.mindful_bell)
+            player?.apply {
+                setOnCompletionListener { mp ->
+                    try { mp.release() } catch (_: Exception) {}
+                }
+                start()
+            }
+        } catch (_: Exception) {
+        }
+    }
+
+    fun playZenBowlSound() {
+        try {
+            val player = MediaPlayer.create(context, R.raw.zen_singing_bowl)
+            player?.apply {
+                setOnCompletionListener { mp ->
+                    try { mp.release() } catch (_: Exception) {}
+                }
+                start()
+            }
+        } catch (_: Exception) {
         }
     }
 
@@ -97,16 +124,21 @@ class NotificationHelper(private val context: Context) {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
+        val mindfulBellUri = Uri.parse(
+            "${ContentResolver.SCHEME_ANDROID_RESOURCE}://${context.packageName}/${R.raw.mindful_bell}"
+        )
+
         val notification = NotificationCompat.Builder(context, CHANNEL_DAILY_QUOTE_ID)
             .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle("SoulQuote â€¢ Daily Reflection")
-            .setContentText("\"$quoteText\" â€” $author")
+            .setContentTitle("SoulQuote • Daily Reflection")
+            .setContentText("\"$quoteText\" — $author")
             .setStyle(
                 NotificationCompat.BigTextStyle()
-                    .bigText("\"$quoteText\"\n\nâ€” $author")
+                    .bigText("\"$quoteText\"\n\n— $author")
                     .setSummaryText("Daily Inspiration")
             )
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setSound(mindfulBellUri)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .build()
@@ -118,7 +150,7 @@ class NotificationHelper(private val context: Context) {
     }
 
     fun showMeditationReminder(
-        title: String = "SoulQuote â€¢ Mindfulness Moment",
+        title: String = "SoulQuote • Mindfulness Moment",
         message: String = "Take a moment to pause, breathe, and center yourself."
     ) {
         if (!hasNotificationPermission()) return
@@ -135,6 +167,10 @@ class NotificationHelper(private val context: Context) {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
+        val zenBowlUri = Uri.parse(
+            "${ContentResolver.SCHEME_ANDROID_RESOURCE}://${context.packageName}/${R.raw.zen_singing_bowl}"
+        )
+
         val notification = NotificationCompat.Builder(context, CHANNEL_MEDITATION_ID)
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(title)
@@ -145,6 +181,7 @@ class NotificationHelper(private val context: Context) {
                     .setSummaryText("Meditation Practice")
             )
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setSound(zenBowlUri)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .build()
@@ -156,8 +193,8 @@ class NotificationHelper(private val context: Context) {
     }
 
     companion object {
-        const val CHANNEL_DAILY_QUOTE_ID = "channel_daily_quote_v1"
-        const val CHANNEL_MEDITATION_ID = "channel_meditation_v1"
+        const val CHANNEL_DAILY_QUOTE_ID = "channel_daily_quote_v2"
+        const val CHANNEL_MEDITATION_ID = "channel_meditation_v2"
 
         const val NOTIFICATION_ID_DAILY_QUOTE = 1001
         const val NOTIFICATION_ID_MEDITATION = 1002

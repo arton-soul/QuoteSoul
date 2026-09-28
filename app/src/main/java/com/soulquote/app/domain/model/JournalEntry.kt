@@ -13,6 +13,17 @@ enum class MoodType(val emoji: String, val displayName: String) {
             return entries.find { it.name.equals(value, ignoreCase = true) } ?: CALM
         }
     }
+
+    fun getLocalizedName(strings: com.soulquote.app.core.localization.AppStrings): String {
+        return when (this) {
+            PEACEFUL -> strings.moodPeaceful
+            GRATEFUL -> strings.moodGrateful
+            CALM -> strings.moodCalm
+            ENERGETIC -> strings.moodEnergetic
+            TIRED -> strings.moodTired
+            ANXIOUS -> strings.moodAnxious
+        }
+    }
 }
 
 data class JournalEntry(

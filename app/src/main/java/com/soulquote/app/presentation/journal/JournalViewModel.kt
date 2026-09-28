@@ -39,6 +39,13 @@ class JournalViewModel(
             )
         )
 
+    val todayEntries: StateFlow<List<JournalEntry>> = journalRepository.getJournalEntriesByDate(todayDateString)
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
+
     val todayEntry: StateFlow<JournalEntry?> = journalRepository.getJournalEntryByDate(todayDateString)
         .stateIn(
             scope = viewModelScope,
@@ -65,12 +72,29 @@ class JournalViewModel(
     private val _statusMessage = MutableStateFlow<String?>(null)
     val statusMessage: StateFlow<String?> = _statusMessage.asStateFlow()
 
+    private val _editingEntryId = MutableStateFlow<String?>(null)
+    val editingEntryId: StateFlow<String?> = _editingEntryId.asStateFlow()
+
     fun selectMood(mood: MoodType) {
         _selectedMood.value = mood
     }
 
     fun onReflectionTextChanged(text: String) {
         _reflectionText.value = text
+    }
+
+    fun startEditing(entry: JournalEntry) {
+        _editingEntryId.value = entry.id
+        _reflectionText.value = entry.content
+        _selectedMood.value = entry.mood
+        if (entry.reflectionPrompt.isNotBlank()) {
+            _currentPrompt.value = entry.reflectionPrompt
+        }
+    }
+
+    fun cancelEditing() {
+        _editingEntryId.value = null
+        _reflectionText.value = ""
     }
 
     fun refreshPrompt() {
@@ -89,10 +113,13 @@ class JournalViewModel(
         if (content.isBlank()) return
 
         viewModelScope.launch {
-            val existing = todayEntry.value
+            val editId = _editingEntryId.value
+            val isEditing = editId != null
+            val existing = if (isEditing) recentEntries.value.find { it.id == editId } else null
+
             val entry = JournalEntry(
-                id = existing?.id ?: UUID.randomUUID().toString(),
-                date = todayDateString,
+                id = editId ?: UUID.randomUUID().toString(),
+                date = existing?.date ?: todayDateString,
                 mood = _selectedMood.value,
                 reflectionPrompt = _currentPrompt.value,
                 content = content,
@@ -101,14 +128,18 @@ class JournalViewModel(
                 updatedAt = System.currentTimeMillis()
             )
             journalRepository.saveJournalEntry(entry)
-            _statusMessage.value = "Refleksi mindful berhasil tersimpan di perangkat lokal."
+            _statusMessage.value = if (isEditing) "Refleksi berhasil diperbarui." else "Refleksi mindful berhasil tersimpan di perangkat lokal."
             _reflectionText.value = ""
+            _editingEntryId.value = null
         }
     }
 
     fun deleteEntry(id: String) {
         viewModelScope.launch {
             journalRepository.deleteJournalEntry(id)
+            if (_editingEntryId.value == id) {
+                cancelEditing()
+            }
             _statusMessage.value = "Catatan refleksi dihapus."
         }
     }

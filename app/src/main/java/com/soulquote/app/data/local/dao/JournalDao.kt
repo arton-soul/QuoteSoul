@@ -15,6 +15,9 @@ interface JournalDao {
     @Query("SELECT * FROM journal_entries ORDER BY createdAt DESC")
     suspend fun getJournalEntriesList(): List<JournalEntryEntity>
 
+    @Query("SELECT * FROM journal_entries WHERE date = :date ORDER BY createdAt DESC")
+    fun getJournalEntriesByDate(date: String): Flow<List<JournalEntryEntity>>
+
     @Query("SELECT * FROM journal_entries WHERE date = :date ORDER BY createdAt DESC LIMIT 1")
     fun getJournalEntryByDate(date: String): Flow<JournalEntryEntity?>
 

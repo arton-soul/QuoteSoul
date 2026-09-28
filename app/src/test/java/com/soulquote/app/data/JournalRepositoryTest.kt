@@ -72,6 +72,33 @@ class JournalRepositoryTest {
     }
 
     @Test
+    fun testMultipleJournalEntriesOnSameDay() = runBlocking {
+        val today = "2026-09-28"
+        val entry1 = JournalEntry(
+            id = "entry_1",
+            date = today,
+            mood = MoodType.CALM,
+            reflectionPrompt = "Prompt 1",
+            content = "First reflection of the day"
+        )
+        val entry2 = JournalEntry(
+            id = "entry_2",
+            date = today,
+            mood = MoodType.GRATEFUL,
+            reflectionPrompt = "Prompt 2",
+            content = "Second reflection of the day"
+        )
+        repository.saveJournalEntry(entry1)
+        repository.saveJournalEntry(entry2)
+
+        val todayEntries = repository.getJournalEntriesByDate(today).first()
+        assertEquals(2, todayEntries.size)
+
+        val allEntries = repository.getAllJournalEntries().first()
+        assertEquals(2, allEntries.size)
+    }
+
+    @Test
     fun testStreakAndBadgesCalculation() = runBlocking {
         val today = LocalDate.now()
         val todayMillis = System.currentTimeMillis()
@@ -117,6 +144,10 @@ class JournalRepositoryTest {
         private val entriesFlow = MutableStateFlow<List<JournalEntryEntity>>(emptyList())
 
         override fun getAllJournalEntries(): Flow<List<JournalEntryEntity>> = entriesFlow
+
+        override fun getJournalEntriesByDate(date: String): Flow<List<JournalEntryEntity>> {
+            return entriesFlow.map { list -> list.filter { it.date == date } }
+        }
 
         override suspend fun getJournalEntriesList(): List<JournalEntryEntity> = entriesFlow.value
 

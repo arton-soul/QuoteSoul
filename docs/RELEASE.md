@@ -7,8 +7,8 @@ Dokumen ini merupakan panduan komprehensif untuk proses build, penandatanganan (
 ## 1. Spesifikasi Rilis Aplikasi
 
 - **Application ID**: `com.dearyoti.soulquote`
-- **Version Code**: `1`
-- **Version Name**: `0.1.0`
+- **Version Code**: `3`
+- **Version Name**: `0.3.0`
 - **Min SDK**: `26` (Android 8.0 Oreo)
 - **Target SDK**: `36` (Android 16 / Android 15+ Google Play Compliant)
 - **Compile SDK**: `36`
@@ -24,12 +24,79 @@ Setelah proses kompilasi rilis berhasil dieksekusi:
 
 | Tipe Berkas | Lokasi Berkas | Ukuran | Kegunaan |
 | :--- | :--- | :--- | :--- |
-| **Release AAB** | [`app/build/outputs/bundle/release/app-release.aab`](file:///d:/Android/Projectku/SoulQuote/app/build/outputs/bundle/release/app-release.aab) | **9.31 MB** | **Upload ke Google Play Console** |
-| **Release APK** | [`app/build/outputs/apk/release/app-release.apk`](file:///d:/Android/Projectku/SoulQuote/app/build/outputs/apk/release/app-release.apk) | **6.29 MB** | Pengujian langsung di perangkat fisik |
+| **Release AAB** | [`app/build/outputs/bundle/release/app-release.aab`](file:///d:/Android/Projectku/SoulQuote/app/build/outputs/bundle/release/app-release.aab) | **9.08 MB** (9,518,591 bytes) | **Upload ke Google Play Console (Internal Testing)** |
+| **Release APK** | [`app/build/outputs/apk/release/app-release.apk`](file:///d:/Android/Projectku/SoulQuote/app/build/outputs/apk/release/app-release.apk) | **6.25 MB** (6,555,683 bytes) | Pengujian langsung di perangkat fisik |
 
 ---
 
-## 3. Konfigurasi Penandatanganan (Signing Keystore)
+## 3. Catatan Rilis Play Store (Release Notes)
+
+Teks siap salin untuk kolom **Keterangan Rilis (Release Notes)** di Google Play Console:
+
+### Versi 0.3.0 (Version Code: 3) — Terkini (Current Release)
+```text
+<id-ID>
+Pembaruan SoulQuote v0.3.0 menyempurnakan keandalan dan pengalaman meditasi Anda:
+• Sinkronisasi Privasi & Cadangan: Statistik data kini terhubung langsung dengan jurnal refleksi, favorit, dan riwayat secara waktu-nyata (real-time).
+• Uji Suara Lonceng & Mangkuk Zen: Uji coba nada lonceng kesadaran (mindful bell) dan mangkuk bernyanyi (zen singing bowl) kini dapat didengar langsung dari aplikasi dengan suara jernih.
+• Pengingat & Notifikasi Lebih Responsif: Pengaturan jadwal pengingat kutipan harian dan meditasi malam kini dilengkapi notifikasi konfirmasi bilingual yang interaktif.
+• Peningkatan Stabilitas: Optimasi alur perizinan notifikasi dan performa di berbagai perangkat Android.
+</id-ID>
+
+<en-US>
+SoulQuote v0.3.0 brings refined reliability and audio responsiveness to your mindful practice:
+• Real-time Backup & Privacy Sync: Live synchronization between local backup stats, mindful journal reflections, favorites, and meditation history.
+• Direct Bell & Zen Singing Bowl Audio Test: Instantly listen to mindful bell and Tibetan singing bowl tones directly in-app with crystal clarity.
+• Interactive Reminder Feedback: Interactive bilingual feedback when toggling and scheduling daily wisdom and evening meditation reminders.
+• Performance & Stability: Enhanced Android 13+ notification permission flow and general performance optimizations.
+</en-US>
+```
+
+### Versi 0.2.0 (Version Code: 2) — Rilis Pembaruan
+```text
+<id-ID>
+Versi 0.2.0 membawa pembaruan menyeluruh untuk meningkatkan kenyamanan, estetika, dan keheningan jiwa Anda:
+• Dukungan Multi-Bahasa: Kini mendukung Bahasa Indonesia dan Bahasa Inggris secara penuh, dapat diubah dengan mudah di menu Pengaturan.
+• Jurnal Mindful Multi-Catatan: Catat refleksi harian kapan saja tanpa batasan jumlah entri, lengkap dengan waktu pencatatan, daftar catatan hari ini, fitur edit, dan riwayat.
+• Penyempurnaan Tampilan Mood: Pilihan suasana hati ditata ulang dalam grid yang rapi, seimbang, dan nyaman dibaca tanpa teks terpotong.
+• Ikon Aplikasi & Desain Baru: Tampilan logo baru yang anggun memadukan simbol kutipan bijak dengan bentuk hati (heart-quote).
+• Optimalisasi Audio Meditasi: Peningkatan stabilitas streaming suara dan manajemen unduhan offline yang lebih hemat ruang penyimpanan.
+</id-ID>
+
+<en-US>
+Version 0.2.0 introduces major enhancements to enrich your mindfulness and reflection experience:
+• Multi-Language Support: Full bilingual experience in Indonesian and English, easily toggleable via Settings.
+• Multi-Entry Mindful Journal: Record multiple reflections per day with precise timestamps, today's entry list, editing, and history management.
+• Redesigned Mood Selector: Balanced, comfortable mood grid layout ensuring clean text and smooth interaction.
+• Elegant New Branding: Brand-new heart-quote app icon and refined visual identity.
+• Meditation Audio Enhancements: Smoother streaming performance and optimized offline download management.
+</en-US>
+```
+
+### Versi 0.1.0 (Version Code: 1) — Rilis Perdana
+```text
+<id-ID>
+Selamat datang di SoulQuote — Ruang hening pribadi untuk ketenangan jiwa dan refleksi diri:
+• Ratusan kutipan bijak harian dari filosofi Stoicism, Zen, dan Timur.
+• Sesi meditasi terpandu dan alunan suara alam relaksasi (soundscapes).
+• Pelacak suasana hati dan jurnal refleksi harian.
+• Studio kartu kutipan estetik untuk berbagi inspirasi ke media sosial.
+• 100% Offline-First, hemat kuota, dan privasi data terjamin aman di perangkat Anda.
+</id-ID>
+
+<en-US>
+Welcome to SoulQuote — Your personal sanctuary for mindfulness and inner peace:
+• Curated collection of daily wisdom quotes across Stoicism, Zen, and Eastern traditions.
+• Guided meditation sessions and immersive ambient nature soundscapes.
+• Daily reflection journal and mood tracking.
+• Aesthetic Quote Card Studio for crafting and sharing inspirational cards.
+• 100% Offline-first architecture, zero telemetry, and privacy-focused local storage.
+</en-US>
+```
+
+---
+
+## 4. Konfigurasi Penandatanganan (Signing Keystore)
 
 Aplikasi ditandatangani menggunakan sertifikat resmi PKCS12 yang dikonfigurasikan di [`app/build.gradle.kts`](file:///d:/Android/Projectku/SoulQuote/app/build.gradle.kts) melalui berkas `keystore.properties`:
 
@@ -49,10 +116,10 @@ Aplikasi ditandatangani menggunakan sertifikat resmi PKCS12 yang dikonfigurasika
 
 ---
 
-## 4. Optimasi R8 & Resource Shrinking
+## 5. Optimasi R8 & Resource Shrinking
 
 Konfigurasi build tipe `release` mengaktifkan **Code Shrinking (Minification)** dan **Resource Shrinking** penuh:
-- Ukuran APK menyusut dari **25.5 MB (debug)** menjadi **6.29 MB (release)** — reduksi ukuran sebesar **~75%**.
+- Ukuran APK menyusut dari **25.5 MB (debug)** menjadi **6.15 MB (release)** — reduksi ukuran sebesar **~76%**.
 - Aturan penjagaan (*keep rules*) didefinisikan secara presisi di [`app/proguard-rules.pro`](file:///d:/Android/Projectku/SoulQuote/app/proguard-rules.pro):
   - Menjaga keutuhan Room Database, Entities, dan DAOs.
   - Menjaga DTO model serialisasi JSON (`ContentManifest`, `ContentPackage`, `UserDataBackupModel`).
@@ -61,7 +128,7 @@ Konfigurasi build tipe `release` mengaktifkan **Code Shrinking (Minification)** 
 
 ---
 
-## 5. Distribusi Konten Dinamis via GitHub (OTA Update)
+## 6. Distribusi Konten Dinamis via GitHub (OTA Update)
 
 SoulQuote terintegrasi dengan repositori GitHub:
 `https://github.com/arton-soul/QuoteSoul.git`
@@ -90,7 +157,7 @@ Endpoint manifes default yang ditanam di dalam aplikasi:
 
 ---
 
-## 6. Daftar Periksa Google Play Console (Play Store Checklist)
+## 7. Daftar Periksa Google Play Console (Play Store Checklist)
 
 Sebelum mengunggah `app-release.aab` ke Google Play Console, pastikan hal-hal berikut telah dipenuhi:
 
@@ -110,7 +177,7 @@ Sebelum mengunggah `app-release.aab` ke Google Play Console, pastikan hal-hal be
 
 ---
 
-## 7. Perintah Build Cepat (Cheatsheet)
+## 8. Perintah Build Cepat (Cheatsheet)
 
 ```powershell
 # Menjalankan seluruh Unit Test (13 test suites)

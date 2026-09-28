@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,7 +28,6 @@ import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -37,6 +37,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -47,11 +48,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.soulquote.app.core.localization.LocalAppStrings
 import com.soulquote.app.domain.model.MoodType
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -63,12 +67,14 @@ fun MindfulJournalDialog(
     onDismiss: () -> Unit,
     associatedQuoteId: String? = null
 ) {
+    val strings = LocalAppStrings.current
     var selectedTab by remember { mutableIntStateOf(0) }
     val selectedMood by viewModel.selectedMood.collectAsStateWithLifecycle()
     val reflectionText by viewModel.reflectionText.collectAsStateWithLifecycle()
     val currentPrompt by viewModel.currentPrompt.collectAsStateWithLifecycle()
     val recentEntries by viewModel.recentEntries.collectAsStateWithLifecycle()
-    val todayEntry by viewModel.todayEntry.collectAsStateWithLifecycle()
+    val todayEntries by viewModel.todayEntries.collectAsStateWithLifecycle()
+    val editingEntryId by viewModel.editingEntryId.collectAsStateWithLifecycle()
 
     Dialog(
         onDismissRequest = onDismiss,
@@ -96,7 +102,7 @@ fun MindfulJournalDialog(
                         Text(text = "✍️", fontSize = 22.sp)
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "Jurnal Mindful & Refleksi",
+                            text = strings.journalDialogTitle,
                             style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
                             color = MaterialTheme.colorScheme.onSurface
                         )
@@ -104,7 +110,7 @@ fun MindfulJournalDialog(
                     IconButton(onClick = onDismiss) {
                         Icon(
                             imageVector = Icons.Default.Close,
-                            contentDescription = "Tutup",
+                            contentDescription = strings.closeButton,
                             tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -124,7 +130,7 @@ fun MindfulJournalDialog(
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Icon(Icons.Default.EditNote, contentDescription = null, modifier = Modifier.size(18.dp))
                                 Spacer(modifier = Modifier.width(6.dp))
-                                Text("Refleksi Hari Ini")
+                                Text(strings.tabTodayReflection)
                             }
                         }
                     )
@@ -135,7 +141,7 @@ fun MindfulJournalDialog(
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Icon(Icons.Default.History, contentDescription = null, modifier = Modifier.size(18.dp))
                                 Spacer(modifier = Modifier.width(6.dp))
-                                Text("Riwayat (${recentEntries.size})")
+                                Text(String.format(strings.tabHistoryTitle, recentEntries.size))
                             }
                         }
                     )
@@ -151,50 +157,103 @@ fun MindfulJournalDialog(
                             .weight(1f, fill = false),
                         verticalArrangement = Arrangement.spacedBy(14.dp)
                     ) {
-                        // Mood Selector
+                        // Edit Mode Banner
+                        if (editingEntryId != null) {
+                            item {
+                                Card(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    shape = RoundedCornerShape(12.dp),
+                                    colors = CardDefaults.cardColors(
+                                        containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
+                                    )
+                                ) {
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(horizontal = 12.dp, vertical = 6.dp),
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text(
+                                            text = strings.editingReflectionBanner,
+                                            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                                            color = MaterialTheme.colorScheme.primary
+                                        )
+                                        TextButton(
+                                            onClick = { viewModel.cancelEditing() },
+                                            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp)
+                                        ) {
+                                            Text(strings.cancelEditButton, style = MaterialTheme.typography.labelSmall)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // Mood Selector (2 rows of 3 items to ensure clean single-line layout)
                         item {
                             Text(
-                                text = "Bagaimana suasana hatimu saat ini?",
+                                text = strings.howIsYourMoodTitle,
                                 style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
                                 color = MaterialTheme.colorScheme.onSurface
                             )
                             Spacer(modifier = Modifier.height(10.dp))
-                            Row(
+
+                            val moodRows = remember { MoodType.entries.chunked(3) }
+                            Column(
                                 modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween
+                                verticalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
-                                MoodType.entries.forEach { mood ->
-                                    val isSelected = mood == selectedMood
-                                    Column(
-                                        horizontalAlignment = Alignment.CenterHorizontally,
-                                        modifier = Modifier
-                                            .clip(RoundedCornerShape(12.dp))
-                                            .clickable { viewModel.selectMood(mood) }
-                                            .padding(4.dp)
+                                moodRows.forEach { rowMoods ->
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                                     ) {
-                                        Box(
-                                            modifier = Modifier
-                                                .size(44.dp)
-                                                .clip(CircleShape)
-                                                .background(
-                                                    if (isSelected) MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
-                                                    else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                                        rowMoods.forEach { mood ->
+                                            val isSelected = mood == selectedMood
+                                            Column(
+                                                horizontalAlignment = Alignment.CenterHorizontally,
+                                                modifier = Modifier
+                                                    .weight(1f)
+                                                    .clip(RoundedCornerShape(14.dp))
+                                                    .clickable { viewModel.selectMood(mood) }
+                                                    .background(
+                                                        if (isSelected) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.45f)
+                                                        else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.25f)
+                                                    )
+                                                    .padding(vertical = 8.dp, horizontal = 4.dp)
+                                            ) {
+                                                Box(
+                                                    modifier = Modifier
+                                                        .size(42.dp)
+                                                        .clip(CircleShape)
+                                                        .background(
+                                                            if (isSelected) MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
+                                                            else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                                                        )
+                                                        .border(
+                                                            width = if (isSelected) 2.dp else 0.dp,
+                                                            color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
+                                                            shape = CircleShape
+                                                        ),
+                                                    contentAlignment = Alignment.Center
+                                                ) {
+                                                    Text(text = mood.emoji, fontSize = 20.sp)
+                                                }
+                                                Spacer(modifier = Modifier.height(4.dp))
+                                                Text(
+                                                    text = mood.getLocalizedName(strings),
+                                                    style = MaterialTheme.typography.labelSmall.copy(
+                                                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium
+                                                    ),
+                                                    color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                                                    maxLines = 1,
+                                                    softWrap = false,
+                                                    overflow = TextOverflow.Ellipsis,
+                                                    textAlign = TextAlign.Center
                                                 )
-                                                .border(
-                                                    width = if (isSelected) 2.dp else 0.dp,
-                                                    color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
-                                                    shape = CircleShape
-                                                ),
-                                            contentAlignment = Alignment.Center
-                                        ) {
-                                            Text(text = mood.emoji, fontSize = 20.sp)
+                                            }
                                         }
-                                        Spacer(modifier = Modifier.height(4.dp))
-                                        Text(
-                                            text = mood.displayName,
-                                            style = MaterialTheme.typography.labelSmall,
-                                            color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
                                     }
                                 }
                             }
@@ -215,7 +274,7 @@ fun MindfulJournalDialog(
                                 ) {
                                     Column(modifier = Modifier.weight(1f)) {
                                         Text(
-                                            text = "Pertanyaan Hening:",
+                                            text = strings.mindfulPromptHeader,
                                             style = MaterialTheme.typography.labelSmall,
                                             color = MaterialTheme.colorScheme.primary,
                                             fontWeight = FontWeight.Bold
@@ -230,7 +289,7 @@ fun MindfulJournalDialog(
                                     IconButton(onClick = { viewModel.refreshPrompt() }) {
                                         Icon(
                                             imageVector = Icons.Default.Refresh,
-                                            contentDescription = "Ganti pertanyaan",
+                                            contentDescription = strings.changePromptButton,
                                             tint = MaterialTheme.colorScheme.primary
                                         )
                                     }
@@ -248,7 +307,7 @@ fun MindfulJournalDialog(
                                     .height(130.dp),
                                 placeholder = {
                                     Text(
-                                        "Tuliskan refleksi singkat, rasa syukur, atau pelepasan beban batinmu...",
+                                        strings.journalPlaceholder,
                                         style = MaterialTheme.typography.bodySmall
                                     )
                                 },
@@ -260,28 +319,75 @@ fun MindfulJournalDialog(
                             )
                         }
 
-                        if (todayEntry != null) {
+                        // Today's Saved Entries (Shows all reflections saved today)
+                        if (todayEntries.isNotEmpty() && editingEntryId == null) {
                             item {
-                                Card(
+                                Column(
                                     modifier = Modifier.fillMaxWidth(),
-                                    shape = RoundedCornerShape(12.dp),
-                                    colors = CardDefaults.cardColors(
-                                        containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.35f)
-                                    )
+                                    verticalArrangement = Arrangement.spacedBy(8.dp)
                                 ) {
-                                    Column(modifier = Modifier.padding(12.dp)) {
-                                        Text(
-                                            text = "Tersimpan hari ini (${todayEntry?.mood?.emoji} ${todayEntry?.mood?.displayName}):",
-                                            style = MaterialTheme.typography.labelSmall,
-                                            color = MaterialTheme.colorScheme.secondary,
-                                            fontWeight = FontWeight.Bold
-                                        )
-                                        Spacer(modifier = Modifier.height(4.dp))
-                                        Text(
-                                            text = "\"${todayEntry?.content}\"",
-                                            style = MaterialTheme.typography.bodySmall,
-                                            color = MaterialTheme.colorScheme.onSecondaryContainer
-                                        )
+                                    Text(
+                                        text = String.format(strings.savedTodayHeader, todayEntries.size),
+                                        style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+                                        color = MaterialTheme.colorScheme.secondary
+                                    )
+                                    todayEntries.forEach { entry ->
+                                        Card(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            shape = RoundedCornerShape(12.dp),
+                                            colors = CardDefaults.cardColors(
+                                                containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.35f)
+                                            )
+                                        ) {
+                                            Column(modifier = Modifier.padding(12.dp)) {
+                                                Row(
+                                                    modifier = Modifier.fillMaxWidth(),
+                                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                                    verticalAlignment = Alignment.CenterVertically
+                                                ) {
+                                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                                        Text(text = entry.mood.emoji, fontSize = 16.sp)
+                                                        Spacer(modifier = Modifier.width(6.dp))
+                                                        Text(
+                                                            text = "${entry.mood.getLocalizedName(strings)} • ${formatTime(entry.createdAt)}",
+                                                            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                                                            color = MaterialTheme.colorScheme.secondary
+                                                        )
+                                                    }
+                                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                                        IconButton(
+                                                            onClick = { viewModel.startEditing(entry) },
+                                                            modifier = Modifier.size(24.dp)
+                                                        ) {
+                                                            Icon(
+                                                                imageVector = Icons.Default.EditNote,
+                                                                contentDescription = strings.editEntryButton,
+                                                                tint = MaterialTheme.colorScheme.primary,
+                                                                modifier = Modifier.size(16.dp)
+                                                            )
+                                                        }
+                                                        Spacer(modifier = Modifier.width(4.dp))
+                                                        IconButton(
+                                                            onClick = { viewModel.deleteEntry(entry.id) },
+                                                            modifier = Modifier.size(24.dp)
+                                                        ) {
+                                                            Icon(
+                                                                imageVector = Icons.Default.DeleteOutline,
+                                                                contentDescription = strings.deleteEntryButton,
+                                                                tint = MaterialTheme.colorScheme.error.copy(alpha = 0.7f),
+                                                                modifier = Modifier.size(16.dp)
+                                                            )
+                                                        }
+                                                    }
+                                                }
+                                                Spacer(modifier = Modifier.height(4.dp))
+                                                Text(
+                                                    text = "\"${entry.content}\"",
+                                                    style = MaterialTheme.typography.bodySmall,
+                                                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                                                )
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -299,7 +405,7 @@ fun MindfulJournalDialog(
                             ) {
                                 Icon(Icons.Default.Save, contentDescription = null, modifier = Modifier.size(18.dp))
                                 Spacer(modifier = Modifier.width(8.dp))
-                                Text("Simpan Refleksi Hening")
+                                Text(if (editingEntryId != null) strings.updateReflectionButton else strings.saveReflectionButton)
                             }
                         }
                     }
@@ -313,10 +419,10 @@ fun MindfulJournalDialog(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = "Belum ada catatan refleksi.\nMulai tulis rasa syukur pertamamu hari ini!",
+                                text = strings.emptyHistoryMessage,
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                                textAlign = TextAlign.Center
                             )
                         }
                     } else {
@@ -344,22 +450,38 @@ fun MindfulJournalDialog(
                                                 Text(text = entry.mood.emoji, fontSize = 18.sp)
                                                 Spacer(modifier = Modifier.width(6.dp))
                                                 Text(
-                                                    text = "${entry.mood.displayName} • ${formatDate(entry.createdAt)}",
+                                                    text = "${entry.mood.getLocalizedName(strings)} • ${formatDate(entry.createdAt)}",
                                                     style = MaterialTheme.typography.labelMedium,
                                                     fontWeight = FontWeight.Bold,
                                                     color = MaterialTheme.colorScheme.primary
                                                 )
                                             }
-                                            IconButton(
-                                                onClick = { viewModel.deleteEntry(entry.id) },
-                                                modifier = Modifier.size(28.dp)
-                                            ) {
-                                                Icon(
-                                                    imageVector = Icons.Default.DeleteOutline,
-                                                    contentDescription = "Hapus",
-                                                    tint = MaterialTheme.colorScheme.error.copy(alpha = 0.7f),
-                                                    modifier = Modifier.size(18.dp)
-                                                )
+                                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                                IconButton(
+                                                    onClick = {
+                                                        viewModel.startEditing(entry)
+                                                        selectedTab = 0
+                                                    },
+                                                    modifier = Modifier.size(28.dp)
+                                                ) {
+                                                    Icon(
+                                                        imageVector = Icons.Default.EditNote,
+                                                        contentDescription = strings.editEntryButton,
+                                                        tint = MaterialTheme.colorScheme.primary,
+                                                        modifier = Modifier.size(18.dp)
+                                                    )
+                                                }
+                                                IconButton(
+                                                    onClick = { viewModel.deleteEntry(entry.id) },
+                                                    modifier = Modifier.size(28.dp)
+                                                ) {
+                                                    Icon(
+                                                        imageVector = Icons.Default.DeleteOutline,
+                                                        contentDescription = strings.deleteEntryButton,
+                                                        tint = MaterialTheme.colorScheme.error.copy(alpha = 0.7f),
+                                                        modifier = Modifier.size(18.dp)
+                                                    )
+                                                }
                                             }
                                         }
 
@@ -393,4 +515,8 @@ fun MindfulJournalDialog(
 
 private fun formatDate(timestamp: Long): String {
     return SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault()).format(Date(timestamp))
+}
+
+private fun formatTime(timestamp: Long): String {
+    return SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date(timestamp))
 }

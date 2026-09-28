@@ -49,45 +49,208 @@ Logo baru ini juga telah diterapkan secara langsung ke dalam resource aplikasi A
 
 ## 📝 Rekomendasi Deskripsi Toko (Store Listing Metadata)
 
-### 1. Judul Aplikasi (App Title - Maks 30 Karakter)
+### 1. Metadata Bahasa Indonesia (Default)
+
+#### A. Judul Aplikasi (App Title - Maks 30 Karakter)
 ```text
 SoulQuote: Refleksi & Meditasi
 ```
 
-### 2. Deskripsi Singkat (Short Description - Maks 80 Karakter)
+#### B. Deskripsi Singkat (Short Description - Maks 80 Karakter)
 ```text
 Kutipan bijak harian, meditasi terpandu, dan suara alam untuk ketenangan jiwa.
 ```
 
-### 3. Deskripsi Lengkap (Full Description - Maks 4000 Karakter)
+#### C. Deskripsi Lengkap (Full Description - Maks 4000 Karakter)
 ```text
-SoulQuote adalah ruang hening pribadi Anda di tengah kesibukan dunia modern. Dirancang khusus untuk memulihkan energi batin, menumbuhkan kesadaran diri, dan merawat kesehatan emosional Anda melalui perpaduan kutipan kebijaksanaan dan audio meditasi mendalam.
+SoulQuote adalah ruang hening pribadi Anda di tengah kesibukan dan kebisingan dunia modern. Dirancang khusus untuk memulihkan energi batin, menumbuhkan kesadaran diri (*mindfulness*), dan merawat kesehatan emosional Anda melalui perpaduan kutipan kebijaksanaan abadi dan audio meditasi mendalam.
 
-✨ FITUR UNGGULAN SOULQUOTE:
+✨ FITUR LENGKAP & KEUNGGULAN SOULQUOTE:
 
-1. Refleksi Batin & Mood Harian
-Mulailah hari dengan kutipan bijak penuh makna dari tokoh filsafat (Stoicism, Zen, Spiritualitas). Catat refleksi batin dan suasana hati Anda setiap hari secara privat.
+1. Refleksi Batin & Jurnal Mindful Multi-Catatan
+Mulailah dan akhiri hari Anda dengan perenungan yang bermakna. Kini Anda dapat mencatat beberapa refleksi harian kapan saja tanpa batasan jumlah entri, lengkap dengan penanda waktu yang presisi, riwayat refleksi, serta opsi pengeditan yang fleksibel.
 
-2. Panduan Meditasi Mendalam
-Akses sesi meditasi audio terpandu bersama instruktur berpengalaman:
-- Pembersihan rekaman emosi dan luka batin
-- Penyelarasan kesadaran dan energi cinta kasih
-- Relaksasi tubuh total untuk istirahat dan tidur lelap
-- Pembersihan karakter malas dan penumbuhan semangat
+2. Pelacak Suasana Hati (Mood Tracker) yang Menenangkan
+Ekspresikan suasana hatimu dengan 6 spektrum emosi (Damai, Bersyukur, Tenang, Bersemangat, Lelah, Gelisah) dalam antarmuka visual yang nyaman, seimbang, dan menenangkan mata.
 
-3. Suara Alam Meditatif
-Nikmati alunan suara alam relaksasi seperti gemericik hujan, ombak laut, gemerisik api unggun, dan denting mangkuk Tibet (Tibetan singing bowl) untuk fokus belajar, bekerja, atau meditasi hening.
+3. Panduan Meditasi Mendalam Bersama Instruktur
+Nikmati rangkaian sesi meditasi terpandu yang dirancang untuk membersihkan beban mental dan menata kembali ketenangan jiwa:
+• Pembersihan rekaman emosi dan pelepasan luka batin
+• Penyelarasan kesadaran diri dan pancaran energi cinta kasih
+• Relaksasi tubuh total untuk melepaskan ketegangan fisik dan tidur lelap
+• Pembersihan karakter malas dan pembangkitan fokus serta motivasi hidup
 
-4. 100% Fleksibel & Mode Offline
-Audio favorit dapat diunduh untuk didengarkan kapan saja tanpa kuota internet atau saat berada dalam mode pesawat.
+4. Alunan Suara Alam Meditatif (Soundscapes)
+Hadirkan atmosfer damai di mana saja dengan alunan instrumen dan suara alam berkualitas tinggi: suara hujan menenangkan, deburan ombak laut, gemerisik api unggun malam, dan denting mangkuk Tibet (*Tibetan singing bowl*) untuk fokus belajar, bekerja, atau meditasi hening.
 
-5. Studio Kutipan Estetik
-Kreasikan kutipan favorit Anda dengan berbagai template kartu yang indah dan bagikan inspirasi ke media sosial dengan mudah.
+5. Runtutan Kesadaran (Mindful Streak) & 6 Lencana Pencapaian
+Bangun kebiasaan hening harian yang konsisten. Pantau rekor hari latihan Anda (*streak*) dan raih 6 lencana apresiasi batin (Langkah Pertama, Fokus 3 Hari, Seminggu Damai, Kedamaian Batin, Zen Master, Penyelam Batin).
 
-6. Privasi Penuh Tanpa Iklan yang Mengganggu
-Seluruh catatan refleksi dan data pribadi Anda tersimpan aman di perangkat lokal Anda.
+6. Widget Layar Utama (Daily Quote Widget)
+Sematkan kutipan inspiratif langsung di layar utama (*Home Screen*) ponsel Anda. Dilengkapi tombol segarkan instan untuk berganti kutipan bijak kapan pun Anda membutuhkan percikan motivasi tanpa harus membuka aplikasi.
 
-Temukan kembali kedamaian dan keheningan jiwamu hari ini bersama SoulQuote.
+7. Studio Kutipan Estetik (Quote Card Studio)
+Ubah kutipan favorit menjadi karya seni visual yang anggun. Sesuaikan latar belakang warna, rasio aspek (1:1 untuk feed, 9:16 untuk story/status), tipografi, dan bagikan inspirasi kebahagiaan kepada sahabat dan keluarga.
+
+8. Mode 100% Fleksibel & Hemat Kuota (Offline-First)
+Audio meditasi utama siap diputar seketika. Anda bebas mengalirkan (*streaming*) sesi lainnya atau mengunduhnya ke penyimpanan perangkat untuk dinikmati kapan saja tanpa koneksi internet atau dalam mode pesawat.
+
+9. Cadangan Data Terenkripsi & Privasi Mutlak (100% Privat)
+Privasi Anda adalah prioritas tertinggi kami. SoulQuote beroperasi tanpa pelacak (*zero telemetry*), tanpa analitik tersembunyi, dan tanpa iklan yang mengganggu. Seluruh catatan jurnal tersimpan privat di perangkat Anda, lengkap dengan fitur ekspor-impor cadangan JSON yang aman.
+
+10. Dukungan Multi-Bahasa (Bilingual)
+SoulQuote mendukung Bahasa Indonesia dan Bahasa Inggris secara penuh, yang dapat Anda alihkan dengan mudah dan instan melalui menu Pengaturan.
+
+11. Lonceng Kesadaran & Pengingat Lembut (Mindful Bell & Reminders)
+Pengingat harian yang menenangkan dengan denting lonceng kesadaran (*mindful bell*) dan alunan mangkuk bernyanyi Zen (*Tibetan singing bowl*) untuk mengajak Anda jeda sejenak dan bernapas di tengah hiruk-pikuk aktivitas.
+
+Temukan kembali keheningan, keseimbangan, dan kedamaian jiwamu hari ini bersama SoulQuote.
+```
+
+---
+
+### 2. Metadata English (Secondary Language)
+
+#### A. App Title (Max 30 Characters)
+```text
+SoulQuote: Mindfulness & Peace
+```
+
+#### B. Short Description (Max 80 Characters)
+```text
+Daily wisdom quotes, guided meditation, and nature sounds for inner peace.
+```
+
+#### C. Full Description (Max 4000 Characters)
+```text
+SoulQuote is your personal sanctuary of stillness amidst the noise of the modern world. Carefully crafted to restore inner harmony, nurture mindfulness, and support emotional well-being through timeless philosophical wisdom and immersive guided meditation.
+
+✨ KEY FEATURES & HIGHLIGHTS OF SOULQUOTE:
+
+1. Multi-Entry Mindful Journal & Daily Reflection
+Begin and close your day with purposeful contemplation. Record multiple journal reflections per day with precise timestamps, full editing capabilities, and a reflective history log.
+
+2. Soothing Daily Mood Tracker
+Acknowledge your emotional state with 6 balanced emotional spectrums (Peaceful, Grateful, Calm, Energetic, Tired, Anxious) framed in a serene, distraction-free interface.
+
+3. Deep Guided Meditation Sessions
+Access audio meditation sessions led by experienced guides, designed to bring mental clarity and emotional release:
+• Emotional cleansing and letting go of past burdens
+• Heart coherence, self-compassion, and loving-kindness
+• Deep bodily relaxation for stress relief and restorative sleep
+• Overcoming lethargy and revitalizing mindful focus
+
+4. Meditative Nature Soundscapes & Ambient Audio
+Create a peaceful environment anywhere with high-fidelity ambient soundscapes: soothing rain, gentle ocean waves, fireside warmth, and resonance of Tibetan singing bowls for focused work, study, or quiet contemplation.
+
+5. Mindful Streaks & 6 Milestone Badges
+Cultivate a sustainable daily practice. Track consecutive mindfulness days and unlock 6 meaningful achievement badges along your inner journey.
+
+6. Home Screen Daily Quote Widget
+Keep daily wisdom within sight with our dedicated 4x2 Home Screen widget. Features an instant refresh button to cycle inspirational quotes directly from your launcher.
+
+7. Aesthetic Quote Card Studio
+Transform wisdom quotes into elegant graphic cards. Customize aspect ratios (1:1 square, 9:16 story), color palettes, and typography to share uplifting reflections with friends and loved ones.
+
+8. 100% Offline-First & Storage-Friendly
+Core meditation audio is ready out-of-the-box. Stream additional sessions seamlessly or download them directly to your device for offline playback on airplanes or off-grid retreats.
+
+9. Absolute Privacy & Zero Telemetry
+Your inner thoughts belong exclusively to you. SoulQuote operates with zero tracking, no cloud telemetry, and no disruptive ads. All reflections remain strictly on your local device, complete with secure encrypted JSON backup and restore.
+
+10. Bilingual Experience
+Easily toggle between Indonesian and English anytime with instant UI reactivity in Settings.
+
+11. Mindful Bells & Gentle Reminders
+Gentle daily notifications accompanied by authentic mindful bells and resonant Tibetan singing bowls to invite mindful pauses and deep breaths throughout your day.
+
+Rediscover stillness, balance, and tranquility in your daily life with SoulQuote.
+```
+
+---
+
+## 📋 Catatan Rilis / Keterangan Versi (What's New in this Release)
+
+Gunakan teks di bawah ini untuk mengisi bagian **Keterangan Rilis / Release Notes** di Google Play Console pada setiap pembaruan:
+
+### 🌟 Versi 0.3.0 (Version Code: 3) — Terkini (Current Release)
+
+#### 🇮🇩 Bahasa Indonesia (`<id-ID>`):
+```text
+<id-ID>
+Pembaruan SoulQuote v0.3.0 menyempurnakan keandalan dan pengalaman meditasi Anda:
+• Sinkronisasi Privasi & Cadangan: Statistik data kini terhubung langsung dengan jurnal refleksi, favorit, dan riwayat secara waktu-nyata (real-time).
+• Uji Suara Lonceng & Mangkuk Zen: Uji coba nada lonceng kesadaran (mindful bell) dan mangkuk bernyanyi (zen singing bowl) kini dapat didengar langsung dari aplikasi dengan suara jernih.
+• Pengingat & Notifikasi Lebih Responsif: Pengaturan jadwal pengingat kutipan harian dan meditasi malam kini dilengkapi notifikasi konfirmasi bilingual yang interaktif.
+• Peningkatan Stabilitas: Optimasi alur perizinan notifikasi dan performa di berbagai perangkat Android.
+</id-ID>
+```
+
+#### 🇺🇸 English (`<en-US>`):
+```text
+<en-US>
+SoulQuote v0.3.0 brings refined reliability and audio responsiveness to your mindful practice:
+• Real-time Backup & Privacy Sync: Live synchronization between local backup stats, mindful journal reflections, favorites, and meditation history.
+• Direct Bell & Zen Singing Bowl Audio Test: Instantly listen to mindful bell and Tibetan singing bowl tones directly in-app with crystal clarity.
+• Interactive Reminder Feedback: Interactive bilingual feedback when toggling and scheduling daily wisdom and evening meditation reminders.
+• Performance & Stability: Enhanced Android 13+ notification permission flow and general performance optimizations.
+</en-US>
+```
+
+---
+
+### 📦 Versi 0.2.0 (Version Code: 2) — Rilis Pembaruan
+
+#### 🇮🇩 Bahasa Indonesia (`<id-ID>`):
+```text
+<id-ID>
+Versi 0.2.0 membawa pembaruan menyeluruh untuk meningkatkan kenyamanan, estetika, dan keheningan jiwa Anda:
+• Dukungan Multi-Bahasa: Kini mendukung Bahasa Indonesia dan Bahasa Inggris secara penuh, dapat diubah dengan mudah di menu Pengaturan.
+• Jurnal Mindful Multi-Catatan: Catat refleksi harian kapan saja tanpa batasan jumlah entri, lengkap dengan waktu pencatatan, daftar catatan hari ini, fitur edit, dan riwayat.
+• Penyempurnaan Tampilan Mood: Pilihan suasana hati ditata ulang dalam grid yang rapi, seimbang, dan nyaman dibaca tanpa teks terpotong.
+• Ikon Aplikasi & Desain Baru: Tampilan logo baru yang anggun memadukan simbol kutipan bijak dengan bentuk hati (heart-quote).
+• Optimalisasi Audio Meditasi: Peningkatan stabilitas streaming suara dan manajemen unduhan offline yang lebih hemat ruang penyimpanan.
+</id-ID>
+```
+
+#### 🇺🇸 English (`<en-US>`):
+```text
+<en-US>
+Version 0.2.0 introduces major enhancements to enrich your mindfulness and reflection experience:
+• Multi-Language Support: Full bilingual experience in Indonesian and English, easily toggleable via Settings.
+• Multi-Entry Mindful Journal: Record multiple reflections per day with precise timestamps, today's entry list, editing, and history management.
+• Redesigned Mood Selector: Balanced, comfortable mood grid layout ensuring clean text and smooth interaction.
+• Elegant New Branding: Brand-new heart-quote app icon and refined visual identity.
+• Meditation Audio Enhancements: Smoother streaming performance and optimized offline download management.
+</en-US>
+```
+
+---
+
+### 📦 Versi 0.1.0 (Version Code: 1) — Rilis Perdana (Initial Release)
+
+#### 🇮🇩 Bahasa Indonesia (`<id-ID>`):
+```text
+<id-ID>
+Selamat datang di SoulQuote — Ruang hening pribadi untuk ketenangan jiwa dan refleksi diri:
+• Ratusan kutipan bijak harian dari filosofi Stoicism, Zen, dan Timur.
+• Sesi meditasi terpandu dan alunan suara alam relaksasi (soundscapes).
+• Pelacak suasana hati dan jurnal refleksi harian.
+• Studio kartu kutipan estetik untuk berbagi inspirasi ke media sosial.
+• 100% Offline-First, hemat kuota, dan privasi data terjamin aman di perangkat Anda.
+</id-ID>
+```
+
+#### 🇺🇸 English (`<en-US>`):
+```text
+<en-US>
+Welcome to SoulQuote — Your personal sanctuary for mindfulness and inner peace:
+• Curated collection of daily wisdom quotes across Stoicism, Zen, and Eastern traditions.
+• Guided meditation sessions and immersive ambient nature soundscapes.
+• Daily reflection journal and mood tracking.
+• Aesthetic Quote Card Studio for crafting and sharing inspirational cards.
+• 100% Offline-first architecture, zero telemetry, and privacy-focused local storage.
+</en-US>
 ```
 
 ---

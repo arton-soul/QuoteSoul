@@ -31,11 +31,13 @@ import androidx.compose.material.icons.filled.CloudDownload
 import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material.icons.filled.FileUpload
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.PrivacyTip
 import com.soulquote.app.BuildConfig
+import com.soulquote.app.core.localization.LocalAppStrings
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Spa
@@ -53,12 +55,17 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
+import android.widget.Toast
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -95,12 +102,35 @@ fun SettingsScreen(
         }
     }
 
+    var pendingPermissionAction by remember { mutableStateOf(PendingPermissionAction.NONE) }
+    val strings = LocalAppStrings.current
+
+    LaunchedEffect(Unit) {
+        viewModel.refreshBackupStats()
+    }
+
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
-            viewModel.setDailyQuoteEnabled(true)
+            when (pendingPermissionAction) {
+                PendingPermissionAction.DAILY_QUOTE -> {
+                    viewModel.setDailyQuoteEnabled(true)
+                    val timeStr = String.format("%02d:%02d", settings.dailyQuoteHour, settings.dailyQuoteMinute)
+                    Toast.makeText(context, String.format(strings.dailyQuoteEnabledToast, timeStr), Toast.LENGTH_SHORT).show()
+                }
+                PendingPermissionAction.MEDITATION -> {
+                    viewModel.setMeditationReminderEnabled(true)
+                    val timeStr = String.format("%02d:%02d", settings.meditationReminderHour, settings.meditationReminderMinute)
+                    Toast.makeText(context, String.format(strings.meditationReminderEnabledToast, timeStr), Toast.LENGTH_SHORT).show()
+                }
+                PendingPermissionAction.TEST_NOTIFICATION -> {
+                    Toast.makeText(context, strings.testBellTriggeredToast, Toast.LENGTH_SHORT).show()
+                }
+                PendingPermissionAction.NONE -> {}
+            }
         }
+        pendingPermissionAction = PendingPermissionAction.NONE
     }
 
     val scrollState = rememberScrollState()
@@ -122,13 +152,149 @@ fun SettingsScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "Settings",
+            text = strings.settingsTitle,
             style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
             color = MaterialTheme.colorScheme.onBackground
+        )
+        Text(
+            text = strings.settingsSubtitle,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.outline
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // 0. Language Settings Card (Bahasa)
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(20.dp),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+        ) {
+            Column(modifier = Modifier.padding(18.dp)) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Language,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Column {
+                        Text(
+                            text = strings.sectionLanguage,
+                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
+                        )
+                        Text(
+                            text = strings.languageSubtitle,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.outline
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(14.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    val isIndonesian = settings.language != "en"
+
+                    // Indonesian Option Button (Default)
+                    Surface(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clip(RoundedCornerShape(12.dp))
+                            .clickable {
+                                if (settings.language != "in") {
+                                    viewModel.setLanguage("in")
+                                    android.widget.Toast.makeText(context, "Bahasa berhasil diubah ke Bahasa Indonesia", android.widget.Toast.LENGTH_SHORT).show()
+                                }
+                            },
+                        shape = RoundedCornerShape(12.dp),
+                        color = if (isIndonesian) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface,
+                        border = if (isIndonesian) androidx.compose.foundation.BorderStroke(1.5.dp, MaterialTheme.colorScheme.primary) else null
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(vertical = 12.dp, horizontal = 10.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RadioButton(
+                                selected = isIndonesian,
+                                onClick = {
+                                    if (settings.language != "in") {
+                                        viewModel.setLanguage("in")
+                                        android.widget.Toast.makeText(context, "Bahasa berhasil diubah ke Bahasa Indonesia", android.widget.Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Column {
+                                Text(
+                                    text = "Indonesia",
+                                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                                    color = if (isIndonesian) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface
+                                )
+                                Text(
+                                    text = "Default",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.outline
+                                )
+                            }
+                        }
+                    }
+
+                    // English Option Button
+                    Surface(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clip(RoundedCornerShape(12.dp))
+                            .clickable {
+                                if (settings.language != "en") {
+                                    viewModel.setLanguage("en")
+                                    android.widget.Toast.makeText(context, "Language changed to English", android.widget.Toast.LENGTH_SHORT).show()
+                                }
+                            },
+                        shape = RoundedCornerShape(12.dp),
+                        color = if (!isIndonesian) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface,
+                        border = if (!isIndonesian) androidx.compose.foundation.BorderStroke(1.5.dp, MaterialTheme.colorScheme.primary) else null
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(vertical = 12.dp, horizontal = 10.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RadioButton(
+                                selected = !isIndonesian,
+                                onClick = {
+                                    if (settings.language != "en") {
+                                        viewModel.setLanguage("en")
+                                        android.widget.Toast.makeText(context, "Language changed to English", android.widget.Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Column {
+                                Text(
+                                    text = "English",
+                                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                                    color = if (!isIndonesian) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface
+                                )
+                                Text(
+                                    text = "Secondary",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.outline
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // 1. Notifications & Reminders Card
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(20.dp),
@@ -145,7 +311,7 @@ fun SettingsScreen(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Notifications & Reminders",
+                        text = strings.sectionNotifications,
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
                     )
                 }
@@ -160,7 +326,7 @@ fun SettingsScreen(
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = "Daily Quote",
+                            text = strings.dailyQuoteTitle,
                             style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium)
                         )
                         val formattedTime = String.format(
@@ -171,7 +337,7 @@ fun SettingsScreen(
                             if (settings.dailyQuoteHour < 12) "AM" else "PM"
                         )
                         Text(
-                            text = "Scheduled at $formattedTime",
+                            text = String.format(strings.scheduledAt, formattedTime),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.outline
                         )
@@ -179,10 +345,18 @@ fun SettingsScreen(
                     Switch(
                         checked = settings.dailyQuoteEnabled,
                         onCheckedChange = { isChecked ->
-                            if (isChecked && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !viewModel.hasNotificationPermission()) {
-                                permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                            if (isChecked) {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !viewModel.hasNotificationPermission()) {
+                                    pendingPermissionAction = PendingPermissionAction.DAILY_QUOTE
+                                    permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                                } else {
+                                    viewModel.setDailyQuoteEnabled(true)
+                                    val timeStr = String.format("%02d:%02d", settings.dailyQuoteHour, settings.dailyQuoteMinute)
+                                    Toast.makeText(context, String.format(strings.dailyQuoteEnabledToast, timeStr), Toast.LENGTH_SHORT).show()
+                                }
                             } else {
-                                viewModel.setDailyQuoteEnabled(isChecked)
+                                viewModel.setDailyQuoteEnabled(false)
+                                Toast.makeText(context, strings.dailyQuoteDisabledToast, Toast.LENGTH_SHORT).show()
                             }
                         }
                     )
@@ -196,6 +370,7 @@ fun SettingsScreen(
                                 context,
                                 { _, hourOfDay, minute ->
                                     viewModel.setDailyQuoteTime(hourOfDay, minute)
+                                    Toast.makeText(context, String.format(strings.timeUpdatedToast, hourOfDay, minute), Toast.LENGTH_SHORT).show()
                                 },
                                 settings.dailyQuoteHour,
                                 settings.dailyQuoteMinute,
@@ -208,8 +383,7 @@ fun SettingsScreen(
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = String.format(
-                                Locale.getDefault(),
-                                "Change Time (%02d:%02d)",
+                                strings.changeTimeButton,
                                 settings.dailyQuoteHour,
                                 settings.dailyQuoteMinute
                             )
@@ -229,7 +403,7 @@ fun SettingsScreen(
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = "Meditation Reminder",
+                            text = strings.meditationReminderTitle,
                             style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium)
                         )
                         val formattedMeditationTime = String.format(
@@ -240,7 +414,7 @@ fun SettingsScreen(
                             if (settings.meditationReminderHour < 12) "AM" else "PM"
                         )
                         Text(
-                            text = "Scheduled at $formattedMeditationTime",
+                            text = String.format(strings.scheduledAt, formattedMeditationTime),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.outline
                         )
@@ -248,10 +422,18 @@ fun SettingsScreen(
                     Switch(
                         checked = settings.meditationReminderEnabled,
                         onCheckedChange = { isChecked ->
-                            if (isChecked && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !viewModel.hasNotificationPermission()) {
-                                permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                            if (isChecked) {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !viewModel.hasNotificationPermission()) {
+                                    pendingPermissionAction = PendingPermissionAction.MEDITATION
+                                    permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                                } else {
+                                    viewModel.setMeditationReminderEnabled(true)
+                                    val timeStr = String.format("%02d:%02d", settings.meditationReminderHour, settings.meditationReminderMinute)
+                                    Toast.makeText(context, String.format(strings.meditationReminderEnabledToast, timeStr), Toast.LENGTH_SHORT).show()
+                                }
                             } else {
-                                viewModel.setMeditationReminderEnabled(isChecked)
+                                viewModel.setMeditationReminderEnabled(false)
+                                Toast.makeText(context, strings.meditationReminderDisabledToast, Toast.LENGTH_SHORT).show()
                             }
                         }
                     )
@@ -265,6 +447,7 @@ fun SettingsScreen(
                                 context,
                                 { _, hourOfDay, minute ->
                                     viewModel.setMeditationReminderTime(hourOfDay, minute)
+                                    Toast.makeText(context, String.format(strings.timeUpdatedToast, hourOfDay, minute), Toast.LENGTH_SHORT).show()
                                 },
                                 settings.meditationReminderHour,
                                 settings.meditationReminderMinute,
@@ -277,8 +460,7 @@ fun SettingsScreen(
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = String.format(
-                                Locale.getDefault(),
-                                "Change Time (%02d:%02d)",
+                                strings.changeTimeButton,
                                 settings.meditationReminderHour,
                                 settings.meditationReminderMinute
                             )
@@ -298,18 +480,22 @@ fun SettingsScreen(
                 ) {
                     Column {
                         Text(
-                            text = "Gentle Vibration",
+                            text = strings.gentleVibrationTitle,
                             style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium)
                         )
                         Text(
-                            text = "Haptic pulse with sound notification",
+                            text = strings.gentleVibrationDesc,
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.outline
                         )
                     }
                     Switch(
                         checked = settings.vibrationEnabled,
-                        onCheckedChange = { viewModel.setVibrationEnabled(it) }
+                        onCheckedChange = { isChecked ->
+                            viewModel.setVibrationEnabled(isChecked)
+                            val msg = if (isChecked) strings.vibrationEnabledToast else strings.vibrationDisabledToast
+                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                        }
                     )
                 }
 
@@ -319,7 +505,7 @@ fun SettingsScreen(
 
                 // 4. Test Notification Buttons
                 Text(
-                    text = "Sound & Notification Test",
+                    text = strings.testNotificationsTitle,
                     style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -330,23 +516,41 @@ fun SettingsScreen(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     FilledTonalButton(
-                        onClick = { viewModel.triggerTestDailyQuoteNotification() },
+                        onClick = {
+                            viewModel.triggerTestDailyQuoteNotification()
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !viewModel.hasNotificationPermission()) {
+                                pendingPermissionAction = PendingPermissionAction.TEST_NOTIFICATION
+                                permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                                Toast.makeText(context, strings.notificationPermissionRequiredToast, Toast.LENGTH_LONG).show()
+                            } else {
+                                Toast.makeText(context, strings.testBellTriggeredToast, Toast.LENGTH_SHORT).show()
+                            }
+                        },
                         modifier = Modifier.weight(1f),
                         shape = RoundedCornerShape(12.dp)
                     ) {
                         Icon(imageVector = Icons.Default.NotificationsActive, contentDescription = null)
                         Spacer(modifier = Modifier.width(6.dp))
-                        Text("Test Bell", style = MaterialTheme.typography.labelMedium)
+                        Text(strings.testBellButton, style = MaterialTheme.typography.labelMedium)
                     }
 
                     FilledTonalButton(
-                        onClick = { viewModel.triggerTestMeditationNotification() },
+                        onClick = {
+                            viewModel.triggerTestMeditationNotification()
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !viewModel.hasNotificationPermission()) {
+                                pendingPermissionAction = PendingPermissionAction.TEST_NOTIFICATION
+                                permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                                Toast.makeText(context, strings.notificationPermissionRequiredToast, Toast.LENGTH_LONG).show()
+                            } else {
+                                Toast.makeText(context, strings.testBowlTriggeredToast, Toast.LENGTH_SHORT).show()
+                            }
+                        },
                         modifier = Modifier.weight(1f),
                         shape = RoundedCornerShape(12.dp)
                     ) {
                         Icon(imageVector = Icons.Default.Spa, contentDescription = null)
                         Spacer(modifier = Modifier.width(6.dp))
-                        Text("Test Bowl", style = MaterialTheme.typography.labelMedium)
+                        Text(strings.testBowlButton, style = MaterialTheme.typography.labelMedium)
                     }
                 }
             }
@@ -374,7 +578,7 @@ fun SettingsScreen(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "Pembaruan Konten",
+                            text = strings.sectionContentUpdates,
                             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
                         )
                     }
@@ -383,7 +587,7 @@ fun SettingsScreen(
                         color = MaterialTheme.colorScheme.primaryContainer
                     ) {
                         Text(
-                            text = "v${contentUpdateState.currentVersion}",
+                            text = String.format(strings.contentVersionBadge, contentUpdateState.currentVersion),
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
                             style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
                             color = MaterialTheme.colorScheme.onPrimaryContainer
@@ -397,9 +601,9 @@ fun SettingsScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = "Statistik Konten", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.outline)
+                    Text(text = strings.contentStatsLabel, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.outline)
                     Text(
-                        text = "${contentUpdateState.totalQuotes} Kutipan • ${contentUpdateState.totalMeditations} Meditasi",
+                        text = "${contentUpdateState.totalQuotes} ${strings.quotesUnit} • ${contentUpdateState.totalMeditations} ${strings.meditationsUnit}",
                         style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -411,9 +615,9 @@ fun SettingsScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = "Storage Strategy", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.outline)
+                    Text(text = strings.storageStrategyLabel, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.outline)
                     Text(
-                        text = "Dual Isolated Databases",
+                        text = strings.storageStrategyValue,
                         style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
                         color = MaterialTheme.colorScheme.secondary
                     )
@@ -426,7 +630,7 @@ fun SettingsScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = "Kanal Distribusi", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.outline)
+                    Text(text = strings.distributionChannelLabel, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.outline)
                     Text(
                         text = if (contentUpdateState.remoteManifestUrl.isNullOrBlank())
                             "Google Drive (Auto/Local)"
@@ -474,7 +678,7 @@ fun SettingsScreen(
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
-                                    contentDescription = "Tutup",
+                                    contentDescription = strings.closeButton,
                                     modifier = Modifier.size(16.dp)
                                 )
                             }
@@ -499,7 +703,7 @@ fun SettingsScreen(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = "Paket Pembaruan v${manifest.contentVersion}",
+                                    text = String.format(strings.updatePackageTitle, manifest.contentVersion),
                                     style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
                                     color = MaterialTheme.colorScheme.primary
                                 )
@@ -521,7 +725,7 @@ fun SettingsScreen(
                             if (manifest.quotesCount > 0) {
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Text(
-                                    text = "+${manifest.quotesCount} kutipan baru ditambahkan",
+                                    text = String.format(strings.newQuotesCount, manifest.quotesCount),
                                     style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.SemiBold),
                                     color = MaterialTheme.colorScheme.primary
                                 )
@@ -540,7 +744,7 @@ fun SettingsScreen(
                                     )
                                     Spacer(modifier = Modifier.height(6.dp))
                                     Text(
-                                        text = contentUpdateState.updateStepDescription ?: "Menerapkan pembaruan...",
+                                        text = contentUpdateState.updateStepDescription ?: strings.applyingUpdateLabel,
                                         style = MaterialTheme.typography.labelSmall,
                                         color = MaterialTheme.colorScheme.outline
                                     )
@@ -557,7 +761,7 @@ fun SettingsScreen(
                                         modifier = Modifier.size(18.dp)
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
-                                    Text("Perbarui Sekarang (v${manifest.contentVersion})")
+                                    Text(String.format(strings.updateNowButton, manifest.contentVersion))
                                 }
                             }
                         }
@@ -579,7 +783,7 @@ fun SettingsScreen(
                                 strokeWidth = 2.dp
                             )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("Memeriksa Server...")
+                            Text(strings.checkingUpdatesLabel)
                         } else {
                             Icon(
                                 imageVector = Icons.Default.Refresh,
@@ -587,7 +791,7 @@ fun SettingsScreen(
                                 modifier = Modifier.size(18.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("Periksa Pembaruan Konten")
+                            Text(strings.checkUpdatesButton)
                         }
                     }
                 }
@@ -614,7 +818,7 @@ fun SettingsScreen(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "Cadangan & Privasi Data",
+                            text = strings.sectionDataBackup,
                             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
                         )
                     }
@@ -623,7 +827,7 @@ fun SettingsScreen(
                         color = MaterialTheme.colorScheme.secondaryContainer
                     ) {
                         Text(
-                            text = "100% Privat",
+                            text = strings.privacyBadge,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
                             style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
                             color = MaterialTheme.colorScheme.onSecondaryContainer
@@ -634,7 +838,7 @@ fun SettingsScreen(
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Text(
-                    text = "Data pribadi tersimpan secara lokal dan terisolasi mandiri dari pembaruan konten aplikasi.",
+                    text = strings.dataBackupDesc,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.outline
                 )
@@ -645,9 +849,9 @@ fun SettingsScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = "Statistik Pribadi", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.outline)
+                    Text(text = strings.personalStatsLabel, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.outline)
                     Text(
-                        text = "${backupState.favoritesCount} Favorit • ${backupState.historyCount} Riwayat",
+                        text = "${backupState.favoritesCount} ${strings.favoritesUnit} • ${backupState.historyCount} ${strings.historyUnit} • ${backupState.journalCount} ${strings.journalUnit}",
                         style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -687,7 +891,7 @@ fun SettingsScreen(
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
-                                    contentDescription = "Tutup",
+                                    contentDescription = strings.closeButton,
                                     modifier = Modifier.size(16.dp)
                                 )
                             }
@@ -715,7 +919,7 @@ fun SettingsScreen(
                                     putExtra(Intent.EXTRA_SUBJECT, "SoulQuote Data Backup")
                                     addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                                 }
-                                context.startActivity(Intent.createChooser(sendIntent, "Simpan / Bagikan Cadangan Data"))
+                                context.startActivity(Intent.createChooser(sendIntent, strings.shareBackupTitle))
                             }
                         },
                         enabled = !backupState.isExporting,
@@ -727,7 +931,7 @@ fun SettingsScreen(
                         } else {
                             Icon(imageVector = Icons.Default.FileUpload, contentDescription = null, modifier = Modifier.size(16.dp))
                             Spacer(modifier = Modifier.width(6.dp))
-                            Text("Ekspor JSON", style = MaterialTheme.typography.labelMedium)
+                            Text(strings.exportJsonButton, style = MaterialTheme.typography.labelMedium)
                         }
                     }
 
@@ -742,7 +946,7 @@ fun SettingsScreen(
                         } else {
                             Icon(imageVector = Icons.Default.FileDownload, contentDescription = null, modifier = Modifier.size(16.dp))
                             Spacer(modifier = Modifier.width(6.dp))
-                            Text("Pulihkan", style = MaterialTheme.typography.labelMedium)
+                            Text(strings.restoreButton, style = MaterialTheme.typography.labelMedium)
                         }
                     }
                 }
@@ -768,7 +972,7 @@ fun SettingsScreen(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "About SoulQuote",
+                        text = strings.sectionAbout,
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
                     )
                 }
@@ -776,12 +980,12 @@ fun SettingsScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "SoulQuote v0.3.1 • Offline-first Inspiration & Meditation",
+                    text = strings.aboutVersion,
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "Crafted with serenity, privacy, and local data persistence.",
+                    text = strings.aboutDescription,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.outline
                 )
@@ -814,14 +1018,14 @@ fun SettingsScreen(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "Kebijakan Privasi (Privacy Policy)",
+                            text = strings.privacyPolicyButton,
                             style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
                             color = MaterialTheme.colorScheme.primary
                         )
                     }
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.OpenInNew,
-                        contentDescription = "Buka Kebijakan Privasi",
+                        contentDescription = strings.privacyPolicyButton,
                         tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(18.dp)
                     )
@@ -831,4 +1035,11 @@ fun SettingsScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
     }
+}
+
+private enum class PendingPermissionAction {
+    NONE,
+    DAILY_QUOTE,
+    MEDITATION,
+    TEST_NOTIFICATION
 }

@@ -58,6 +58,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.soulquote.app.core.localization.LocalAppStrings
 import com.soulquote.app.domain.model.MoodType
 import com.soulquote.app.domain.model.Quote
 import com.soulquote.app.domain.model.QuoteCategory
@@ -81,6 +82,7 @@ fun HomeScreen(
     onNavigateToFavorites: (() -> Unit)? = null,
     journalViewModel: JournalViewModel? = null
 ) {
+    val strings = LocalAppStrings.current
     val dailyQuote by viewModel.dailyQuote.collectAsState()
     val categories by viewModel.categories.collectAsState()
     val selectedQuoteForDetail by viewModel.selectedQuoteForDetail.collectAsState()
@@ -90,16 +92,17 @@ fun HomeScreen(
     var showBadgesDialog by remember { mutableStateOf(false) }
 
     val streakInfo = journalViewModel?.streakInfo?.collectAsStateWithLifecycle()?.value
-    val todayEntry = journalViewModel?.todayEntry?.collectAsStateWithLifecycle()?.value
+    val todayEntries = journalViewModel?.todayEntries?.collectAsStateWithLifecycle()?.value ?: emptyList()
+    val todayEntry = todayEntries.firstOrNull()
     val currentPrompt = journalViewModel?.currentPrompt?.collectAsStateWithLifecycle()?.value
-        ?: "Apa yang membuat jiwamu merasa tenang hari ini?"
+        ?: strings.defaultJournalPrompt
     val selectedMood = journalViewModel?.selectedMood?.collectAsStateWithLifecycle()?.value ?: MoodType.CALM
 
     val greeting = when (LocalTime.now().hour) {
-        in 5..11 -> "Good Morning"
-        in 12..16 -> "Good Afternoon"
-        in 17..21 -> "Good Evening"
-        else -> "Restful Night"
+        in 5..11 -> strings.greetingMorning
+        in 12..16 -> strings.greetingAfternoon
+        in 17..21 -> strings.greetingEvening
+        else -> strings.greetingNight
     }
 
     selectedQuoteForDetail?.let { quote ->
@@ -107,7 +110,7 @@ fun HomeScreen(
             quote = quote,
             onDismiss = { viewModel.showQuoteDetail(null) },
             onToggleFavorite = { viewModel.toggleFavorite(it) },
-            onShare = { shareQuote(context, it) },
+            onShare = { shareQuote(context, it, strings.shareQuoteTitle) },
             onCustomizeInStudio = onNavigateToStudio
         )
     }
@@ -157,7 +160,7 @@ fun HomeScreen(
                     }
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "Today's Reflection",
+                        text = strings.todaysReflection,
                         style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
                         color = MaterialTheme.colorScheme.onBackground
                     )
@@ -177,7 +180,7 @@ fun HomeScreen(
                             Text(text = "🔥", fontSize = 13.sp)
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
-                                text = "${streakInfo?.currentStreak ?: 0} Hari",
+                                text = "${streakInfo?.currentStreak ?: 0} ${strings.daysUnit}",
                                 style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
                                 color = MaterialTheme.colorScheme.onPrimaryContainer
                             )
@@ -196,7 +199,7 @@ fun HomeScreen(
                         IconButton(onClick = onNavigateToFavorites) {
                             Icon(
                                 imageVector = Icons.Default.Favorite,
-                                contentDescription = "Favorit",
+                                contentDescription = strings.navFavorites,
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         }
@@ -211,7 +214,7 @@ fun HomeScreen(
                 QuoteCard(
                     quote = quote,
                     onToggleFavorite = { viewModel.toggleFavorite(it) },
-                    onShare = { shareQuote(context, it) },
+                    onShare = { shareQuote(context, it, strings.shareQuoteTitle) },
                     onClick = { viewModel.showQuoteDetail(quote) },
                     isFeatured = true,
                     onCustomizeInStudio = onNavigateToStudio
@@ -223,7 +226,7 @@ fun HomeScreen(
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
                 ) {
                     Text(
-                        text = "Loading inspiring reflection...",
+                        text = strings.loadingDailyQuote,
                         modifier = Modifier.padding(24.dp),
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -250,15 +253,16 @@ fun HomeScreen(
                             Text(text = "🧘", fontSize = 18.sp)
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = "Refleksi Batin & Mood",
+                                text = strings.innerReflectionMood,
                                 style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
                                 color = MaterialTheme.colorScheme.onSecondaryContainer
                             )
                         }
 
-                        if (todayEntry != null) {
+                        if (todayEntries.isNotEmpty()) {
+                            val countText = if (todayEntries.size > 1) " (${todayEntries.size})" else ""
                             Text(
-                                text = "${todayEntry.mood.emoji} Tersimpan",
+                                text = "${todayEntries.first().mood.emoji} ${strings.savedBadge}$countText",
                                 style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
                                 color = MaterialTheme.colorScheme.primary
                             )
@@ -284,21 +288,21 @@ fun HomeScreen(
                             val isSelected = mood == selectedMood
                             Box(
                                 modifier = Modifier
-                                    .size(38.dp)
-                                    .clip(CircleShape)
-                                    .background(
-                                        if (isSelected) MaterialTheme.colorScheme.primary.copy(alpha = 0.25f)
-                                        else MaterialTheme.colorScheme.surface.copy(alpha = 0.6f)
-                                    )
-                                    .border(
-                                        width = if (isSelected) 1.5.dp else 0.dp,
-                                        color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
-                                        shape = CircleShape
-                                    )
-                                    .clickable {
-                                        journalViewModel?.selectMood(mood)
-                                        showJournalDialog = true
-                                    },
+                                .size(38.dp)
+                                .clip(CircleShape)
+                                .background(
+                                    if (isSelected) MaterialTheme.colorScheme.primary.copy(alpha = 0.25f)
+                                    else MaterialTheme.colorScheme.surface.copy(alpha = 0.6f)
+                                )
+                                .border(
+                                    width = if (isSelected) 1.5.dp else 0.dp,
+                                    color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
+                                    shape = CircleShape
+                                )
+                                .clickable {
+                                    journalViewModel?.selectMood(mood)
+                                    showJournalDialog = true
+                                },
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(text = mood.emoji, fontSize = 16.sp)
@@ -324,7 +328,7 @@ fun HomeScreen(
                             )
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
-                                text = if (todayEntry != null) "Buka Jurnal Refleksi" else "Tulis Refleksi Hari Ini",
+                                text = if (todayEntries.isNotEmpty()) strings.openJournalButton else strings.writeReflection,
                                 style = MaterialTheme.typography.labelMedium
                             )
                         }
@@ -341,7 +345,7 @@ fun HomeScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Themes of Wisdom",
+                    text = strings.themesOfWisdom,
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
                 )
             }
@@ -395,19 +399,19 @@ fun HomeScreen(
                         Spacer(modifier = Modifier.width(14.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                text = "Guided Meditation",
+                                text = strings.guidedMeditationTitle,
                                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                                 color = MaterialTheme.colorScheme.onPrimaryContainer
                             )
                             Text(
-                                text = "Heningkan pikiran dengan panduan nafas mindful",
+                                text = strings.guidedMeditationDesc,
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.85f)
                             )
                         }
                         Icon(
                             imageVector = Icons.Default.PlayArrow,
-                            contentDescription = "Mulai",
+                            contentDescription = strings.playLabel,
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }
@@ -448,19 +452,19 @@ fun HomeScreen(
                         Spacer(modifier = Modifier.width(14.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                text = "Atmospheric Soundscapes",
+                                text = strings.ambientSoundscapesTitle,
                                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                                 color = MaterialTheme.colorScheme.onSecondaryContainer
                             )
                             Text(
-                                text = "Hujan, ombak, hutan & api unggun untuk fokus dan tidur",
+                                text = strings.ambientSoundscapesDesc,
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.85f)
                             )
                         }
                         Icon(
                             imageVector = Icons.Default.PlayArrow,
-                            contentDescription = "Dengarkan",
+                            contentDescription = strings.playLabel,
                             tint = MaterialTheme.colorScheme.secondary
                         )
                     }
@@ -470,13 +474,13 @@ fun HomeScreen(
     }
 }
 
-fun shareQuote(context: android.content.Context, quote: Quote) {
+fun shareQuote(context: android.content.Context, quote: Quote, chooserTitle: String = "Bagikan Kutipan") {
     val shareText = "\"${quote.text}\"\n\n— ${quote.author}\n\nShared via SoulQuote"
     val sendIntent = Intent().apply {
         action = Intent.ACTION_SEND
         putExtra(Intent.EXTRA_TEXT, shareText)
         type = "text/plain"
     }
-    val shareIntent = Intent.createChooser(sendIntent, "Bagikan Kutipan")
+    val shareIntent = Intent.createChooser(sendIntent, chooserTitle)
     context.startActivity(shareIntent)
 }

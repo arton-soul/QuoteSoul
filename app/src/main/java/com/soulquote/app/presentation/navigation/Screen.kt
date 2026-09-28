@@ -17,6 +17,15 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector)
     object Meditation : Screen("meditation", "Meditate", Icons.Default.SelfImprovement)
     object Settings : Screen("settings", "Settings", Icons.Default.Settings)
 
+    fun getTitle(strings: com.soulquote.app.core.localization.AppStrings): String = when (this) {
+        Home -> strings.navHome
+        Explore -> strings.navExplore
+        Studio -> strings.navStudio
+        Favorites -> strings.navFavorites
+        Meditation -> strings.navMeditation
+        Settings -> strings.navSettings
+    }
+
     companion object {
         val bottomNavItems = listOf(Home, Explore, Meditation, Studio, Settings)
     }

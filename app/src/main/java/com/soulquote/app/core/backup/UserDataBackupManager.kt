@@ -13,6 +13,8 @@ import com.soulquote.app.data.local.entity.user.JournalEntryEntity
 import com.soulquote.app.data.local.entity.user.MeditationHistoryEntity
 import com.soulquote.app.data.local.entity.user.UserSettingEntity
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.security.MessageDigest
@@ -54,6 +56,20 @@ class UserDataBackupManager(
             historyCount = history,
             journalCount = journal,
             settingsCount = settings
+        )
+    }
+
+    fun getUserDataStatsFlow(): Flow<UserDataStats> = combine(
+        userDatabase.favoriteDao().getAllFavorites(),
+        userDatabase.meditationHistoryDao().getHistory(),
+        userDatabase.journalDao().getAllJournalEntries(),
+        userDatabase.userSettingDao().getAllSettings()
+    ) { favs, hist, journals, settings ->
+        UserDataStats(
+            favoritesCount = favs.size,
+            historyCount = hist.size,
+            journalCount = journals.size,
+            settingsCount = settings.size
         )
     }
 

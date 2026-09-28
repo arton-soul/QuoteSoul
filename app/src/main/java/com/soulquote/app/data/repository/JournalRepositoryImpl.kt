@@ -26,6 +26,12 @@ class JournalRepositoryImpl(
         }
     }
 
+    override fun getJournalEntriesByDate(date: String): Flow<List<JournalEntry>> {
+        return journalDao.getJournalEntriesByDate(date).map { entities ->
+            entities.map { it.toDomain() }
+        }
+    }
+
     override fun getJournalEntryByDate(date: String): Flow<JournalEntry?> {
         return journalDao.getJournalEntryByDate(date).map { entity ->
             entity?.toDomain()

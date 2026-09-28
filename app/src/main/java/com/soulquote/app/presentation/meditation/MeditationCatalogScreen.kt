@@ -70,6 +70,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.soulquote.app.core.localization.LocalAppStrings
 import com.soulquote.app.domain.model.Meditation
 import com.soulquote.app.presentation.ambient.AmbientMixerScreen
 import com.soulquote.app.presentation.ambient.AmbientViewModel
@@ -81,6 +82,7 @@ fun MeditationCatalogScreen(
     ambientViewModel: AmbientViewModel,
     modifier: Modifier = Modifier
 ) {
+    val strings = LocalAppStrings.current
     val context = LocalContext.current
     val selectedTabIndex by ambientViewModel.selectedTab.collectAsStateWithLifecycle()
     val catalogState by viewModel.catalogUiState.collectAsStateWithLifecycle()
@@ -106,11 +108,11 @@ fun MeditationCatalogScreen(
                         )
                         Column {
                             Text(
-                                text = "Meditation",
+                                text = strings.meditationTitle,
                                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
                             )
                             Text(
-                                text = "Keheningan & ketenangan batin",
+                                text = strings.meditationSubtitle,
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -138,13 +140,13 @@ fun MeditationCatalogScreen(
                     Tab(
                         selected = selectedTabIndex == 0,
                         onClick = { ambientViewModel.selectTab(0) },
-                        text = { Text("Panduan Suara", fontWeight = if (selectedTabIndex == 0) FontWeight.Bold else FontWeight.Normal) },
+                        text = { Text(strings.tabVoiceGuide, fontWeight = if (selectedTabIndex == 0) FontWeight.Bold else FontWeight.Normal) },
                         icon = { Icon(Icons.Default.SelfImprovement, contentDescription = null, modifier = Modifier.size(20.dp)) }
                     )
                     Tab(
                         selected = selectedTabIndex == 1,
                         onClick = { ambientViewModel.selectTab(1) },
-                        text = { Text("Suara Alam", fontWeight = if (selectedTabIndex == 1) FontWeight.Bold else FontWeight.Normal) },
+                        text = { Text(strings.tabNatureSounds, fontWeight = if (selectedTabIndex == 1) FontWeight.Bold else FontWeight.Normal) },
                         icon = { Icon(Icons.Default.Waves, contentDescription = null, modifier = Modifier.size(20.dp)) }
                     )
                 }
@@ -157,7 +159,7 @@ fun MeditationCatalogScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp, vertical = 6.dp),
-                        placeholder = { Text("Cari meditasi atau instruktur...", fontSize = 14.sp) },
+                        placeholder = { Text(strings.searchMeditationPlaceholder, fontSize = 14.sp) },
                         leadingIcon = {
                             Icon(
                                 imageVector = Icons.Default.Search,
@@ -192,7 +194,7 @@ fun MeditationCatalogScreen(
                         FilterChip(
                             selected = isAllSelected,
                             onClick = { viewModel.selectCategory("all") },
-                            label = { Text("Semua", fontSize = 13.sp) },
+                            label = { Text(strings.filterAll, fontSize = 13.sp) },
                             colors = FilterChipDefaults.filterChipColors(
                                 selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
                                 selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
@@ -223,7 +225,7 @@ fun MeditationCatalogScreen(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = "Tidak ada sesi meditasi yang sesuai.",
+                                text = strings.emptyMeditationList,
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -344,7 +346,7 @@ fun MeditationCatalogScreen(
                                     ) {
                                         Icon(
                                             imageVector = if (playerState.isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
-                                            contentDescription = if (playerState.isPlaying) "Jeda" else "Putar"
+                                            contentDescription = if (playerState.isPlaying) strings.pauseLabel else strings.playLabel
                                         )
                                     }
                                 }
@@ -379,6 +381,7 @@ fun MeditationSessionCard(
     onDownloadClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val strings = LocalAppStrings.current
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -420,7 +423,7 @@ fun MeditationSessionCard(
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
-                            text = "${meditation.durationSeconds / 60} Menit",
+                            text = "${meditation.durationSeconds / 60} ${strings.minutesUnit}",
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -445,7 +448,7 @@ fun MeditationSessionCard(
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
-                                text = "Offline",
+                                text = strings.offlineBadge,
                                 style = MaterialTheme.typography.labelSmall,
                                 color = Color(0xFF2E7D32),
                                 fontWeight = FontWeight.Bold
@@ -481,7 +484,7 @@ fun MeditationSessionCard(
                 meditation.instructor?.let { instructor ->
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        text = "Instruktur: $instructor",
+                        text = String.format(strings.instructorPrefix, instructor),
                         style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium),
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -508,7 +511,7 @@ fun MeditationSessionCard(
                 ) {
                     Icon(
                         imageVector = if (isCurrentPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
-                        contentDescription = if (isCurrentPlaying) "Jeda" else "Putar"
+                        contentDescription = if (isCurrentPlaying) strings.pauseLabel else strings.playLabel
                     )
                 }
 
@@ -519,7 +522,7 @@ fun MeditationSessionCard(
                 ) {
                     Icon(
                         imageVector = if (meditation.isDownloaded) Icons.Default.CheckCircle else Icons.Default.CloudDownload,
-                        contentDescription = if (meditation.isDownloaded) "Tersedia Offline" else "Unduh Offline",
+                        contentDescription = if (meditation.isDownloaded) strings.availableOfflineDesc else strings.downloadOfflineDesc,
                         tint = if (meditation.isDownloaded) Color(0xFF2E7D32) else MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.size(20.dp)
                     )

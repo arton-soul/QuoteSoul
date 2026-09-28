@@ -42,6 +42,7 @@ data class ContentUpdateUiState(
 data class BackupUiState(
     val favoritesCount: Int = 0,
     val historyCount: Int = 0,
+    val journalCount: Int = 0,
     val settingsCount: Int = 0,
     val isExporting: Boolean = false,
     val isRestoring: Boolean = false,
@@ -73,6 +74,18 @@ class SettingsViewModel(
     init {
         refreshContentStats()
         refreshBackupStats()
+        viewModelScope.launch {
+            userDataBackupManager.getUserDataStatsFlow().collect { stats ->
+                _backupUiState.update {
+                    it.copy(
+                        favoritesCount = stats.favoritesCount,
+                        historyCount = stats.historyCount,
+                        journalCount = stats.journalCount,
+                        settingsCount = stats.settingsCount
+                    )
+                }
+            }
+        }
     }
 
     fun refreshContentStats() {
@@ -296,6 +309,14 @@ class SettingsViewModel(
         }
     }
 
+    fun setLanguage(language: String) {
+        viewModelScope.launch {
+            val current = userSettings.value
+            val updated = current.copy(language = language)
+            userRepository.updateUserSettings(updated)
+        }
+    }
+
     fun refreshBackupStats() {
         viewModelScope.launch {
             val stats = userDataBackupManager.getUserDataStats()
@@ -303,6 +324,7 @@ class SettingsViewModel(
                 it.copy(
                     favoritesCount = stats.favoritesCount,
                     historyCount = stats.historyCount,
+                    journalCount = stats.journalCount,
                     settingsCount = stats.settingsCount
                 )
             }
@@ -345,7 +367,7 @@ class SettingsViewModel(
                 _backupUiState.update {
                     it.copy(
                         isRestoring = false,
-                        backupMessage = "Pemulihan berhasil: ${res.favoritesRestored} favorit, ${res.historyRestored} riwayat meditasi."
+                        backupMessage = "Pemulihan berhasil: ${res.favoritesRestored} favorit, ${res.historyRestored} riwayat, ${res.journalRestored} refleksi."
                     )
                 }
             } else {
@@ -364,6 +386,7 @@ class SettingsViewModel(
     }
 
     fun triggerTestDailyQuoteNotification() {
+        notificationHelper.playBellSound()
         notificationHelper.showDailyQuoteNotification(
             quoteId = "test_quote",
             quoteText = "Kedamaian jiwa dimulai saat pikiran tenang dan hati penuh syukur.",
@@ -372,6 +395,7 @@ class SettingsViewModel(
     }
 
     fun triggerTestMeditationNotification() {
+        notificationHelper.playZenBowlSound()
         notificationHelper.showMeditationReminder(
             title = "SoulQuote • Mindfulness Moment",
             message = "Luangkan sejenak waktu untuk bernapas dalam dan menenangkan pikiran."

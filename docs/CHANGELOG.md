@@ -5,6 +5,44 @@ All notable changes to the **SoulQuote** project will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-09-28
+
+### Fixed & Enhanced
+- **Data Backup & Privacy Synchronization**:
+  - Connected backup and privacy statistics to a real-time reactive Room Flow (`getUserDataStatsFlow()`), combining favorites, meditation history, journal reflections, and settings.
+  - Corrected counter display in `SettingsScreen` to show: `${favoritesCount} Favorit • ${historyCount} Riwayat • ${journalCount} Refleksi`.
+  - Added automatic stat refresh whenever navigating to or resuming the Settings screen.
+- **Mindful Bell & Zen Singing Bowl Audio Testing**:
+  - Implemented direct in-app audio playback via `MediaPlayer` (`playBellSound()` and `playZenBowlSound()`) ensuring instant, audible feedback when pressing "Uji Lonceng" and "Uji Mangkuk Zen" without relying solely on system notification sounds.
+  - Upgraded notification channels to `v2` (`channel_daily_quote_v2` and `channel_meditation_v2`) with `IMPORTANCE_HIGH` and universal resource URIs for reliable ringtone delivery.
+- **Reminder & Notification Controls**:
+  - Added interactive bilingual Toast feedback for toggling Daily Quote reminders, Meditation reminders, Gentle vibration, and updating scheduled reminder times.
+  - Added `PendingPermissionAction` workflow ensuring that when Android 13+ `POST_NOTIFICATIONS` permission is requested, the pending test sound/notification executes seamlessly immediately after being granted.
+- **Physical Device Validation**:
+  - Full end-to-end installation, soundscape playback, notification triggering, and database counter synchronization validated on physical Xiaomi Redmi device.
+
+## [0.2.0] - 2026-09-28
+
+### Added
+- **Multi-Language Support (Indonesian & English)**:
+  - Added full bilingual localization engine (`AppStrings`, `IndonesianStrings`, `EnglishStrings`).
+  - Added Language Selection in `SettingsScreen` (Bahasa Indonesia / English) with instantaneous UI reactivity.
+  - Localized all screens: Home, Meditation Catalog, Quote Studio, Favorites, History, Journal, Badges, and Settings.
+  - Added localized Android system string resources (`values` & `values-en`).
+- **Play Store Branding Assets & Graphics**:
+  - Designed and generated high-resolution 512x512 app icon combining mindful lotus/quote with an elegant heart motif.
+  - Generated 1024x500 Feature Graphic banner for Google Play Store listing.
+  - Generated adaptive launcher icons (`mipmap-anydpi-v26`, `hdpi`, `mdpi`, `xhdpi`, `xxhdpi`, `xxxhdpi`).
+
+### Fixed
+- **Mindful Journal & Reflection**:
+  - Fixed multiple reflections per day issue where new entries previously overwrote earlier entries due to key collisions.
+  - Supported multiple daily reflection entries with distinct IDs, real-time list display, time badges, editing, and deletion.
+  - Redesigned mood selector into a 2-row x 3-column balanced grid, eliminating awkward vertical text-wrapping and stretching for "Gelisah" and other moods.
+- **Audio Meditasi & Offline Management**:
+  - Ensured seamless Google Drive streaming fallback and background download caching.
+  - Fixed deletion state tracking and checklist icon updates in catalog.
+
 ## [0.12.0] - 2026-09-27
 
 ### Added
