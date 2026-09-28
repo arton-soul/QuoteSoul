@@ -49,56 +49,79 @@ class MeditationAudioPlayer(private val context: Context) {
     }
 
     private fun getOrCreatePlayer(): ExoPlayer {
-        return exoPlayer ?: ExoPlayer.Builder(context).build().apply {
-            val audioAttributes = AudioAttributes.Builder()
-                .setContentType(C.AUDIO_CONTENT_TYPE_SPEECH)
-                .setUsage(C.USAGE_MEDIA)
-                .build()
-            setAudioAttributes(audioAttributes, true) // Automatically handle audio focus & ducking
+        return exoPlayer ?: run {
+            val httpDataSourceFactory = androidx.media3.datasource.DefaultHttpDataSource.Factory()
+                .setAllowCrossProtocolRedirects(true)
+                .setConnectTimeoutMs(15000)
+                .setReadTimeoutMs(30000)
+                .setUserAgent("SoulQuote-Player/1.0")
 
-            addListener(object : Player.Listener {
-                override fun onIsPlayingChanged(isPlaying: Boolean) {
-                    _playbackState.value = _playbackState.value.copy(
-                        isPlaying = isPlaying
-                    )
-                    if (isPlaying) {
-                        startProgressTicker()
-                    } else {
-                        stopProgressTicker()
-                    }
-                }
+            val dataSourceFactory = androidx.media3.datasource.DefaultDataSource.Factory(context, httpDataSourceFactory)
+            val mediaSourceFactory = androidx.media3.exoplayer.source.DefaultMediaSourceFactory(dataSourceFactory)
 
-                override fun onPlaybackStateChanged(state: Int) {
-                    when (state) {
-                        Player.STATE_BUFFERING -> {
-                            _playbackState.value = _playbackState.value.copy(isBuffering = true)
-                        }
-                        Player.STATE_READY -> {
-                            val duration = duration.coerceAtLeast(0L)
+            ExoPlayer.Builder(context)
+                .setMediaSourceFactory(mediaSourceFactory)
+                .build().apply {
+                    val audioAttributes = AudioAttributes.Builder()
+                        .setContentType(C.AUDIO_CONTENT_TYPE_SPEECH)
+                        .setUsage(C.USAGE_MEDIA)
+                        .build()
+                    setAudioAttributes(audioAttributes, true) // Automatically handle audio focus & ducking
+
+                    addListener(object : Player.Listener {
+                        override fun onIsPlayingChanged(isPlaying: Boolean) {
                             _playbackState.value = _playbackState.value.copy(
-                                isBuffering = false,
-                                durationMs = duration
+                                isPlaying = isPlaying
                             )
-                        }
-                        Player.STATE_ENDED -> {
-                            _playbackState.value = _playbackState.value.copy(
-                                isPlaying = false,
-                                isCompleted = true,
-                                currentPositionMs = _playbackState.value.durationMs
-                            )
-                            stopProgressTicker()
-                            val id = _playbackState.value.currentMeditationId
-                            if (id != null) {
-                                onCompletionCallback?.invoke(id)
+                            if (isPlaying) {
+                                startProgressTicker()
+                            } else {
+                                stopProgressTicker()
                             }
                         }
-                        Player.STATE_IDLE -> {
-                            _playbackState.value = _playbackState.value.copy(isBuffering = false)
+
+                        override fun onPlaybackStateChanged(state: Int) {
+                            when (state) {
+                                Player.STATE_BUFFERING -> {
+                                    _playbackState.value = _playbackState.value.copy(isBuffering = true)
+                                }
+                                Player.STATE_READY -> {
+                                    val duration = duration.coerceAtLeast(0L)
+                                    _playbackState.value = _playbackState.value.copy(
+                                        isBuffering = false,
+                                        durationMs = duration
+                                    )
+                                }
+                                Player.STATE_ENDED -> {
+                                    _playbackState.value = _playbackState.value.copy(
+                                        isPlaying = false,
+                                        isCompleted = true,
+                                        currentPositionMs = _playbackState.value.durationMs
+                                    )
+                                    stopProgressTicker()
+                                    val id = _playbackState.value.currentMeditationId
+                                    if (id != null) {
+                                        onCompletionCallback?.invoke(id)
+                                    }
+                                }
+                                Player.STATE_IDLE -> {
+                                    _playbackState.value = _playbackState.value.copy(isBuffering = false)
+                                }
+                            }
                         }
-                    }
+
+                        override fun onPlayerError(error: androidx.media3.common.PlaybackException) {
+                            android.util.Log.e("MeditationAudioPlayer", "ExoPlayer playback error: ${error.message}", error)
+                            _playbackState.value = _playbackState.value.copy(
+                                isPlaying = false,
+                                isBuffering = false,
+                                errorMessage = "Gagal memutar audio: ${error.localizedMessage ?: error.errorCodeName}"
+                            )
+                            stopProgressTicker()
+                        }
+                    })
+                    exoPlayer = this
                 }
-            })
-            exoPlayer = this
         }
     }
 
@@ -125,7 +148,8 @@ class MeditationAudioPlayer(private val context: Context) {
             durationMs = (meditation.durationSeconds * 1000L).coerceAtLeast(0L),
             playbackSpeed = player.playbackParameters.speed,
             isBuffering = true,
-            isCompleted = false
+            isCompleted = false,
+            errorMessage = null
         )
     }
 

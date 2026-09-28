@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.Uri
 import com.soulquote.app.R
 import com.soulquote.app.core.content.DriveContentClient
+import com.soulquote.app.core.content.GoogleDriveUrlResolver
 import com.soulquote.app.domain.model.Meditation
 import com.soulquote.app.domain.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
@@ -30,54 +31,52 @@ class MeditationDownloadManager(
     private val userRepository: UserRepository
 ) {
 
-    private val audioDir: File by lazy {
-        File(context.filesDir, "audio").apply {
+    private val audioDir: File
+        get() = (context.getExternalFilesDir("audio") ?: File(context.filesDir, "audio")).apply {
             if (!exists()) mkdirs()
         }
-    }
 
     private val _downloadStates = MutableStateFlow<Map<String, DownloadProgress>>(emptyMap())
     val downloadStates: StateFlow<Map<String, DownloadProgress>> = _downloadStates.asStateFlow()
 
     fun isDownloadedLocally(meditation: Meditation): Boolean {
-        val file = File(audioDir, meditation.localFileName)
-        if (file.exists() && file.length() > 0) return true
-
-        val extAudioDir = context.getExternalFilesDir("audio")
-        if (extAudioDir != null && File(extAudioDir, meditation.localFileName).let { it.exists() && it.length() > 0 }) {
-            return true
-        }
-
-        val externalDownloadFile = File(
-            android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DOWNLOADS),
-            meditation.localFileName
-        )
-        return externalDownloadFile.exists() && externalDownloadFile.length() > 0
-    }
-
-    fun getAudioUri(meditation: Meditation): Uri {
-        val localFile = File(audioDir, meditation.localFileName)
-        if (localFile.exists() && localFile.length() > 0) {
-            return Uri.fromFile(localFile)
-        }
-
+        // 1. Check external files directory (primary storage for media)
         val extAudioDir = context.getExternalFilesDir("audio")
         if (extAudioDir != null) {
             val extFile = File(extAudioDir, meditation.localFileName)
-            if (extFile.exists() && extFile.length() > 0) {
+            if (extFile.exists() && extFile.length() > 0 && extFile.canRead()) {
+                return true
+            }
+        }
+
+        // 2. Check internal files directory (fallback)
+        val internalFile = File(context.filesDir, "audio/${meditation.localFileName}")
+        return internalFile.exists() && internalFile.length() > 0 && internalFile.canRead()
+    }
+
+    fun getAudioUri(meditation: Meditation): Uri {
+        // 1. If downloaded in external files dir, play local file
+        val extAudioDir = context.getExternalFilesDir("audio")
+        if (extAudioDir != null) {
+            val extFile = File(extAudioDir, meditation.localFileName)
+            if (extFile.exists() && extFile.length() > 0 && extFile.canRead()) {
                 return Uri.fromFile(extFile)
             }
         }
 
-        val externalDownloadFile = File(
-            android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DOWNLOADS),
-            meditation.localFileName
-        )
-        if (externalDownloadFile.exists() && externalDownloadFile.length() > 0) {
-            return Uri.fromFile(externalDownloadFile)
+        // 2. If downloaded in internal files dir, play local file
+        val internalFile = File(context.filesDir, "audio/${meditation.localFileName}")
+        if (internalFile.exists() && internalFile.length() > 0 && internalFile.canRead()) {
+            return Uri.fromFile(internalFile)
         }
 
-        // If not downloaded locally, fallback to bundled offline ambient track
+        // 3. If not downloaded locally, stream directly from Google Drive URL
+        if (meditation.audioUrl.isNotBlank()) {
+            val resolvedUrl = GoogleDriveUrlResolver.resolveDirectDownloadUrl(meditation.audioUrl)
+            return Uri.parse(resolvedUrl)
+        }
+
+        // 4. Fallback to bundled offline ambient track
         return Uri.parse("${ContentResolver.SCHEME_ANDROID_RESOURCE}://${context.packageName}/${R.raw.meditation_bell_ambient}")
     }
 
@@ -88,8 +87,8 @@ class MeditationDownloadManager(
         updateState(meditation.id, isDownloading = true, progress = 0.05f)
 
         try {
-            // If already downloaded, register and return
-            if (targetFile.exists() && targetFile.length() > 0) {
+            // If already downloaded and readable, register and return
+            if (targetFile.exists() && targetFile.length() > 0 && targetFile.canRead()) {
                 userRepository.registerDownloadedAudio(
                     assetId = meditation.id,
                     assetType = "meditation",
@@ -120,17 +119,14 @@ class MeditationDownloadManager(
                 }
                 downloadSuccess = dlResult.isSuccess && tempFile.exists() && tempFile.length() > 0
             } catch (_: Exception) {
-                // Network unavailable or server offline
                 downloadSuccess = false
             }
 
-            // Offline resilience fallback: If remote download failed, copy bundled offline raw audio into local file
             if (!downloadSuccess || !tempFile.exists() || tempFile.length() == 0L) {
-                context.resources.openRawResource(R.raw.meditation_bell_ambient).use { rawIn ->
-                    FileOutputStream(tempFile).use { fileOut ->
-                        rawIn.copyTo(fileOut)
-                    }
-                }
+                tempFile.delete()
+                val errorMsg = "Gagal mengunduh audio dari server. Periksa koneksi internet."
+                updateState(meditation.id, isDownloading = false, progress = 0f, error = errorMsg)
+                return@withContext Result.failure(java.io.IOException(errorMsg))
             }
 
             updateState(meditation.id, isDownloading = true, progress = 0.95f)
@@ -167,10 +163,32 @@ class MeditationDownloadManager(
 
     suspend fun deleteMeditationAudio(meditation: Meditation): Boolean = withContext(Dispatchers.IO) {
         try {
-            val file = File(audioDir, meditation.localFileName)
-            if (file.exists()) {
-                file.delete()
+            // 1. Delete from external files dir
+            val extDir = context.getExternalFilesDir("audio")
+            if (extDir != null) {
+                val extFile = File(extDir, meditation.localFileName)
+                if (extFile.exists()) {
+                    extFile.delete()
+                }
             }
+
+            // 2. Delete from internal files dir
+            val internalFile = File(context.filesDir, "audio/${meditation.localFileName}")
+            if (internalFile.exists()) {
+                internalFile.delete()
+            }
+
+            // 3. Clean legacy Download file if present
+            try {
+                val pubDownload = File(
+                    android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DOWNLOADS),
+                    meditation.localFileName
+                )
+                if (pubDownload.exists()) {
+                    pubDownload.delete()
+                }
+            } catch (_: Exception) {}
+
             userRepository.removeDownloadedAudio(meditation.id)
             updateState(meditation.id, isDownloading = false, progress = 0f)
             true
