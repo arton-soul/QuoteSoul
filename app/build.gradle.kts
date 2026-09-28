@@ -43,7 +43,7 @@ android {
         buildConfigField(
             "String",
             "DEFAULT_REMOTE_MANIFEST_URL",
-            "\"https://raw.githubusercontent.com/isna-design/soul/main/distribution/content_manifest.json\""
+            "\"https://raw.githubusercontent.com/arton-soul/QuoteSoul/main/distribution/content_manifest.json\""
         )
 
         buildConfigField(

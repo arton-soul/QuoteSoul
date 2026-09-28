@@ -64,10 +64,10 @@ Konfigurasi build tipe `release` mengaktifkan **Code Shrinking (Minification)** 
 ## 5. Distribusi Konten Dinamis via GitHub (OTA Update)
 
 SoulQuote terintegrasi dengan repositori GitHub:
-`https://github.com/isna-design/soul.git`
+`https://github.com/arton-soul/QuoteSoul.git`
 
 Endpoint manifes default yang ditanam di dalam aplikasi:
-`https://raw.githubusercontent.com/isna-design/soul/main/distribution/content_manifest.json`
+`https://raw.githubusercontent.com/arton-soul/QuoteSoul/main/distribution/content_manifest.json`
 
 ### Langkah Memperbarui Konten Tanpa Rilis APK Baru:
 1. Siapkan paket pembaruan konten baru (misal `distribution/content_update_v5.json`).

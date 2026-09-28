@@ -15,7 +15,7 @@ soul/
 
 ## URL Akses Langsung (Raw Endpoint)
 Aplikasi SoulQuote secara otomatis membaca URL berikut:
-`https://raw.githubusercontent.com/isna-design/soul/main/distribution/content_manifest.json`
+`https://raw.githubusercontent.com/arton-soul/QuoteSoul/main/distribution/content_manifest.json`
 
 ## Cara Merilis Pembaruan Konten Baru (Misal Versi 5)
 

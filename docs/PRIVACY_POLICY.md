@@ -89,5 +89,5 @@ If you have any questions, feedback, or concerns regarding this Privacy Policy o
 
 - **Developer:** Made Sudiartono
 - **Email:** `support@soulquote.app` *(or your primary support email)*
-- **GitHub:** [https://github.com/isna-design/soul](https://github.com/isna-design/soul)
+- **GitHub:** [https://github.com/arton-soul/QuoteSoul](https://github.com/arton-soul/QuoteSoul)
 - **Application:** SoulQuote (`com.dearyoti.soulquote`)
