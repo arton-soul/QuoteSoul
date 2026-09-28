@@ -70,8 +70,8 @@ class MeditationDownloadManager(
             return Uri.fromFile(internalFile)
         }
 
-        // 3. If not downloaded locally, stream directly from Google Drive URL
-        if (meditation.audioUrl.isNotBlank()) {
+        // 3. If not downloaded locally, stream directly from remote URL (Google Drive, etc.)
+        if (meditation.audioUrl.isNotBlank() && !meditation.audioUrl.contains("assets.soulquote.dearyoti.com")) {
             val resolvedUrl = GoogleDriveUrlResolver.resolveDirectDownloadUrl(meditation.audioUrl)
             return Uri.parse(resolvedUrl)
         }
