@@ -4,6 +4,7 @@ import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import com.soulquote.app.R
+import com.soulquote.app.core.content.DriveContentClient
 import com.soulquote.app.domain.model.Meditation
 import com.soulquote.app.domain.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
@@ -15,8 +16,6 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.InputStream
-import java.net.HttpURLConnection
-import java.net.URL
 import java.security.MessageDigest
 
 data class DownloadProgress(
@@ -102,36 +101,24 @@ class MeditationDownloadManager(
                 return@withContext Result.success(targetFile)
             }
 
-            // Attempt streaming download with timeout
+            // Attempt download using DriveContentClient with redirect and virus-scan token support
             var downloadSuccess = false
             try {
-                val url = URL(meditation.audioUrl)
-                val connection = (url.openConnection() as HttpURLConnection).apply {
-                    connectTimeout = 8000
-                    readTimeout = 15000
-                    requestMethod = "GET"
+                val driveClient = DriveContentClient(
+                    context = context,
+                    connectTimeoutMs = 15000,
+                    readTimeoutMs = 30000,
+                    maxRetries = 2
+                )
+                val dlResult = driveClient.downloadPackageToFile(
+                    urlOrId = meditation.audioUrl,
+                    targetFile = tempFile,
+                    expectedSizeBytes = meditation.sizeBytes
+                ) { progress ->
+                    val clampedProgress = progress.coerceIn(0.1f, 0.9f)
+                    updateState(meditation.id, isDownloading = true, progress = clampedProgress)
                 }
-
-                if (connection.responseCode in 200..299) {
-                    val totalBytes = connection.contentLength.takeIf { it > 0 }?.toLong() ?: meditation.sizeBytes
-                    var bytesDownloaded = 0L
-
-                    connection.inputStream.use { input ->
-                        FileOutputStream(tempFile).use { output ->
-                            val buffer = ByteArray(8192)
-                            var bytesRead: Int
-                            while (input.read(buffer).also { bytesRead = it } != -1) {
-                                output.write(buffer, 0, bytesRead)
-                                bytesDownloaded += bytesRead
-                                if (totalBytes > 0) {
-                                    val progress = (bytesDownloaded.toFloat() / totalBytes).coerceIn(0.1f, 0.9f)
-                                    updateState(meditation.id, isDownloading = true, progress = progress)
-                                }
-                            }
-                        }
-                    }
-                    downloadSuccess = true
-                }
+                downloadSuccess = dlResult.isSuccess && tempFile.exists() && tempFile.length() > 0
             } catch (_: Exception) {
                 // Network unavailable or server offline
                 downloadSuccess = false

@@ -1,12 +1,12 @@
 {
-  "manifestVersion": 1,
-  "contentVersion": 5,
-  "minAppVersion": 1,
-  "releasedAt": "2026-09-28T07:20:00Z",
-  "packageUrl": "https://raw.githubusercontent.com/isna-design/soul/main/distribution/content_update_v5.json",
-  "packageSizeBytes": 833,
-  "packageChecksumSha256": "3bdaada88659cd0332d345e18acafb10c89439deac7c1eddcd8b4cdc01c71d75",
-  "changelog": "Penambahan sesi audio Meditasi Online (18 Juni 2025) bersama Bunda Arsaningsih.",
-  "quotesCount": 0,
-  "meditationsCount": 1
+    "manifestVersion":  1,
+    "contentVersion":  6,
+    "minAppVersion":  1,
+    "releasedAt":  "2026-09-28T02:57:29Z",
+    "packageUrl":  "https://raw.githubusercontent.com/isna-design/soul/main/distribution/content_update_v6.json",
+    "packageSizeBytes":  8773,
+    "packageChecksumSha256":  "0b5a59981c748948fc62b037cf5c5992a6ff9fa63d8a8f2cc6072392adcea30c",
+    "changelog":  "Penambahan 8 sesi audio meditasi online (OSR) bersama Bunda Arsaningsih.",
+    "quotesCount":  0,
+    "meditationsCount":  8
 }
