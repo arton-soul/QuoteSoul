@@ -5,6 +5,7 @@
 **Application Name:** SoulQuote  
 **Application ID:** `com.dearyoti.soulquote`  
 **Developer:** Made Sudiartono (SoulQuote)  
+**Official Privacy Policy URL:** [https://dearyoti.blogspot.com/p/privacy-policy-for-soulquote.html](https://dearyoti.blogspot.com/p/privacy-policy-for-soulquote.html)  
 
 ---
 

@@ -45,6 +45,12 @@ android {
             "DEFAULT_REMOTE_MANIFEST_URL",
             "\"https://raw.githubusercontent.com/isna-design/soul/main/distribution/content_manifest.json\""
         )
+
+        buildConfigField(
+            "String",
+            "PRIVACY_POLICY_URL",
+            "\"https://dearyoti.blogspot.com/p/privacy-policy-for-soulquote.html\""
+        )
     }
 
     signingConfigs {

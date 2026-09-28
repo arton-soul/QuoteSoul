@@ -104,6 +104,9 @@ Sebelum mengunggah `app-release.aab` ke Google Play Console, pastikan hal-hal be
   - `POST_NOTIFICATIONS`: Digunakan secara transparan untuk pengingat harian kutipan dan meditasi.
   - `SCHEDULE_EXACT_ALARM`: Menggunakan pengecekan izin dan graceful fallback ke inexact alarms.
   - `WRITE_EXTERNAL_STORAGE`: Terbatas pada Android $\le$ 9 (`maxSdkVersion="28"`) untuk ekspor kartu gambar, sedangkan Android 10+ menggunakan `MediaStore` Scoped Storage tanpa izin khusus.
+- [x] **Kebijakan Privasi (Privacy Policy)**:
+  - Telah dipublikasikan secara resmi di Blogger: [`https://dearyoti.blogspot.com/p/privacy-policy-for-soulquote.html`](https://dearyoti.blogspot.com/p/privacy-policy-for-soulquote.html)
+  - Tersedia tautan langsung di dalam aplikasi (Menu Pengaturan &gt; About SoulQuote &gt; Kebijakan Privasi).
 
 ---
 
