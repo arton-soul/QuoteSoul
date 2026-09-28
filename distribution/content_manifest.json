@@ -2,10 +2,10 @@
     "manifestVersion":  1,
     "contentVersion":  7,
     "minAppVersion":  1,
-    "releasedAt":  "2026-09-28T15:28:33Z",
+    "releasedAt":  "2026-09-28T15:44:40Z",
     "packageUrl":  "https://raw.githubusercontent.com/arton-soul/QuoteSoul/main/distribution/content_update_v7.json",
-    "packageSizeBytes":  45632,
-    "packageChecksumSha256":  "e992e10797f6311849aabe2969381fc0fa77fc3b744ad19d5bfa907ab9067972",
+    "packageSizeBytes":  44849,
+    "packageChecksumSha256":  "a838e1a91d16b12d90d3aadb61a88f22473dad9ffa859ccec3a0eef0efd23a55",
     "changelog":  "Penambahan 60 kata-kata bijak dan mutiara kesadaran jiwa oleh Bunda Arsaningsih (Seri Karma, Reinkarnasi, \u0026 Misi Jiwa).",
     "quotesCount":  60,
     "meditationsCount":  0

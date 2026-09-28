@@ -1,0 +1,3 @@
+# Ensure distribution and seed JSON files preserve exact LF line endings across all platforms
+/distribution/*.json text eol=lf
+/app/src/main/assets/seed/*.json text eol=lf
