@@ -8,9 +8,11 @@ import com.soulquote.app.data.local.backup.FavoriteBackupDto
 import com.soulquote.app.data.local.backup.JournalEntryBackupDto
 import com.soulquote.app.data.local.backup.MeditationHistoryBackupDto
 import com.soulquote.app.data.local.backup.UserDataBackup
+import com.soulquote.app.data.local.backup.UserQuoteBackupDto
 import com.soulquote.app.data.local.entity.user.FavoriteEntity
 import com.soulquote.app.data.local.entity.user.JournalEntryEntity
 import com.soulquote.app.data.local.entity.user.MeditationHistoryEntity
+import com.soulquote.app.data.local.entity.user.UserQuoteEntity
 import com.soulquote.app.data.local.entity.user.UserSettingEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -26,6 +28,7 @@ data class UserDataStats(
     val favoritesCount: Int,
     val historyCount: Int,
     val journalCount: Int = 0,
+    val userQuotesCount: Int = 0,
     val settingsCount: Int
 )
 
@@ -33,6 +36,7 @@ data class RestoreResult(
     val favoritesRestored: Int,
     val historyRestored: Int,
     val journalRestored: Int = 0,
+    val userQuotesRestored: Int = 0,
     val settingsRestored: Int
 )
 
@@ -50,11 +54,13 @@ class UserDataBackupManager(
         val favorites = userDatabase.favoriteDao().getAllFavoritesList().size
         val history = userDatabase.meditationHistoryDao().getAllHistoryList().size
         val journal = userDatabase.journalDao().getJournalEntriesList().size
+        val userQuotes = userDatabase.userQuoteDao().getAllUserQuotesList().size
         val settings = userDatabase.userSettingDao().getAllSettingsList().size
         UserDataStats(
             favoritesCount = favorites,
             historyCount = history,
             journalCount = journal,
+            userQuotesCount = userQuotes,
             settingsCount = settings
         )
     }
@@ -63,12 +69,14 @@ class UserDataBackupManager(
         userDatabase.favoriteDao().getAllFavorites(),
         userDatabase.meditationHistoryDao().getHistory(),
         userDatabase.journalDao().getAllJournalEntries(),
+        userDatabase.userQuoteDao().getAllUserQuotes(),
         userDatabase.userSettingDao().getAllSettings()
-    ) { favs, hist, journals, settings ->
+    ) { favs, hist, journals, userQuotes, settings ->
         UserDataStats(
             favoritesCount = favs.size,
             historyCount = hist.size,
             journalCount = journals.size,
+            userQuotesCount = userQuotes.size,
             settingsCount = settings.size
         )
     }
@@ -77,6 +85,7 @@ class UserDataBackupManager(
         val favoriteEntities = userDatabase.favoriteDao().getAllFavoritesList()
         val historyEntities = userDatabase.meditationHistoryDao().getAllHistoryList()
         val journalEntities = userDatabase.journalDao().getJournalEntriesList()
+        val userQuoteEntities = userDatabase.userQuoteDao().getAllUserQuotesList()
         val settingEntities = userDatabase.userSettingDao().getAllSettingsList()
 
         val favorites = favoriteEntities.map {
@@ -103,6 +112,16 @@ class UserDataBackupManager(
                 updatedAt = it.updatedAt
             )
         }
+        val userQuotes = userQuoteEntities.map {
+            UserQuoteBackupDto(
+                id = it.id,
+                text = it.text,
+                author = it.author,
+                category = it.category,
+                createdAt = it.createdAt,
+                updatedAt = it.updatedAt
+            )
+        }
         val settings = settingEntities.associate { it.key to it.value }
 
         // Compute checksum of combined contents
@@ -111,6 +130,7 @@ class UserDataBackupManager(
             favorites.forEach { append("${it.quoteId};") }
             history.forEach { append("${it.meditationId}:${it.completedAt};") }
             journals.forEach { append("${it.id}:${it.date};") }
+            userQuotes.forEach { append("${it.id}:${it.text.hashCode()};") }
             settings.forEach { append("${it.key}=${it.value};") }
         }
         val checksum = contentDigest.digest(contentSummary.toByteArray()).joinToString("") { "%02x".format(it) }
@@ -123,6 +143,7 @@ class UserDataBackupManager(
             favorites = favorites,
             meditationHistory = history,
             journalEntries = journals,
+            userQuotes = userQuotes,
             settings = settings,
             checksumSha256 = checksum
         )
@@ -164,6 +185,7 @@ class UserDataBackupManager(
                     userDatabase.favoriteDao().clearFavorites()
                     userDatabase.meditationHistoryDao().clearHistory()
                     userDatabase.journalDao().clearJournalEntries()
+                    userDatabase.userQuoteDao().deleteAllUserQuotes()
                     userDatabase.userSettingDao().clearSettings()
                 }
 
@@ -203,6 +225,20 @@ class UserDataBackupManager(
                     userDatabase.journalDao().insertJournalEntries(journals)
                 }
 
+                if (backup.userQuotes.isNotEmpty()) {
+                    val userQuotes = backup.userQuotes.map {
+                        UserQuoteEntity(
+                            id = it.id,
+                            text = it.text,
+                            author = it.author,
+                            category = it.category,
+                            createdAt = it.createdAt,
+                            updatedAt = it.updatedAt
+                        )
+                    }
+                    userDatabase.userQuoteDao().insertAllUserQuotes(userQuotes)
+                }
+
                 if (backup.settings.isNotEmpty()) {
                     val settings = backup.settings.map {
                         UserSettingEntity(key = it.key, value = it.value)
@@ -216,6 +252,7 @@ class UserDataBackupManager(
                     favoritesRestored = backup.favorites.size,
                     historyRestored = backup.meditationHistory.size,
                     journalRestored = backup.journalEntries.size,
+                    userQuotesRestored = backup.userQuotes.size,
                     settingsRestored = backup.settings.size
                 )
             )

@@ -5,6 +5,38 @@ All notable changes to the **SoulQuote** project will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-09-29
+
+### Added & Enhanced
+- **Quote Studio Personal Quotes Database**:
+  - Created `UserQuoteEntity` and `UserQuoteDao` in private `SoulQuoteUserDatabase` (`soulquote_user.db`).
+  - Bumped database version to `3` with clean dynamic SQLite migration `MIGRATION_2_3`.
+  - Added "Tulis Kutipan Baru" dialog to write custom reflections and authors with immediate canvas application.
+  - Redesigned Quote Picker Sheet with 2 tabs: "Katalog Aplikasi" and "Kutipan Saya" with deletion management.
+  - Integrated custom user quotes into the JSON backup & restore pipeline (`UserDataBackupManager`) and settings stats.
+- **Custom Quote Text Card Background (Highlight Box)**:
+  - Added `StudioTextCardBg` with 10 presets (None, Hitam, Slate, Putih, Krem, Bata, Mawar, Emas, Hutan, Indigo).
+  - Added adjustable text card opacity slider (15% - 100%) in Effects tab.
+  - Dynamic rounded-rectangle container rendering behind quote & author text on preview canvas and exported high-resolution bitmap.
+- **Freeform Quote Text Repositioning (Drag & Bias Alignment)**:
+  - Implemented vertical drag gestures on canvas preview for intuitive text repositioning.
+  - Added quick alignment presets [Atas], [Tengah], [Bawah] and a fine vertical bias slider (-0.75f to 0.75f) in Format tab.
+  - Implemented 1:1 proportional Y-offset rendering in `QuoteImageExporter`.
+- **Custom Gallery Image Opacity / Dimmer**:
+  - Added dedicated gallery photo dimmer slider (0% - 85%) directly inside Background tab when custom gallery photo is active.
+- **Mindful Splash Screen (Introductory Screen)**:
+  - Created `SplashScreen` featuring rhythmic breathing animation (pulse & radial aura halo), brand emblem, high-contrast serif typography, and bilingual mindful breathing guidance.
+  - Seamless animated `Crossfade` transition into the main application.
+  - Included immediate tap-to-skip support and smart deep-link/notification bypass.
+- **In-App Disclaimer & Content Attribution**:
+  - Added dedicated "Penafian & Sumber Konten (Disclaimer)" modal in Settings (`SettingsScreen`).
+  - Outlined clear independence (no affiliation with SOUL organization or Bunda Arsaningsih), attribution of wisdom quotes and guided meditation audio to public YouTube content of Bunda Arsaningsih, and direct button link to the official YouTube channel.
+  - Maintained bilingual string support in `IndonesianStrings` and `EnglishStrings`.
+- **Automated Testing**:
+  - Added `testMigration2To3SqlExecution` in `RoomMigrationTest`.
+  - Added `StudioTextCardBg` preset validation and boundary tests in `QuoteStudioConfigTest`.
+  - Added `UserQuoteBackupDto` serialization and stats verification in `UserDataBackupTest`.
+
 ## [0.3.0] - 2026-09-28
 
 ### Fixed & Enhanced

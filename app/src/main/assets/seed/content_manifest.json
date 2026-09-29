@@ -1,12 +1,12 @@
 {
   "manifestVersion": 1,
-  "contentVersion": 8,
+  "contentVersion": 9,
   "minAppVersion": 1,
-  "releasedAt": "2026-09-29T01:53:13.220Z",
-  "packageUrl": "https://raw.githubusercontent.com/arton-soul/QuoteSoul/main/distribution/content_update_v8.json",
-  "packageSizeBytes": 33473,
-  "packageChecksumSha256": "6a57bfd5356ae475d52833babb7a8850eb2b9837232d67959961591e76161142",
-  "changelog": "Penambahan 60 kata bijak dan perenungan kesadaran jiwa tentang Misteri Doa, Kepasrahan, & Hukum Semesta (Bunda Arsaningsih & dr. Rastho Mahotama).",
-  "quotesCount": 60,
-  "meditationsCount": 0
+  "releasedAt": "2026-09-29T23:03:34.533Z",
+  "packageUrl": "https://raw.githubusercontent.com/arton-soul/QuoteSoul/main/distribution/content_update_v9.json",
+  "packageSizeBytes": 18026,
+  "packageChecksumSha256": "66bfb970b0e57800c613397a15f1f07f2984cb949e45a4afe0bd8ebb8324aaa6",
+  "changelog": "Pembaruan konten audio meditasi OSR Bunda Arsaningsih: 9 sesi meditasi baru berdurasi penuh (Damai Tanpa Curiga, Olah Rasa, Cakra Mahkota, Law of Attraction, dll) dan penonaktifan sampel lama.",
+  "quotesCount": 0,
+  "meditationsCount": 9
 }

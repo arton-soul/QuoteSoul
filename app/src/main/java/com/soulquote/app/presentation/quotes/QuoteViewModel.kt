@@ -10,6 +10,7 @@ import com.soulquote.app.domain.usecase.GetFavoriteQuotesUseCase
 import com.soulquote.app.domain.usecase.GetQuotesUseCase
 import com.soulquote.app.domain.usecase.GetRandomQuoteUseCase
 import com.soulquote.app.domain.usecase.ToggleFavoriteUseCase
+import com.soulquote.app.data.local.dao.UserQuoteDao
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -17,6 +18,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -46,7 +49,8 @@ class QuoteViewModel(
     private val getFavoriteQuotesUseCase: GetFavoriteQuotesUseCase,
     private val toggleFavoriteUseCase: ToggleFavoriteUseCase,
     private val getRandomQuoteUseCase: GetRandomQuoteUseCase,
-    private val getCategoriesUseCase: GetCategoriesUseCase
+    private val getCategoriesUseCase: GetCategoriesUseCase,
+    private val userQuoteDao: UserQuoteDao? = null
 ) : ViewModel() {
 
     private val _selectedCategoryId = MutableStateFlow("all")
@@ -64,14 +68,42 @@ class QuoteViewModel(
     val categories: StateFlow<List<QuoteCategory>> = getCategoriesUseCase()
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
+    val userQuotes: StateFlow<List<Quote>> = (userQuoteDao?.getAllUserQuotes() ?: flowOf(emptyList()))
+        .map { list ->
+            list.map { uq ->
+                Quote(
+                    id = uq.id,
+                    text = uq.text,
+                    author = uq.author,
+                    categoryId = "custom",
+                    isFavorite = false,
+                    tags = listOf("Kutipan Pribadi", "Custom")
+                )
+            }
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
     val exploreQuotes: StateFlow<List<Quote>> = combine(
-        _selectedCategoryId.flatMapLatest { catId -> getQuotesUseCase(catId) },
-        _searchQuery
-    ) { quotes, query ->
-        if (query.isBlank()) {
-            quotes
+        _selectedCategoryId.flatMapLatest { catId ->
+            if (catId == "custom") {
+                userQuotes
+            } else {
+                getQuotesUseCase(catId)
+            }
+        },
+        _searchQuery,
+        userQuotes,
+        _selectedCategoryId
+    ) { quotes, query, uQuotes, catId ->
+        val baseList = if (catId == "all") {
+            uQuotes + quotes
         } else {
-            quotes.filter {
+            quotes
+        }
+        if (query.isBlank()) {
+            baseList
+        } else {
+            baseList.filter {
                 it.text.contains(query, ignoreCase = true) ||
                 it.author.contains(query, ignoreCase = true) ||
                 it.tags.any { tag -> tag.contains(query, ignoreCase = true) }

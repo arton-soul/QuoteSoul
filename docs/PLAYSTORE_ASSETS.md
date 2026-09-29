@@ -89,8 +89,13 @@ Bangun kebiasaan hening harian yang konsisten. Pantau rekor hari latihan Anda (*
 6. Widget Layar Utama (Daily Quote Widget)
 Sematkan kutipan inspiratif langsung di layar utama (*Home Screen*) ponsel Anda. Dilengkapi tombol segarkan instan untuk berganti kutipan bijak kapan pun Anda membutuhkan percikan motivasi tanpa harus membuka aplikasi.
 
-7. Studio Kutipan Estetik (Quote Card Studio)
-Ubah kutipan favorit menjadi karya seni visual yang anggun. Sesuaikan latar belakang warna, rasio aspek (1:1 untuk feed, 9:16 untuk story/status), tipografi, dan bagikan inspirasi kebahagiaan kepada sahabat dan keluarga.
+7. Studio Kutipan Estetik & Pembuat Kutipan Pribadi (Quote Studio)
+Ubah kutipan favorit atau tulis kata-kata bijak karyamu sendiri menjadi karya seni visual yang anggun. Dilengkapi fitur lengkap:
+• Tulis dan simpan kutipan pribadi langsung ke database privatmu
+• Pengaturan redup/opasitas foto galeri pribadi untuk kenyamanan membaca
+• Geser & posisikan letak kalimat secara bebas di atas kanvas
+• Latar kotak teks khusus dengan aneka pilihan warna & opasitas
+• Beragam rasio kanvas (1:1 untuk feed, 9:16 untuk story/status, 4:5), pilihan font elegan, dan bagikan inspirasi kebahagiaan seketika.
 
 8. Mode 100% Fleksibel & Hemat Kuota (Offline-First)
 Audio meditasi utama siap diputar seketika. Anda bebas mengalirkan (*streaming*) sesi lainnya atau mengunduhnya ke penyimpanan perangkat untuk dinikmati kapan saja tanpa koneksi internet atau dalam mode pesawat.
@@ -103,6 +108,11 @@ SoulQuote mendukung Bahasa Indonesia dan Bahasa Inggris secara penuh, yang dapat
 
 11. Lonceng Kesadaran & Pengingat Lembut (Mindful Bell & Reminders)
 Pengingat harian yang menenangkan dengan denting lonceng kesadaran (*mindful bell*) dan alunan mangkuk bernyanyi Zen (*Tibetan singing bowl*) untuk mengajak Anda jeda sejenak dan bernapas di tengah hiruk-pikuk aktivitas.
+
+---
+⚠️ PENAFIAN & ATRIBUSI SUMBER (DISCLAIMER):
+Aplikasi SoulQuote adalah karya independen yang dikembangkan untuk mempermudah latihan refleksi diri dan meditasi SOUL Reflection. Aplikasi ini TIDAK berafiliasi resmi, bermitra, disponsori, atau disahkan oleh Bunda Arsaningsih maupun organisasi/perusahaan SOUL. Seluruh kutipan dan materi panduan meditasi bersumber dan terinspirasi dari tayangan publik di Kanal YouTube Resmi Bunda Arsaningsih. Seluruh hak cipta materi orisinal sepenuhnya merupakan milik pencipta aslinya.
+---
 
 Temukan kembali keheningan, keseimbangan, dan kedamaian jiwamu hari ini bersama SoulQuote.
 ```
@@ -149,8 +159,13 @@ Cultivate a sustainable daily practice. Track consecutive mindfulness days and u
 6. Home Screen Daily Quote Widget
 Keep daily wisdom within sight with our dedicated 4x2 Home Screen widget. Features an instant refresh button to cycle inspirational quotes directly from your launcher.
 
-7. Aesthetic Quote Card Studio
-Transform wisdom quotes into elegant graphic cards. Customize aspect ratios (1:1 square, 9:16 story), color palettes, and typography to share uplifting reflections with friends and loved ones.
+7. Aesthetic Quote Card Studio & Custom Wisdom Creator
+Transform wisdom quotes or compose your own personal insights into breathtaking graphic cards:
+• Write and save personal quotes directly to your secure private database
+• Adjust custom photo opacity and dimming for optimal text clarity
+• Freely drag and reposition quotes on the canvas with quick alignment shortcuts
+• Customize dedicated text container background cards with vivid palettes and opacity controls
+• Multi-format canvas ratios (1:1 square, 9:16 story, 4:5 portrait), elegant fonts, and instant sharing.
 
 8. 100% Offline-First & Storage-Friendly
 Core meditation audio is ready out-of-the-box. Stream additional sessions seamlessly or download them directly to your device for offline playback on airplanes or off-grid retreats.
@@ -163,6 +178,11 @@ Easily toggle between Indonesian and English anytime with instant UI reactivity 
 
 11. Mindful Bells & Gentle Reminders
 Gentle daily notifications accompanied by authentic mindful bells and resonant Tibetan singing bowls to invite mindful pauses and deep breaths throughout your day.
+
+---
+⚠️ DISCLAIMER & CONTENT ATTRIBUTION:
+SoulQuote is an independent application created to facilitate personal mindfulness and SOUL Reflection meditation practice. It is NOT officially affiliated with, endorsed by, sponsored by, or partnered with Bunda Arsaningsih or the SOUL organization. All quotes and meditation references are inspired by and derived from public videos on Bunda Arsaningsih's official YouTube Channel. All original copyrights remain the property of their respective creator.
+---
 
 Rediscover stillness, balance, and tranquility in your daily life with SoulQuote.
 ```
@@ -250,6 +270,74 @@ Welcome to SoulQuote — Your personal sanctuary for mindfulness and inner peace
 • Daily reflection journal and mood tracking.
 • Aesthetic Quote Card Studio for crafting and sharing inspirational cards.
 • 100% Offline-first architecture, zero telemetry, and privacy-focused local storage.
+</en-US>
+```
+
+### 📦 Versi 0.2.0 (Version Code: 2) — Multi-Bahasa & Visual Baru
+#### 🇮🇩 Bahasa Indonesia (`<id-ID>`):
+```text
+<id-ID>
+Pembaruan SoulQuote v0.2.0:
+• Dukungan Multi-Bahasa (Bahasa Indonesia & English) langsung dari Pengaturan.
+• Peningkatan Jurnal Refleksi: kini mendukung multi-catatan harian dengan timestamp presisi.
+• Antarmuka Mood Tracker lebih seimbang dan nyaman di mata.
+• Logo dan ikon aplikasi baru yang anggun serta optimalisasi pemutar audio meditasi.
+</id-ID>
+```
+#### 🇺🇸 English (`<en-US>`):
+```text
+<en-US>
+SoulQuote v0.2.0 Update:
+• Full Bilingual Support (Indonesian & English) toggleable in Settings.
+• Multi-entry daily reflection journal with exact timestamps and editing.
+• Refreshed, balanced mood tracker interface.
+• New elegant brand identity and optimized audio meditation playback.
+</en-US>
+```
+
+### 📦 Versi 0.3.0 (Version Code: 3) — Uji Lonceng, Sinkronisasi Data & Konten v8
+#### 🇮🇩 Bahasa Indonesia (`<id-ID>`):
+```text
+<id-ID>
+Pembaruan SoulQuote v0.3.0:
+• Sinkronisasi reaktif data favorit, riwayat, dan jurnal refleksi pada menu Cadangan & Privasi.
+• Uji Lonceng Kesadaran & Mangkuk Zen langsung bersuara di dalam aplikasi.
+• Pembaruan Konten v8: 60 kutipan baru tentang Misteri Doa, Kepasrahan & Hukum Semesta oleh Bunda Arsaningsih & dr. Rastho Mahotama.
+• Notifikasi harian lebih interaktif dan izin pengingat yang mulus.
+</id-ID>
+```
+#### 🇺🇸 English (`<en-US>`):
+```text
+<en-US>
+SoulQuote v0.3.0 Update:
+• Reactive synchronization for favorites, history, and journal stats in Backup & Privacy.
+• Instant in-app audio preview for Mindful Bell and Tibetan Zen Singing Bowl.
+• Content Update v8: 60 new wisdom quotes on the Mystery of Prayer, Surrender, and Universal Laws.
+• Enhanced daily reminder notifications and smooth permission handling.
+</en-US>
+```
+
+### 📦 Versi 0.4.0 (Version Code: 4) — Quote Studio Supercharge & Kutipan Pribadi
+#### 🇮🇩 Bahasa Indonesia (`<id-ID>`):
+```text
+<id-ID>
+Pembaruan SoulQuote v0.4.0:
+• Pembuat Kutipan Pribadi: Tulis dan simpan kata-kata bijak karyamu sendiri ke database privatmu.
+• Latar Khusus Kutipan: Pilihan aneka warna kotak latar teks dan opasitas untuk kontras yang sempurna.
+• Geser & Atur Posisi: Pindahkan letak kutipan secara bebas di atas kanvas dengan gesture sentuh atau tombol cepat.
+• Pengatur Redup Foto Galeri: Atur opasitas foto latar dari galeri agar teks selalu mudah dibaca.
+• Pencadangan otomatis untuk seluruh kutipan pribadimu.
+</id-ID>
+```
+#### 🇺🇸 English (`<en-US>`):
+```text
+<en-US>
+SoulQuote v0.4.0 Update:
+• Custom Quote Creator: Compose and save your own wisdom quotes to your private database.
+• Text Box Backgrounds: Choose container colors and adjust opacity for impeccable readability.
+• Freeform Repositioning: Move and align quote text on canvas via touch gestures or quick presets.
+• Gallery Photo Dimmer: Adjust background photo brightness/opacity for stunning visual contrast.
+• Full encrypted JSON backup support for your personal quotes collection.
 </en-US>
 ```
 

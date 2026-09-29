@@ -11,10 +11,12 @@ import com.soulquote.app.data.local.dao.FavoriteDao
 import com.soulquote.app.data.local.dao.JournalDao
 import com.soulquote.app.data.local.dao.MeditationHistoryDao
 import com.soulquote.app.data.local.dao.UserSettingDao
+import com.soulquote.app.data.local.dao.UserQuoteDao
 import com.soulquote.app.data.local.entity.user.DownloadedAudioEntity
 import com.soulquote.app.data.local.entity.user.FavoriteEntity
 import com.soulquote.app.data.local.entity.user.JournalEntryEntity
 import com.soulquote.app.data.local.entity.user.MeditationHistoryEntity
+import com.soulquote.app.data.local.entity.user.UserQuoteEntity
 import com.soulquote.app.data.local.entity.user.UserSettingEntity
 
 @Database(
@@ -23,9 +25,10 @@ import com.soulquote.app.data.local.entity.user.UserSettingEntity
         MeditationHistoryEntity::class,
         UserSettingEntity::class,
         DownloadedAudioEntity::class,
-        JournalEntryEntity::class
+        JournalEntryEntity::class,
+        UserQuoteEntity::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = true
 )
 abstract class SoulQuoteUserDatabase : RoomDatabase() {
@@ -34,6 +37,7 @@ abstract class SoulQuoteUserDatabase : RoomDatabase() {
     abstract fun userSettingDao(): UserSettingDao
     abstract fun downloadedAudioDao(): DownloadedAudioDao
     abstract fun journalDao(): JournalDao
+    abstract fun userQuoteDao(): UserQuoteDao
 
     companion object {
         const val DATABASE_NAME = "soulquote_user.db"
@@ -60,6 +64,25 @@ abstract class SoulQuoteUserDatabase : RoomDatabase() {
             }
         }
 
+        val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS `user_quotes` (
+                        `id` TEXT NOT NULL,
+                        `text` TEXT NOT NULL,
+                        `author` TEXT NOT NULL,
+                        `category` TEXT NOT NULL,
+                        `createdAt` INTEGER NOT NULL,
+                        `updatedAt` INTEGER NOT NULL,
+                        PRIMARY KEY(`id`)
+                    )
+                    """.trimIndent()
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_user_quotes_createdAt` ON `user_quotes` (`createdAt`)")
+            }
+        }
+
         @Volatile
         private var INSTANCE: SoulQuoteUserDatabase? = null
 
@@ -70,7 +93,7 @@ abstract class SoulQuoteUserDatabase : RoomDatabase() {
                     SoulQuoteUserDatabase::class.java,
                     DATABASE_NAME
                 )
-                    .addMigrations(MIGRATION_1_2)
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                     .build()
                 INSTANCE = instance
                 instance

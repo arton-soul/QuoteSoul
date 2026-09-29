@@ -51,4 +51,41 @@ class RoomMigrationTest {
         val indexCreatedSql = executedSqlStatements[2]
         assertTrue("Must index createdAt column", indexCreatedSql.contains("index_journal_entries_createdAt"))
     }
+
+    @Test
+    fun testMigration2To3SqlExecution() {
+        val migration = SoulQuoteUserDatabase.MIGRATION_2_3
+        assertEquals(2, migration.startVersion)
+        assertEquals(3, migration.endVersion)
+
+        val executedSqlStatements = mutableListOf<String>()
+
+        val dbProxy = Proxy.newProxyInstance(
+            SupportSQLiteDatabase::class.java.classLoader,
+            arrayOf(SupportSQLiteDatabase::class.java)
+        ) { _, method, args ->
+            if (method.name == "execSQL" && args != null && args.isNotEmpty()) {
+                executedSqlStatements.add(args[0].toString())
+            }
+            null
+        } as SupportSQLiteDatabase
+
+        migration.migrate(dbProxy)
+
+        assertEquals(2, executedSqlStatements.size)
+
+        // 1. Check user_quotes table creation SQL
+        val tableSql = executedSqlStatements[0]
+        assertTrue("Must create user_quotes table", tableSql.contains("CREATE TABLE IF NOT EXISTS `user_quotes`"))
+        assertTrue("Must include id PK", tableSql.contains("`id` TEXT NOT NULL"))
+        assertTrue("Must include text", tableSql.contains("`text` TEXT NOT NULL"))
+        assertTrue("Must include author", tableSql.contains("`author` TEXT NOT NULL"))
+        assertTrue("Must include category", tableSql.contains("`category` TEXT NOT NULL"))
+        assertTrue("Must include createdAt", tableSql.contains("`createdAt` INTEGER NOT NULL"))
+        assertTrue("Must include updatedAt", tableSql.contains("`updatedAt` INTEGER NOT NULL"))
+
+        // 2. Check index SQL
+        val indexSql = executedSqlStatements[1]
+        assertTrue("Must index createdAt column", indexSql.contains("index_user_quotes_createdAt"))
+    }
 }

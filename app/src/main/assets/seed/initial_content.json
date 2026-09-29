@@ -1,5 +1,5 @@
 {
-  "contentVersion": 8,
+  "contentVersion": 9,
   "categories": [
     {
       "id": "jiwa_spiritual",
@@ -2284,7 +2284,7 @@
       "category": "mindful_breathing",
       "description": "Sesi meditasi pernafasan mindful selama 5 menit untuk meredakan stres, menstabilkan detak jantung, dan memusatkan kesadaran pada saat ini.",
       "instructor": "Bunda Arsaningsih",
-      "active": true,
+      "active": false,
       "title": "Ketenangan Nafas & Keheningan Batin",
       "sizeBytes": 4800000,
       "checksum": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2298,7 +2298,7 @@
       "category": "inner_calm",
       "description": "Panduan melepaskan beban emosional dan kekhawatiran pikiran, membawa jiwa masuk ke ruang hening penuh kedamaian sejati.",
       "instructor": "Bunda Arsaningsih",
-      "active": true,
+      "active": false,
       "title": "Menyelami Keheningan Jiwa",
       "sizeBytes": 9600000,
       "checksum": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2312,7 +2312,7 @@
       "category": "spiritual_energy",
       "description": "Membersihkan rekaman energi negatif dan membuka cakra hati untuk memancarkan cinta kasih tanpa syarat kepada seluruh semesta.",
       "instructor": "Bunda Arsaningsih",
-      "active": true,
+      "active": false,
       "title": "Penyelarasan Cahaya & Cinta Kasih",
       "sizeBytes": 7680000,
       "checksum": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2326,7 +2326,7 @@
       "category": "deep_sleep",
       "description": "Relaksasi tubuh total dari ujung kepala hingga kaki, mengalirkan kedamaian mendalam untuk tidur yang berkualitas dan pulih bugar.",
       "instructor": "SoulQuote Guide",
-      "active": true,
+      "active": false,
       "title": "Istirahat Tenang Tidur Nyenyak",
       "sizeBytes": 11520000,
       "checksum": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -2340,7 +2340,7 @@
       "category": "spiritual_energy",
       "description": "Sesi meditasi online mendalam bersama Bunda Arsaningsih. Penyelarasan kesadaran, pembersihan energi negatif, ketenangan batin, dan pancaran cinta kasih murni.",
       "instructor": "Bunda Arsaningsih",
-      "active": true,
+      "active": false,
       "title": "Meditasi Online (18 Juni 2025)",
       "sizeBytes": 25454448,
       "checksum": "0443037f00f2d4540b3d061d7bc10dd4aaf48bbb55a3f8fba98dd4e10308c0b6"
@@ -2456,6 +2456,132 @@
       "title": "Membersihkan Pendaman Energi Bergosip",
       "sizeBytes": 21885376,
       "checksum": "78906f64c083f9a6ef98c2124af20a3dd018b32432391ca64b6cb9d7b6da7618"
+    },
+    {
+      "localFileName": "OSR-3Agustus2022- Damai Tanpa Curiga.ogg",
+      "id": "osr_3agustus2022_damai_tanpa_curiga",
+      "durationSeconds": 2826,
+      "audioUrl": "https://drive.google.com/uc?export=download&id=1PJ-JhtPfMfMHSCKLRaw-h6brIQwPhEDS",
+      "version": 1,
+      "category": "inner_calm",
+      "description": "Sesi meditasi OSR bersama Bunda Arsaningsih untuk menenangkan pikiran, melepaskan prasangka dan kecurigaan, serta menumbuhkan kedamaian batin.",
+      "instructor": "Bunda Arsaningsih",
+      "active": true,
+      "title": "Damai Tanpa Curiga",
+      "sizeBytes": 37841071,
+      "checksum": "9414513c265cb42e268a33c274ac884a1fef70dced9f9a481aea83fcc4f61a70"
+    },
+    {
+      "localFileName": "OSR-6April2022-OlahRasa.ogg",
+      "id": "osr_6april2022_olah_rasa",
+      "durationSeconds": 2749,
+      "audioUrl": "https://drive.google.com/uc?export=download&id=1f_OISotIqM9htNTcULJgH0RiKLbSPcvz",
+      "version": 1,
+      "category": "inner_calm",
+      "description": "Sesi meditasi OSR bersama Bunda Arsaningsih untuk melatih kepekaan rasa, mengasah intuisi batin, dan menyelaraskan getaran rasa kasih.",
+      "instructor": "Bunda Arsaningsih",
+      "active": true,
+      "title": "Olah Rasa & Kepekaan Batin",
+      "sizeBytes": 33693402,
+      "checksum": "a57644d98312159b928fb8dc13ef928caf70905c412416dd526968d777018a30"
+    },
+    {
+      "localFileName": "OSR-10Agustus2022-Pribadi Tangguh Siap Bertumbuh.ogg",
+      "id": "osr_10agustus2022_pribadi_tangguh",
+      "durationSeconds": 2670,
+      "audioUrl": "https://drive.google.com/uc?export=download&id=1zgt72r2SZo66I7-RMXpHOn8OebM6ERy0",
+      "version": 1,
+      "category": "spiritual_energy",
+      "description": "Sesi meditasi OSR bersama Bunda Arsaningsih untuk membangkitkan ketangguhan mental jiwa dalam menghadapi tantangan hidup dan siap bertumbuh.",
+      "instructor": "Bunda Arsaningsih",
+      "active": true,
+      "title": "Pribadi Tangguh Siap Bertumbuh",
+      "sizeBytes": 34043297,
+      "checksum": "baa70235c1526d2410bb250c1b71aebeaeb6323d7066eb426a64b0be12bbe625"
+    },
+    {
+      "localFileName": "OSR-16Nov2022-LawofAttraction.ogg",
+      "id": "osr_16nov2022_law_of_attraction",
+      "durationSeconds": 1905,
+      "audioUrl": "https://drive.google.com/uc?export=download&id=1dBiwq12pRW9CrqjmZBwgc7J3WDINJRrQ",
+      "version": 1,
+      "category": "spiritual_energy",
+      "description": "Sesi meditasi OSR bersama Bunda Arsaningsih untuk memancarkan vibrasi frekuensi positif dan menarik keberlimpahan serta kebaikan semesta.",
+      "instructor": "Bunda Arsaningsih",
+      "active": true,
+      "title": "Menyelaraskan Energi Law of Attraction",
+      "sizeBytes": 22966825,
+      "checksum": "3530e0d97cf8278a4f664bd7a5150d3940f781c30dadf8b2fb1f8e68419eb408"
+    },
+    {
+      "localFileName": "OSR-22Juni2022-PembersihanPancaIndera.ogg",
+      "id": "osr_22juni2022_pembersihan_panca_indera",
+      "durationSeconds": 2612,
+      "audioUrl": "https://drive.google.com/uc?export=download&id=1B-4rwaWJsuqlS6fi6st3E5oXDbeC3aHL",
+      "version": 1,
+      "category": "mindful_breathing",
+      "description": "Sesi meditasi OSR bersama Bunda Arsaningsih untuk membersihkan residu dan rekaman energi negatif yang terserap melalui panca indera raga.",
+      "instructor": "Bunda Arsaningsih",
+      "active": true,
+      "title": "Pembersihan Panca Indera",
+      "sizeBytes": 39620684,
+      "checksum": "349bfbc0cde4b9e99b7a23479464ef5c29125c6e1e25814e66b28b4dc62d0823"
+    },
+    {
+      "localFileName": "OSR-22Okt2022-PembersihanEmosidariLuar.ogg",
+      "id": "osr_22okt2022_pembersihan_emosi_luar",
+      "durationSeconds": 2963,
+      "audioUrl": "https://drive.google.com/uc?export=download&id=1aQdgLAZbwwO1b9ZPR6kvoz79Pwq_q03x",
+      "version": 1,
+      "category": "deep_sleep",
+      "description": "Sesi meditasi OSR bersama Bunda Arsaningsih untuk memfilter dan membersihkan serapan emosi negatif dari lingkungan luar dan interaksi sosial.",
+      "instructor": "Bunda Arsaningsih",
+      "active": true,
+      "title": "Pembersihan Emosi dari Luar",
+      "sizeBytes": 40075707,
+      "checksum": "61bd410ec7883a96ac153ba70aedd94c645b0e86a698ed628fae52007f8785b5"
+    },
+    {
+      "localFileName": "OSR-23Nov2022-AkhirnyaBeneranBahagia.ogg",
+      "id": "osr_23nov2022_akhirnya_beneran_bahagia",
+      "durationSeconds": 2652,
+      "audioUrl": "https://drive.google.com/uc?export=download&id=1VgOxCJ8tEEW4pFHF3b8ah3p65e7Y_WZY",
+      "version": 1,
+      "category": "inner_calm",
+      "description": "Sesi meditasi OSR bersama Bunda Arsaningsih untuk membuka pintu kebahagiaan sejati tanpa syarat dari dalam kedalaman sukma diri.",
+      "instructor": "Bunda Arsaningsih",
+      "active": true,
+      "title": "Akhirnya Beneran Bahagia",
+      "sizeBytes": 37563960,
+      "checksum": "0d90ea07a370a078cbcbceda14b9cc318ff7bd205e1bdb3b44a9ca373a7beb69"
+    },
+    {
+      "localFileName": "OSR-28Sep2022-KeyakinanPadaTuhan.ogg",
+      "id": "osr_28sep2022_keyakinan_pada_tuhan",
+      "durationSeconds": 2626,
+      "audioUrl": "https://drive.google.com/uc?export=download&id=1PXEdfbUMIDFZveKd7UQT_3VapxuYLdSZ",
+      "version": 1,
+      "category": "spiritual_energy",
+      "description": "Sesi meditasi OSR bersama Bunda Arsaningsih untuk memperteguh iman, rasa percaya penuh, dan penyerahan diri secara total kepada Tuhan.",
+      "instructor": "Bunda Arsaningsih",
+      "active": true,
+      "title": "Memperteguh Keyakinan pada Tuhan",
+      "sizeBytes": 37000399,
+      "checksum": "64fa9bb05bf426ea7de602b38167bf8ea2bc38d06bf6369669fd98f672813264"
+    },
+    {
+      "localFileName": "OSR-PembersihanCakraMahkota.ogg",
+      "id": "osr_pembersihan_cakra_mahkota",
+      "durationSeconds": 3240,
+      "audioUrl": "https://drive.google.com/uc?export=download&id=1Y1hZj7QR73DnvCmzS5S8fk3gr3g6YqKc",
+      "version": 1,
+      "category": "spiritual_energy",
+      "description": "Sesi meditasi OSR bersama Bunda Arsaningsih untuk membersihkan cakra mahkota dan memperkuat koneksi spiritual langsung dengan Cahaya Ilahi.",
+      "instructor": "Bunda Arsaningsih",
+      "active": true,
+      "title": "Pembersihan Cakra Mahkota",
+      "sizeBytes": 49529732,
+      "checksum": "12cbef18bdfdb0f5d233a104dbe6e458addb1fda36defc5dff04b34b246bf0da"
     }
   ]
 }

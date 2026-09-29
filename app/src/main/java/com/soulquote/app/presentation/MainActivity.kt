@@ -40,6 +40,13 @@ import com.soulquote.app.presentation.settings.SettingsViewModel
 import com.soulquote.app.presentation.settings.SettingsViewModelFactory
 import com.soulquote.app.presentation.studio.StudioViewModel
 import com.soulquote.app.presentation.studio.StudioViewModelFactory
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import com.soulquote.app.presentation.splash.SplashScreen
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -110,20 +117,42 @@ class MainActivity : ComponentActivity() {
                 config.setLocale(locale)
             }
 
+            var showSplash by rememberSaveable { mutableStateOf(true) }
+
+            val initialNavTarget by navTarget.collectAsState()
+            LaunchedEffect(initialNavTarget) {
+                if (initialNavTarget != null) {
+                    showSplash = false
+                }
+            }
+
             androidx.compose.runtime.CompositionLocalProvider(
                 com.soulquote.app.core.localization.LocalAppStrings provides strings
             ) {
                 SoulQuoteTheme {
-                    MainContent(
-                        quoteViewModel = quoteViewModel,
-                        settingsViewModel = settingsViewModel,
-                        studioViewModel = studioViewModel,
-                        meditationViewModel = meditationViewModel,
-                        ambientViewModel = ambientViewModel,
-                        journalViewModel = journalViewModel,
-                        navTargetState = navTarget,
-                        onConsumeNavTarget = { _navTarget.value = null }
-                    )
+                    Crossfade(
+                        targetState = showSplash,
+                        animationSpec = tween(durationMillis = 500),
+                        label = "splashCrossfade"
+                    ) { isSplash ->
+                        if (isSplash) {
+                            SplashScreen(
+                                strings = strings,
+                                onTimeout = { showSplash = false }
+                            )
+                        } else {
+                            MainContent(
+                                quoteViewModel = quoteViewModel,
+                                settingsViewModel = settingsViewModel,
+                                studioViewModel = studioViewModel,
+                                meditationViewModel = meditationViewModel,
+                                ambientViewModel = ambientViewModel,
+                                journalViewModel = journalViewModel,
+                                navTargetState = navTarget,
+                                onConsumeNavTarget = { _navTarget.value = null }
+                            )
+                        }
+                    }
                 }
             }
         }

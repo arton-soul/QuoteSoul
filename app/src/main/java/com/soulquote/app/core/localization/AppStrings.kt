@@ -83,6 +83,12 @@ interface AppStrings {
     val aboutVersion: String
     val aboutDescription: String
     val privacyPolicyButton: String
+    val disclaimerButton: String
+    val disclaimerTitle: String
+    val disclaimerBody: String
+    val disclaimerVisitYoutube: String
+    val splashTagline: String
+    val splashMindfulBreath: String
 
     // Meditation
     val meditationTitle: String
@@ -128,6 +134,7 @@ interface AppStrings {
     val closeButton: String
     val updatePackageTitle: String
     val newQuotesCount: String
+    val newMeditationsCount: String
     val applyingUpdateLabel: String
     val shareBackupTitle: String
 
@@ -243,6 +250,12 @@ object IndonesianStrings : AppStrings {
     override val aboutVersion = "SoulQuote v${com.soulquote.app.BuildConfig.VERSION_NAME} • Inspirasi & Meditasi Offline"
     override val aboutDescription = "Dibuat dengan keheningan, privasi, dan penyimpanan data lokal yang aman."
     override val privacyPolicyButton = "Kebijakan Privasi (Privacy Policy)"
+    override val disclaimerButton = "Penafian & Sumber Konten (Disclaimer)"
+    override val disclaimerTitle = "Penafian & Sumber Konten"
+    override val disclaimerBody = "Aplikasi SoulQuote dikembangkan secara mandiri dan BUKAN merupakan aplikasi resmi dari Bunda Arsaningsih maupun organisasi/perusahaan SOUL. Tidak ada ikatan kerja sama resmi, afiliasi, kemitraan, ataupun sponsor antara pengembang aplikasi ini dan pihak Bunda Arsaningsih / organisasi SOUL.\n\nAplikasi ini dibuat semata-mata sebagai sarana pembantu yang terinspirasi oleh materi dan ceramah di Kanal YouTube Resmi Bunda Arsaningsih. Seluruh kutipan bijak dan panduan meditasi bersumber serta dirangkum dari tayangan publik YouTube tersebut, dengan tujuan tulus untuk mempermudah masyarakat dalam melatih keheningan batin dan meditasi SOUL Reflection setiap hari.\n\nHak cipta atas rekaman, naskah renungan, dan ajaran orisinal sepenuhnya tetap menjadi milik Bunda Arsaningsih. Dukung selalu karya asli beliau dengan menonton dan berlangganan di Kanal YouTube Resmi Bunda Arsaningsih."
+    override val disclaimerVisitYoutube = "Buka YouTube Bunda Arsaningsih"
+    override val splashTagline = "Ruang Hening & Kebijaksanaan Jiwa"
+    override val splashMindfulBreath = "Tarik napas perlahan... Hadir seutuhnya di saat ini."
 
     // Meditation
     override val meditationTitle = "Meditasi"
@@ -288,6 +301,7 @@ object IndonesianStrings : AppStrings {
     override val closeButton = "Tutup"
     override val updatePackageTitle = "Paket Pembaruan v%s"
     override val newQuotesCount = "+%d kutipan baru ditambahkan"
+    override val newMeditationsCount = "+%d sesi meditasi baru ditambahkan"
     override val applyingUpdateLabel = "Menerapkan pembaruan..."
     override val shareBackupTitle = "Simpan / Bagikan Cadangan Data"
 
@@ -396,6 +410,12 @@ object EnglishStrings : AppStrings {
     override val aboutVersion = "SoulQuote v${com.soulquote.app.BuildConfig.VERSION_NAME} • Offline Inspiration & Meditation"
     override val aboutDescription = "Crafted with serenity, privacy, and secure local data persistence."
     override val privacyPolicyButton = "Privacy Policy"
+    override val disclaimerButton = "Disclaimer & Content Attribution"
+    override val disclaimerTitle = "Disclaimer & Attribution"
+    override val disclaimerBody = "SoulQuote is an independently developed application and is NOT an official app of Bunda Arsaningsih or the SOUL organization/company. There is no official affiliation, partnership, sponsorship, or endorsement between the developer and Bunda Arsaningsih or SOUL entities.\n\nThis app was created as a personal mindfulness companion inspired by the teachings and public video content on Bunda Arsaningsih's official YouTube Channel. All wisdom quotes and guided meditation resources are referenced from these public videos to help users easily practice daily SOUL Reflection and inner stillness.\n\nAll original copyrights and intellectual property remain solely with Bunda Arsaningsih. We encourage users to support her official work by subscribing to and following the official Bunda Arsaningsih YouTube channel."
+    override val disclaimerVisitYoutube = "Visit Bunda Arsaningsih on YouTube"
+    override val splashTagline = "Sanctuary for Mindfulness & Inner Peace"
+    override val splashMindfulBreath = "Breathe in gently... Be fully present in this moment."
 
     // Meditation
     override val meditationTitle = "Meditation"
@@ -441,6 +461,7 @@ object EnglishStrings : AppStrings {
     override val closeButton = "Close"
     override val updatePackageTitle = "Update Package v%s"
     override val newQuotesCount = "+%d new quotes added"
+    override val newMeditationsCount = "+%d new meditation sessions added"
     override val applyingUpdateLabel = "Applying update..."
     override val shareBackupTitle = "Save / Share Data Backup"
 

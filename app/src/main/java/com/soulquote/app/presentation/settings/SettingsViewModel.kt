@@ -43,6 +43,7 @@ data class BackupUiState(
     val favoritesCount: Int = 0,
     val historyCount: Int = 0,
     val journalCount: Int = 0,
+    val userQuotesCount: Int = 0,
     val settingsCount: Int = 0,
     val isExporting: Boolean = false,
     val isRestoring: Boolean = false,
@@ -81,6 +82,7 @@ class SettingsViewModel(
                         favoritesCount = stats.favoritesCount,
                         historyCount = stats.historyCount,
                         journalCount = stats.journalCount,
+                        userQuotesCount = stats.userQuotesCount,
                         settingsCount = stats.settingsCount
                     )
                 }
@@ -325,6 +327,7 @@ class SettingsViewModel(
                     favoritesCount = stats.favoritesCount,
                     historyCount = stats.historyCount,
                     journalCount = stats.journalCount,
+                    userQuotesCount = stats.userQuotesCount,
                     settingsCount = stats.settingsCount
                 )
             }

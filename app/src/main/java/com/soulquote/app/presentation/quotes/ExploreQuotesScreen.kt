@@ -9,13 +9,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedFilterChip
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChipDefaults
@@ -45,6 +51,7 @@ fun ExploreQuotesScreen(
     modifier: Modifier = Modifier,
     onNavigateToStudio: ((Quote) -> Unit)? = null
 ) {
+    val userQuotes by viewModel.userQuotes.collectAsState()
     val quotes by viewModel.exploreQuotes.collectAsState()
     val categories by viewModel.categories.collectAsState()
     val selectedCategory by viewModel.selectedCategoryId.collectAsState()
@@ -119,6 +126,24 @@ fun ExploreQuotesScreen(
                     )
                 )
             }
+            item {
+                ElevatedFilterChip(
+                    selected = selectedCategory == "custom",
+                    onClick = { viewModel.selectCategory("custom") },
+                    label = { Text("Kutipan Saya (${userQuotes.size})") },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Bookmark,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp)
+                        )
+                    },
+                    colors = FilterChipDefaults.elevatedFilterChipColors(
+                        selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                        selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                )
+            }
             items(categories) { category ->
                 val isSelected = selectedCategory == category.id
                 ElevatedFilterChip(
@@ -143,11 +168,48 @@ fun ExploreQuotesScreen(
                     .weight(1f),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = "No quotes found for this selection.",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.outline
-                )
+                if (selectedCategory == "custom") {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.padding(24.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.BookmarkBorder,
+                            contentDescription = null,
+                            modifier = Modifier.size(48.dp),
+                            tint = MaterialTheme.colorScheme.outline.copy(alpha = 0.6f)
+                        )
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Text(
+                            text = "Belum ada kutipan pribadi yang disimpan.",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.outline
+                        )
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Button(onClick = {
+                            onNavigateToStudio?.invoke(
+                                Quote(
+                                    id = "new_custom",
+                                    text = "Tuliskan renungan dan inspirasimu di sini...",
+                                    author = "Pribadi",
+                                    categoryId = "custom",
+                                    isFavorite = false,
+                                    tags = listOf("Kutipan Pribadi")
+                                )
+                            )
+                        }) {
+                            Icon(imageVector = Icons.Default.Edit, contentDescription = null, modifier = Modifier.size(16.dp))
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text("Tulis di Quote Studio")
+                        }
+                    }
+                } else {
+                    Text(
+                        text = "No quotes found for this selection.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.outline
+                    )
+                }
             }
         } else {
             LazyColumn(

@@ -55,6 +55,9 @@ class QuoteStudioConfigTest {
         val defaultState = StudioUiState()
         assertEquals(24f, defaultState.fontSizeSp)
         assertEquals(0.25f, defaultState.overlayOpacity)
+        assertEquals(0f, defaultState.verticalBias)
+        assertEquals(StudioTextCardBg.None, defaultState.textCardBg)
+        assertEquals(0.55f, defaultState.textCardOpacity)
         assertTrue(defaultState.showWatermark)
         assertTrue(defaultState.showAuthor)
         assertFalse(defaultState.isExporting)
@@ -65,5 +68,24 @@ class QuoteStudioConfigTest {
 
         val boundedHigh = defaultState.copy(overlayOpacity = (1.5f).coerceIn(0f, 0.85f))
         assertEquals(0.85f, boundedHigh.overlayOpacity)
+
+        // Verify verticalBias constraint bounds
+        val biasLow = (-1.0f).coerceIn(-0.75f, 0.75f)
+        assertEquals(-0.75f, biasLow, 0.001f)
+
+        val biasHigh = (1.0f).coerceIn(-0.75f, 0.75f)
+        assertEquals(0.75f, biasHigh, 0.001f)
+    }
+
+    @Test
+    fun testStudioTextCardBgPresets() {
+        val cardBgs = StudioTextCardBg.entries
+        assertTrue(cardBgs.size >= 8)
+        assertEquals(StudioTextCardBg.None, cardBgs.first { it.label == "None" })
+        assertTrue(cardBgs.any { it.label == "Hitam" })
+        assertTrue(cardBgs.any { it.label == "Slate" })
+        assertTrue(cardBgs.any { it.label == "Putih" })
+        assertTrue(cardBgs.any { it.label == "Krem" })
+        assertTrue(cardBgs.any { it.label == "Bata" })
     }
 }

@@ -24,7 +24,8 @@ class QuoteViewModelFactory(
                 getFavoriteQuotesUseCase = GetFavoriteQuotesUseCase(quoteRepo),
                 toggleFavoriteUseCase = ToggleFavoriteUseCase(quoteRepo),
                 getRandomQuoteUseCase = GetRandomQuoteUseCase(quoteRepo),
-                getCategoriesUseCase = GetCategoriesUseCase(quoteRepo)
+                getCategoriesUseCase = GetCategoriesUseCase(quoteRepo),
+                userQuoteDao = appContainer.userDatabase.userQuoteDao()
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

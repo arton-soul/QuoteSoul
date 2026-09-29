@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.soulquote.app.core.di.AppContainer
 import com.soulquote.app.core.studio.QuoteImageExporter
+import com.soulquote.app.data.local.dao.UserQuoteDao
+import com.soulquote.app.data.local.entity.user.UserQuoteEntity
 import com.soulquote.app.domain.model.Quote
 import com.soulquote.app.domain.repository.QuoteRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,9 +17,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 class StudioViewModel(
-    private val quoteRepository: QuoteRepository
+    private val quoteRepository: QuoteRepository,
+    private val userQuoteDao: UserQuoteDao? = null
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(StudioUiState())
@@ -25,6 +29,10 @@ class StudioViewModel(
 
     val availableQuotes: StateFlow<List<Quote>> = quoteRepository.getAllQuotes()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    val userQuotes: StateFlow<List<UserQuoteEntity>> = userQuoteDao?.getAllUserQuotes()
+        ?.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+        ?: MutableStateFlow(emptyList())
 
     fun setQuote(quote: Quote) {
         _uiState.value = _uiState.value.copy(
@@ -128,6 +136,56 @@ class StudioViewModel(
         }
     }
 
+    fun setVerticalBias(bias: Float) {
+        _uiState.value = _uiState.value.copy(verticalBias = bias.coerceIn(-0.75f, 0.75f))
+    }
+
+    fun setTextCardBg(bg: StudioTextCardBg) {
+        _uiState.value = _uiState.value.copy(textCardBg = bg)
+    }
+
+    fun setTextCardOpacity(opacity: Float) {
+        _uiState.value = _uiState.value.copy(textCardOpacity = opacity.coerceIn(0.1f, 1f))
+    }
+
+    fun saveCustomQuote(text: String, author: String) {
+        viewModelScope.launch {
+            val trimmedText = text.trim()
+            val trimmedAuthor = author.trim().ifEmpty { "Pribadi" }
+            if (trimmedText.isBlank()) return@launch
+
+            val id = "uq_${UUID.randomUUID().toString().take(8)}"
+            val entity = UserQuoteEntity(
+                id = id,
+                text = trimmedText,
+                author = trimmedAuthor,
+                category = "custom",
+                createdAt = System.currentTimeMillis(),
+                updatedAt = System.currentTimeMillis()
+            )
+            userQuoteDao?.insertUserQuote(entity)
+            _uiState.value = _uiState.value.copy(
+                quoteId = id,
+                quoteText = trimmedText,
+                author = trimmedAuthor
+            )
+        }
+    }
+
+    fun deleteCustomQuote(id: String) {
+        viewModelScope.launch {
+            userQuoteDao?.deleteUserQuote(id)
+        }
+    }
+
+    fun setCustomQuote(userQuote: UserQuoteEntity) {
+        _uiState.value = _uiState.value.copy(
+            quoteId = userQuote.id,
+            quoteText = userQuote.text,
+            author = userQuote.author
+        )
+    }
+
     fun clearStatusMessage() {
         _uiState.value = _uiState.value.copy(exportStatusMessage = null)
     }
@@ -140,7 +198,8 @@ class StudioViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(StudioViewModel::class.java)) {
             return StudioViewModel(
-                quoteRepository = appContainer.quoteRepository
+                quoteRepository = appContainer.quoteRepository,
+                userQuoteDao = appContainer.userDatabase.userQuoteDao()
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

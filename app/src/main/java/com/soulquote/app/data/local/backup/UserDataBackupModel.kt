@@ -28,6 +28,15 @@ data class JournalEntryBackupDto(
     val updatedAt: Long = System.currentTimeMillis()
 )
 
+data class UserQuoteBackupDto(
+    val id: String,
+    val text: String,
+    val author: String = "Pribadi",
+    val category: String = "custom",
+    val createdAt: Long = System.currentTimeMillis(),
+    val updatedAt: Long = System.currentTimeMillis()
+)
+
 data class UserDataBackup(
     val backupVersion: Int = 1,
     val appVersion: Int = 1,
@@ -36,6 +45,7 @@ data class UserDataBackup(
     val favorites: List<FavoriteBackupDto> = emptyList(),
     val meditationHistory: List<MeditationHistoryBackupDto> = emptyList(),
     val journalEntries: List<JournalEntryBackupDto> = emptyList(),
+    val userQuotes: List<UserQuoteBackupDto> = emptyList(),
     val settings: Map<String, String> = emptyMap(),
     val checksumSha256: String = ""
 ) {
@@ -86,6 +96,19 @@ data class UserDataBackup(
             journalArray.put(obj)
         }
         dataObj.put("journalEntries", journalArray)
+
+        val uqArray = JSONArray()
+        for (u in userQuotes) {
+            val obj = JSONObject()
+            obj.put("id", u.id)
+            obj.put("text", u.text)
+            obj.put("author", u.author)
+            obj.put("category", u.category)
+            obj.put("createdAt", u.createdAt)
+            obj.put("updatedAt", u.updatedAt)
+            uqArray.put(obj)
+        }
+        dataObj.put("userQuotes", uqArray)
 
         val setObj = JSONObject()
         for ((k, v) in settings) {
@@ -162,6 +185,24 @@ data class UserDataBackup(
                 }
             }
 
+            val userQuotes = mutableListOf<UserQuoteBackupDto>()
+            val uqArray = dataObj.optJSONArray("userQuotes")
+            if (uqArray != null) {
+                for (i in 0 until uqArray.length()) {
+                    val obj = uqArray.getJSONObject(i)
+                    userQuotes.add(
+                        UserQuoteBackupDto(
+                            id = obj.getString("id"),
+                            text = obj.getString("text"),
+                            author = obj.optString("author", "Pribadi"),
+                            category = obj.optString("category", "custom"),
+                            createdAt = obj.optLong("createdAt", System.currentTimeMillis()),
+                            updatedAt = obj.optLong("updatedAt", System.currentTimeMillis())
+                        )
+                    )
+                }
+            }
+
             val settings = mutableMapOf<String, String>()
             val setObj = dataObj.optJSONObject("settings")
             if (setObj != null) {
@@ -180,6 +221,7 @@ data class UserDataBackup(
                 favorites = favorites,
                 meditationHistory = history,
                 journalEntries = journalList,
+                userQuotes = userQuotes,
                 settings = settings,
                 checksumSha256 = checksumSha256
             )

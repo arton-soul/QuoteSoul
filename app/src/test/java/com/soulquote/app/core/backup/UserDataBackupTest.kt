@@ -4,6 +4,7 @@ import com.soulquote.app.data.local.backup.FavoriteBackupDto
 import com.soulquote.app.data.local.backup.JournalEntryBackupDto
 import com.soulquote.app.data.local.backup.MeditationHistoryBackupDto
 import com.soulquote.app.data.local.backup.UserDataBackup
+import com.soulquote.app.data.local.backup.UserQuoteBackupDto
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
@@ -43,6 +44,16 @@ class UserDataBackupTest {
                     updatedAt = 1759000400000L
                 )
             ),
+            userQuotes = listOf(
+                UserQuoteBackupDto(
+                    id = "user_q_1",
+                    text = "Ketenangan adalah awal dari kebijaksanaan.",
+                    author = "Saya",
+                    category = "custom",
+                    createdAt = 1759000500000L,
+                    updatedAt = 1759000500000L
+                )
+            ),
             settings = mapOf(
                 "daily_quote_enabled" to "true",
                 "vibration_enabled" to "false"
@@ -57,6 +68,7 @@ class UserDataBackupTest {
         assertTrue(jsonStr.contains("med_breathe_01"))
         assertTrue(jsonStr.contains("PEACEFUL"))
         assertTrue(jsonStr.contains("Hening pagi di teras rumah."))
+        assertTrue(jsonStr.contains("Ketenangan adalah awal dari kebijaksanaan."))
 
         val restored = UserDataBackup.fromJsonString(jsonStr)
         assertEquals(backup.backupVersion, restored.backupVersion)
@@ -78,6 +90,11 @@ class UserDataBackupTest {
         assertEquals("PEACEFUL", restored.journalEntries[0].mood)
         assertEquals("Hening pagi di teras rumah.", restored.journalEntries[0].content)
 
+        assertEquals(1, restored.userQuotes.size)
+        assertEquals("user_q_1", restored.userQuotes[0].id)
+        assertEquals("Ketenangan adalah awal dari kebijaksanaan.", restored.userQuotes[0].text)
+        assertEquals("Saya", restored.userQuotes[0].author)
+
         assertEquals(2, restored.settings.size)
         assertEquals("true", restored.settings["daily_quote_enabled"])
         assertEquals("false", restored.settings["vibration_enabled"])
@@ -93,6 +110,7 @@ class UserDataBackupTest {
             favorites = emptyList(),
             meditationHistory = emptyList(),
             journalEntries = emptyList(),
+            userQuotes = emptyList(),
             settings = emptyMap(),
             checksumSha256 = "empty_checksum"
         )
@@ -104,21 +122,24 @@ class UserDataBackupTest {
         assertEquals(0, restored.favorites.size)
         assertEquals(0, restored.meditationHistory.size)
         assertEquals(0, restored.journalEntries.size)
+        assertEquals(0, restored.userQuotes.size)
         assertEquals(0, restored.settings.size)
     }
 
     @Test
     fun testUserDataStatsAndRestoreResult() {
-        val stats = UserDataStats(favoritesCount = 5, historyCount = 2, journalCount = 3, settingsCount = 4)
+        val stats = UserDataStats(favoritesCount = 5, historyCount = 2, journalCount = 3, userQuotesCount = 1, settingsCount = 4)
         assertEquals(5, stats.favoritesCount)
         assertEquals(2, stats.historyCount)
         assertEquals(3, stats.journalCount)
+        assertEquals(1, stats.userQuotesCount)
         assertEquals(4, stats.settingsCount)
 
-        val result = RestoreResult(favoritesRestored = 5, historyRestored = 2, journalRestored = 3, settingsRestored = 4)
+        val result = RestoreResult(favoritesRestored = 5, historyRestored = 2, journalRestored = 3, userQuotesRestored = 1, settingsRestored = 4)
         assertEquals(5, result.favoritesRestored)
         assertEquals(2, result.historyRestored)
         assertEquals(3, result.journalRestored)
+        assertEquals(1, result.userQuotesRestored)
         assertEquals(4, result.settingsRestored)
     }
 }

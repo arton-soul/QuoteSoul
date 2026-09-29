@@ -56,6 +56,19 @@ enum class StudioTextColor(val label: String, val colorHex: Long) {
     PastelMint("Mint", 0xFFA7F3D0)
 }
 
+enum class StudioTextCardBg(val label: String, val colorHex: Long) {
+    None("None", 0x00000000),
+    Dark("Hitam", 0xFF0B0F17),
+    SoftDark("Slate", 0xFF1E293B),
+    Light("Putih", 0xFFFFFFFF),
+    Cream("Krem", 0xFFFAF7EE),
+    Terracotta("Bata", 0xFF7C2D12),
+    RoseGold("Mawar", 0xFF6D2849),
+    Gold("Emas", 0xFF785918),
+    Forest("Hutan", 0xFF064E3B),
+    Indigo("Indigo", 0xFF1E1B4B)
+}
+
 data class StudioUiState(
     val quoteId: String? = null,
     val quoteText: String = "Kedamaian jiwa dimulai saat pikiran tenang dan hati penuh syukur.",
@@ -66,6 +79,9 @@ data class StudioUiState(
     val fontSizeSp: Float = 24f,
     val textAlign: TextAlign = TextAlign.Center,
     val textColor: StudioTextColor = StudioTextColor.White,
+    val verticalBias: Float = 0f,
+    val textCardBg: StudioTextCardBg = StudioTextCardBg.None,
+    val textCardOpacity: Float = 0.55f,
     val overlayOpacity: Float = 0.25f,
     val showWatermark: Boolean = true,
     val showAuthor: Boolean = true,

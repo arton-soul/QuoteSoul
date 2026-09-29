@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.core.content.FileProvider
 import com.soulquote.app.presentation.studio.StudioBackground
 import com.soulquote.app.presentation.studio.StudioFont
+import com.soulquote.app.presentation.studio.StudioTextCardBg
 import com.soulquote.app.presentation.studio.StudioUiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -134,7 +135,45 @@ object QuoteImageExporter {
         } else null
 
         val totalContentHeight = quoteLayout.height + (authorLayout?.height?.plus((24 * scale).toInt()) ?: 0)
-        val startY = max((height - totalContentHeight) / 2f, height * 0.15f)
+        
+        // Calculate vertical position considering verticalBias (-0.75 to +0.75)
+        val centerBaseY = (height - totalContentHeight) / 2f
+        val biasShift = state.verticalBias * (height * 0.35f)
+        val minMarginY = height * 0.08f
+        val maxMarginY = height - totalContentHeight - (if (state.showWatermark) 48 * scale else 24 * scale)
+        val startY = (centerBaseY + biasShift).coerceIn(minMarginY, max(minMarginY, maxMarginY))
+
+        // 3.5. Draw Text Card Background (if enabled)
+        if (state.textCardBg != StudioTextCardBg.None) {
+            var textMaxLineWidth = 0f
+            for (i in 0 until quoteLayout.lineCount) {
+                textMaxLineWidth = max(textMaxLineWidth, quoteLayout.getLineWidth(i))
+            }
+            if (authorLayout != null) {
+                for (i in 0 until authorLayout.lineCount) {
+                    textMaxLineWidth = max(textMaxLineWidth, authorLayout.getLineWidth(i))
+                }
+            }
+
+            val cardPaddingX = 24f * scale
+            val cardPaddingY = 20f * scale
+            val cardWidth = (textMaxLineWidth + cardPaddingX * 2).coerceIn(
+                width * 0.5f,
+                width - (horizontalMargin * 0.5f)
+            )
+            val cardHeight = totalContentHeight + cardPaddingY * 2
+            val cardLeft = (width - cardWidth) / 2f
+            val cardTop = startY - cardPaddingY
+            val cardRect = RectF(cardLeft, cardTop, cardLeft + cardWidth, cardTop + cardHeight)
+
+            val cardPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+                color = state.textCardBg.colorHex.toInt()
+                alpha = (state.textCardOpacity.coerceIn(0.1f, 1f) * 255).toInt()
+                style = Paint.Style.FILL
+            }
+            val cornerRadius = 18f * scale
+            canvas.drawRoundRect(cardRect, cornerRadius, cornerRadius, cardPaint)
+        }
 
         // 4. Draw Quote Text
         canvas.save()

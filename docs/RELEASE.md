@@ -7,8 +7,8 @@ Dokumen ini merupakan panduan komprehensif untuk proses build, penandatanganan (
 ## 1. Spesifikasi Rilis Aplikasi
 
 - **Application ID**: `com.dearyoti.soulquote`
-- **Version Code**: `3`
-- **Version Name**: `0.3.0`
+- **Version Code**: `4`
+- **Version Name**: `0.4.0`
 - **Min SDK**: `26` (Android 8.0 Oreo)
 - **Target SDK**: `36` (Android 16 / Android 15+ Google Play Compliant)
 - **Compile SDK**: `36`
@@ -22,10 +22,10 @@ Dokumen ini merupakan panduan komprehensif untuk proses build, penandatanganan (
 
 Setelah proses kompilasi rilis berhasil dieksekusi:
 
-| Tipe Berkas | Lokasi Berkas | Ukuran | Kegunaan |
-| :--- | :--- | :--- | :--- |
-| **Release AAB** | [`app/build/outputs/bundle/release/app-release.aab`](file:///d:/Android/Projectku/SoulQuote/app/build/outputs/bundle/release/app-release.aab) | **9.08 MB** (9,518,591 bytes) | **Upload ke Google Play Console (Internal Testing)** |
-| **Release APK** | [`app/build/outputs/apk/release/app-release.apk`](file:///d:/Android/Projectku/SoulQuote/app/build/outputs/apk/release/app-release.apk) | **6.25 MB** (6,555,683 bytes) | Pengujian langsung di perangkat fisik |
+| Tipe Berkas | Lokasi Berkas | Ukuran | SHA-256 Checksum | Kegunaan |
+| :--- | :--- | :--- | :--- | :--- |
+| **Release AAB** | [`app/build/outputs/bundle/release/app-release.aab`](file:///d:/Android/Projectku/SoulQuote/app/build/outputs/bundle/release/app-release.aab) | **9.18 MB** (9,629,285 B) | `3ef5136422efda4ba8bcda0c643a7f62ac6ef62b8f397b0d2e82c5c0aa19b957` | **Upload ke Google Play Console (Production / Internal Testing)** |
+| **Release APK** | [`app/build/outputs/apk/release/app-release.apk`](file:///d:/Android/Projectku/SoulQuote/app/build/outputs/apk/release/app-release.apk) | **6.30 MB** (6,608,115 B) | `60c928a0504ab4af1c02fb45d08ded1c049489ebe4a9cbf7e5003cd6df01ffab` | Pengujian dan instalasi langsung di perangkat fisik |
 
 ---
 
@@ -33,7 +33,30 @@ Setelah proses kompilasi rilis berhasil dieksekusi:
 
 Teks siap salin untuk kolom **Keterangan Rilis (Release Notes)** di Google Play Console:
 
-### Versi 0.3.0 (Version Code: 3) — Terkini (Current Release)
+### 🌟 Versi 0.4.0 (Version Code: 4) — Terkini (Current Release)
+```text
+<id-ID>
+Pembaruan SoulQuote v0.4.0 menghadirkan fitur kreasi kutipan dan tampilan pembuka baru:
+• Pembuat Kutipan Pribadi: Tulis kata-kata bijak Anda sendiri dan simpan permanen di database privat lokal yang aman.
+• Latar Khusus Kutipan: Percantik kartu kutipan dengan pilihan warna latar teks khusus dan tingkat opasitas yang fleksibel.
+• Pengatur Posisi & Geser Bebas: Pindahkan letak kutipan secara bebas di kanvas dengan gesture sentuh atau tombol cepat.
+• Pengatur Redup Foto Galeri: Atur opasitas foto latar dari galeri agar teks selalu mudah dibaca.
+• Layar Pembuka (Splash Screen): Tampilan pembuka baru dengan animasi denyut pernapasan kesadaran (mindful breathing pulse).
+• Penafian & Atribusi Resmi: Informasi transparansi dan apresiasi sumber inspirasi ceramah/meditasi Bunda Arsaningsih.
+</id-ID>
+
+<en-US>
+SoulQuote v0.4.0 brings creative quote crafting tools and a serene new intro:
+• Personal Wisdom Quotes: Compose and store your own custom quotes in a private, encrypted local database.
+• Custom Text Container Cards: Enhance quotes with stylish highlight container backgrounds and adjustable opacity.
+• Freeform Drag & Repositioning: Move and align quote text on the canvas freely via touch gestures or quick presets.
+• Gallery Photo Dimmer: Adjust background photo dimming for optimal quote readability and visual contrast.
+• Mindful Splash Screen: Beautiful new opening screen with rhythmic breathing pulse and halo aura glow.
+• Disclaimer & Attribution: Transparent attribution and direct acknowledgment of Bunda Arsaningsih's inspirational content.
+</en-US>
+```
+
+### Versi 0.3.0 (Version Code: 3) — Versi Sebelumnya
 ```text
 <id-ID>
 Pembaruan SoulQuote v0.3.0 menyempurnakan keandalan dan pengalaman meditasi Anda:
