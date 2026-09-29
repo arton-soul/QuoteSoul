@@ -20,6 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added `PendingPermissionAction` workflow ensuring that when Android 13+ `POST_NOTIFICATIONS` permission is requested, the pending test sound/notification executes seamlessly immediately after being granted.
 - **Physical Device Validation**:
   - Full end-to-end installation, soundscape playback, notification triggering, and database counter synchronization validated on physical Xiaomi Redmi device.
+- **Content Update v8 (OTA & Seed)**:
+  - Published Content Package Version 8 containing 60 new wisdom quotes and soul reflections on *Misteri Doa, Kepasrahan, & Hukum Semesta* by Bunda Arsaningsih & dr. Rastho Mahotama.
+  - Merged into `initial_content.json` (increasing total offline quotes to 192) and deployed live via `distribution/content_update_v8.json` and `distribution/content_manifest.json`.
 - **Content Update v7 (OTA & Seed)**:
   - Published Content Package Version 7 containing 60 new quotes by Bunda Arsaningsih from the podcast series *Karma, Reinkarnasi, & Misi Jiwa* (Channeling & Energi, Spiritual Gift, Misi Jiwa).
   - Merged into `initial_content.json` (increasing bundled offline quotes to 132) and deployed live via `distribution/content_update_v7.json` and `distribution/content_manifest.json`.

@@ -1,12 +1,12 @@
 {
-    "manifestVersion":  1,
-    "contentVersion":  7,
-    "minAppVersion":  1,
-    "releasedAt":  "2026-09-28T15:44:40Z",
-    "packageUrl":  "https://raw.githubusercontent.com/arton-soul/QuoteSoul/main/distribution/content_update_v7.json",
-    "packageSizeBytes":  44849,
-    "packageChecksumSha256":  "a838e1a91d16b12d90d3aadb61a88f22473dad9ffa859ccec3a0eef0efd23a55",
-    "changelog":  "Penambahan 60 kata-kata bijak dan mutiara kesadaran jiwa oleh Bunda Arsaningsih (Seri Karma, Reinkarnasi, \u0026 Misi Jiwa).",
-    "quotesCount":  60,
-    "meditationsCount":  0
+  "manifestVersion": 1,
+  "contentVersion": 8,
+  "minAppVersion": 1,
+  "releasedAt": "2026-09-29T01:53:13.220Z",
+  "packageUrl": "https://raw.githubusercontent.com/arton-soul/QuoteSoul/main/distribution/content_update_v8.json",
+  "packageSizeBytes": 33473,
+  "packageChecksumSha256": "6a57bfd5356ae475d52833babb7a8850eb2b9837232d67959961591e76161142",
+  "changelog": "Penambahan 60 kata bijak dan perenungan kesadaran jiwa tentang Misteri Doa, Kepasrahan, & Hukum Semesta (Bunda Arsaningsih & dr. Rastho Mahotama).",
+  "quotesCount": 60,
+  "meditationsCount": 0
 }
