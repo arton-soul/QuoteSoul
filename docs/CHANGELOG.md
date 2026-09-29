@@ -5,6 +5,26 @@ All notable changes to the **SoulQuote** project will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-09-30
+
+### Added & Enhanced
+- **OSR Authentic Meditations Integration (Content Update v9)**:
+  - Extracted, verified, and integrated 9 authentic full-length Online Soul Reflection (OSR) meditation sessions by Bunda Arsaningsih from Google Drive (`Damai Tanpa Curiga`, `Olah Rasa & Kepekaan Batin`, `Pribadi Tangguh Siap Bertumbuh`, `Menyelaraskan Energi Law of Attraction`, `Pembersihan Panca Indera`, `Pembersihan Emosi dari Luar`, `Akhirnya Beneran Bahagia`, `Memperteguh Keyakinan pada Tuhan`, `Pembersihan Cakra Mahkota`).
+  - Computed exact durations, sizes, and SHA-256 integrity checksums for all audio files.
+  - Deactivated 5 outdated dummy 10-second sample placeholder audios (`med_breathing_5min`, `med_inner_peace_10min`, `med_spiritual_energy_8min`, `med_deep_sleep_12min`, `med_online_18juni2025`).
+  - Active meditation catalog expanded to 17 authentic guided sessions.
+  - Created OTA update package `content_update_v9.json` and updated `content_manifest.json` for live client delivery.
+- **My Quotes Discoverability**:
+  - Added dedicated "Kutipan Saya" quick-access button and counter directly in Studio canvas.
+  - Added "Kutipan Saya" category filter in Explore Quotes screen.
+  - Integrated custom user quotes directly into Explore Quotes screen feed.
+- **Settings Screen Enhancements**:
+  - Display dynamic badge for new meditation sessions count (`+X sesi meditasi baru`) when content update package includes meditations.
+  - Added bilingual strings for meditation update counters.
+- **Production Release Signing**:
+  - Bumped `versionCode` to `5` and `versionName` to `0.5.0`.
+  - Built and signed release Android App Bundle (`app-release.aab`, 9.20 MB) and release APK (`app-release.apk`, 6.31 MB).
+
 ## [0.4.0] - 2026-09-29
 
 ### Added & Enhanced

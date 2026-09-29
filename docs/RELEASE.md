@@ -7,8 +7,8 @@ Dokumen ini merupakan panduan komprehensif untuk proses build, penandatanganan (
 ## 1. Spesifikasi Rilis Aplikasi
 
 - **Application ID**: `com.dearyoti.soulquote`
-- **Version Code**: `4`
-- **Version Name**: `0.4.0`
+- **Version Code**: `5`
+- **Version Name**: `0.5.0`
 - **Min SDK**: `26` (Android 8.0 Oreo)
 - **Target SDK**: `36` (Android 16 / Android 15+ Google Play Compliant)
 - **Compile SDK**: `36`
@@ -24,8 +24,8 @@ Setelah proses kompilasi rilis berhasil dieksekusi:
 
 | Tipe Berkas | Lokasi Berkas | Ukuran | SHA-256 Checksum | Kegunaan |
 | :--- | :--- | :--- | :--- | :--- |
-| **Release AAB** | [`app/build/outputs/bundle/release/app-release.aab`](file:///d:/Android/Projectku/SoulQuote/app/build/outputs/bundle/release/app-release.aab) | **9.18 MB** (9,629,285 B) | `3ef5136422efda4ba8bcda0c643a7f62ac6ef62b8f397b0d2e82c5c0aa19b957` | **Upload ke Google Play Console (Production / Internal Testing)** |
-| **Release APK** | [`app/build/outputs/apk/release/app-release.apk`](file:///d:/Android/Projectku/SoulQuote/app/build/outputs/apk/release/app-release.apk) | **6.30 MB** (6,608,115 B) | `60c928a0504ab4af1c02fb45d08ded1c049489ebe4a9cbf7e5003cd6df01ffab` | Pengujian dan instalasi langsung di perangkat fisik |
+| **Release AAB** | [`app/build/outputs/bundle/release/app-release.aab`](file:///d:/Android/Projectku/SoulQuote/app/build/outputs/bundle/release/app-release.aab) | **9.20 MB** (9,646,937 B) | `76610816cf85073cecbb2a77ca621a9755251b6724f72d829fee0ddaae8cfad8` | **Upload ke Google Play Console (Production / Internal Testing)** |
+| **Release APK** | [`app/build/outputs/apk/release/app-release.apk`](file:///d:/Android/Projectku/SoulQuote/app/build/outputs/apk/release/app-release.apk) | **6.31 MB** (6,614,627 B) | `1e6075ef1833eb010532571201f0ff9a33da477c8ec0af0941605dff5302e40c` | Pengujian dan instalasi langsung di perangkat fisik |
 
 ---
 
@@ -33,7 +33,30 @@ Setelah proses kompilasi rilis berhasil dieksekusi:
 
 Teks siap salin untuk kolom **Keterangan Rilis (Release Notes)** di Google Play Console:
 
-### 🌟 Versi 0.4.0 (Version Code: 4) — Terkini (Current Release)
+### 🌟 Versi 0.5.0 (Version Code: 5) — Terkini (Current Release)
+```text
+<id-ID>
+Pembaruan SoulQuote v0.5.0 menghadirkan ekspansi katalog meditasi dan peningkatan studio kutipan:
+• 9 Sesi Meditasi Baru: Nikmati 9 sesi meditasi OSR Bunda Arsaningsih berdurasi penuh (Damai Tanpa Curiga, Olah Rasa, Cakra Mahkota, Law of Attraction, Pembersihan Emosi, dll).
+• Pembaruan Konten Meditasi Versi 9: Sampel placeholder lama telah digantikan sepenuhnya dengan audio berkualitas tinggi. Total 17 sesi meditasi aktif.
+• Studio Kutipan Interaktif: Tulis kutipan pribadi, atur opasitas foto galeri, geser letak kutipan bebas di kanvas, dan pilih warna latar kartu kutipan.
+• Tab "Kutipan Saya": Akses dan kelola kata-kata bijak ciptaan Anda dengan cepat di Studio dan Jelajah Kutipan.
+• Layar Pembuka Meditatif: Animasi ritme nafas kesadaran (mindful breathing pulse) saat aplikasi dibuka.
+• Pernyataan & Penafian Transparan: Apresiasi penuh terhadap ceramah dan karya inspirasi Bunda Arsaningsih.
+</id-ID>
+
+<en-US>
+SoulQuote v0.5.0 brings an expanded meditation catalog and enhanced quote studio tools:
+• 9 New Full-Length Meditations: Authentic OSR guided sessions by Bunda Arsaningsih (Inner Peace, Crown Chakra, Law of Attraction, Emotional Cleansing, etc.).
+• Content Update v9: Old sample audio replaced with authentic full-length meditations. Total 17 active guided sessions.
+• Interactive Quote Studio: Create custom quotes, adjust gallery photo opacity, freely reposition text on canvas, and customize quote card backgrounds.
+• "My Quotes" Tab: Quick access and seamless management for your personal wisdom quotes in Studio and Explore.
+• Mindful Splash Screen: Elegant opening pulse animation synchronized with mindful breathing.
+• Transparent Disclaimer & Attribution: Clear recognition and appreciation of Bunda Arsaningsih's inspirational teachings.
+</en-US>
+```
+
+### Versi 0.4.0 (Version Code: 4) — Versi Sebelumnya
 ```text
 <id-ID>
 Pembaruan SoulQuote v0.4.0 menghadirkan fitur kreasi kutipan dan tampilan pembuka baru:
