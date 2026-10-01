@@ -47,6 +47,9 @@ interface QuoteDao {
     @Query("DELETE FROM quote_categories")
     suspend fun clearCategories()
 
+    @Query("DELETE FROM quotes WHERE author != 'Bunda Arsaningsih'")
+    suspend fun deleteNonBundaQuotes()
+
     @Transaction
     suspend fun replaceAllQuotes(quotes: List<QuoteEntity>, categories: List<QuoteCategoryEntity>) {
         clearQuotes()

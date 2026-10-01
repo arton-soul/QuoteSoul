@@ -20,6 +20,10 @@ data class ContentPackage(
             return if (has(key) && !isNull(key)) getString(key) else null
         }
 
+        private fun JSONObject.getNullableInt(key: String): Int? {
+            return if (has(key) && !isNull(key)) getInt(key) else null
+        }
+
         fun fromJson(jsonStr: String): ContentPackage {
             val json = JSONObject(jsonStr)
             val contentVersion = json.optInt("contentVersion", 1)
@@ -125,6 +129,8 @@ data class ContentPackage(
                             version = obj.optInt("version", 1),
                             checksum = obj.getString("checksum"),
                             sizeBytes = obj.getLong("sizeBytes"),
+                            meditationStartSeconds = obj.getNullableInt("meditationStartSeconds"),
+                            youtubeUrl = obj.getNullableString("youtubeUrl"),
                             active = obj.optBoolean("active", true)
                         )
                     )

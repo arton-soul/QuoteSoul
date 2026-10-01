@@ -1,6 +1,7 @@
 package com.soulquote.app.data
 
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.soulquote.app.data.local.SoulQuoteContentDatabase
 import com.soulquote.app.data.local.SoulQuoteUserDatabase
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -87,5 +88,36 @@ class RoomMigrationTest {
         // 2. Check index SQL
         val indexSql = executedSqlStatements[1]
         assertTrue("Must index createdAt column", indexSql.contains("index_user_quotes_createdAt"))
+    }
+
+    @Test
+    fun testContentDbMigration1To2SqlExecution() {
+        val migration = SoulQuoteContentDatabase.MIGRATION_1_2
+        assertEquals(1, migration.startVersion)
+        assertEquals(2, migration.endVersion)
+
+        val executedSqlStatements = mutableListOf<String>()
+
+        val dbProxy = Proxy.newProxyInstance(
+            SupportSQLiteDatabase::class.java.classLoader,
+            arrayOf(SupportSQLiteDatabase::class.java)
+        ) { _, method, args ->
+            if (method.name == "execSQL" && args != null && args.isNotEmpty()) {
+                executedSqlStatements.add(args[0].toString())
+            }
+            null
+        } as SupportSQLiteDatabase
+
+        migration.migrate(dbProxy)
+
+        assertEquals(2, executedSqlStatements.size)
+        assertTrue(
+            "Must alter table to add meditationStartSeconds",
+            executedSqlStatements.any { it.contains("ALTER TABLE `meditations` ADD COLUMN `meditationStartSeconds` INTEGER DEFAULT NULL") }
+        )
+        assertTrue(
+            "Must alter table to add youtubeUrl",
+            executedSqlStatements.any { it.contains("ALTER TABLE `meditations` ADD COLUMN `youtubeUrl` TEXT DEFAULT NULL") }
+        )
     }
 }

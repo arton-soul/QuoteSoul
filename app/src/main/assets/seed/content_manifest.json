@@ -1,12 +1,15 @@
-{
-  "manifestVersion": 1,
-  "contentVersion": 9,
-  "minAppVersion": 1,
-  "releasedAt": "2026-09-29T23:03:34.533Z",
-  "packageUrl": "https://raw.githubusercontent.com/arton-soul/QuoteSoul/main/distribution/content_update_v9.json",
-  "packageSizeBytes": 18026,
-  "packageChecksumSha256": "66bfb970b0e57800c613397a15f1f07f2984cb949e45a4afe0bd8ebb8324aaa6",
-  "changelog": "Pembaruan konten audio meditasi OSR Bunda Arsaningsih: 9 sesi meditasi baru berdurasi penuh (Damai Tanpa Curiga, Olah Rasa, Cakra Mahkota, Law of Attraction, dll) dan penonaktifan sampel lama.",
-  "quotesCount": 0,
-  "meditationsCount": 9
+﻿{
+    "contentVersion":  10,
+    "publishedAt":  "2026-10-01T11:06:50Z",
+    "minAppVersion":  1,
+    "description":  "Pembaruan audio meditasi utuh berdurasi panjang dengan chapter navigasi pencerahan/meditasi \u0026 tautan YouTube, serta penyelarasan 100% kutipan murni Bunda Arsaningsih.",
+    "changelog":  [
+                      "Mengganti berkas audio meditasi OSR dengan durasi utuh dan kualitas jernih",
+                      "Menambahkan tombol navigasi lompat langsung ke sesi meditasi (Chapter Jump)",
+                      "Menyematkan tautan langsung ke video sumber YouTube",
+                      "Menghapus kutipan non-Bunda Arsaningsih sehingga 100% kutipan berasal dari karya Bunda Arsaningsih"
+                  ],
+    "packageUrl":  "asset://seed/content_update_v10.json",
+    "packageChecksumSha256":  "a8d25ff30d725057f01203a4ce5c0d3a5f2a7cf7d6232d33d79820ea459401d0",
+    "packageSizeBytes":  156124
 }

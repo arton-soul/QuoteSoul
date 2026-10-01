@@ -284,6 +284,7 @@ class ContentUpdateManager(
                 }
                 if (contentPackage.quotes.isNotEmpty()) {
                     database.quoteDao().insertQuotes(contentPackage.quotes)
+                    database.quoteDao().deleteNonBundaQuotes()
                 }
                 if (contentPackage.templates.isNotEmpty()) {
                     database.templateDao().insertTemplates(contentPackage.templates)

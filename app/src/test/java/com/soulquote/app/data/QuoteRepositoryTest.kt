@@ -84,6 +84,21 @@ class QuoteRepositoryTest {
         assertFalse(repository.isFavorite("q_new"))
     }
 
+    @Test
+    fun testDeleteNonBundaQuotes() = runBlocking {
+        val quotes = listOf(
+            QuoteEntity("1", "Text 1", "Bunda Arsaningsih", "mindfulness"),
+            QuoteEntity("2", "Text 2", "Marcus Aurelius", "stoicism"),
+            QuoteEntity("3", "Text 3", "Bunda Arsaningsih", "inner_peace")
+        )
+        fakeQuoteDao.insertQuotes(quotes)
+        assertEquals(3, fakeQuoteDao.getActiveQuoteCount())
+
+        fakeQuoteDao.deleteNonBundaQuotes()
+        assertEquals(2, fakeQuoteDao.getActiveQuoteCount())
+        assertTrue(fakeQuoteDao.getActiveQuotesList().all { it.author == "Bunda Arsaningsih" })
+    }
+
     private class FakeQuoteDao : QuoteDao {
         val activeQuotes = mutableListOf<QuoteEntity>()
         val quotesFlow = MutableStateFlow<List<QuoteEntity>>(emptyList())
@@ -101,6 +116,9 @@ class QuoteRepositoryTest {
         override suspend fun insertCategories(categories: List<QuoteCategoryEntity>) {}
         override suspend fun clearQuotes() { activeQuotes.clear() }
         override suspend fun clearCategories() {}
+        override suspend fun deleteNonBundaQuotes() {
+            activeQuotes.removeAll { it.author != "Bunda Arsaningsih" }
+        }
     }
 
     private class FakeFavoriteDao : FavoriteDao {

@@ -21,6 +21,10 @@ class DatabaseSeeder(
         return if (has(key) && !isNull(key)) getString(key) else null
     }
 
+    private fun JSONObject.getNullableInt(key: String): Int? {
+        return if (has(key) && !isNull(key)) getInt(key) else null
+    }
+
     suspend fun seedIfNecessary() = withContext(Dispatchers.IO) {
         try {
             val jsonString = context.assets.open("seed/initial_content.json")
@@ -136,6 +140,8 @@ class DatabaseSeeder(
                             version = obj.optInt("version", 1),
                             checksum = obj.getString("checksum"),
                             sizeBytes = obj.getLong("sizeBytes"),
+                            meditationStartSeconds = obj.getNullableInt("meditationStartSeconds"),
+                            youtubeUrl = obj.getNullableString("youtubeUrl"),
                             active = obj.optBoolean("active", true)
                         )
                     )

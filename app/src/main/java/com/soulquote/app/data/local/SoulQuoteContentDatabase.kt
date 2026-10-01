@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.soulquote.app.data.local.dao.AppConfigDao
 import com.soulquote.app.data.local.dao.MeditationDao
 import com.soulquote.app.data.local.dao.QuoteDao
@@ -24,7 +26,7 @@ import com.soulquote.app.data.local.entity.content.TemplateEntity
         TemplateEntity::class,
         AppConfigEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = true
 )
 abstract class SoulQuoteContentDatabase : RoomDatabase() {
@@ -36,6 +38,13 @@ abstract class SoulQuoteContentDatabase : RoomDatabase() {
     companion object {
         const val DATABASE_NAME = "soulquote_content.db"
 
+        val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE `meditations` ADD COLUMN `meditationStartSeconds` INTEGER DEFAULT NULL")
+                db.execSQL("ALTER TABLE `meditations` ADD COLUMN `youtubeUrl` TEXT DEFAULT NULL")
+            }
+        }
+
         @Volatile
         private var INSTANCE: SoulQuoteContentDatabase? = null
 
@@ -45,7 +54,8 @@ abstract class SoulQuoteContentDatabase : RoomDatabase() {
                     context.applicationContext,
                     SoulQuoteContentDatabase::class.java,
                     DATABASE_NAME
-                ).fallbackToDestructiveMigration()
+                ).addMigrations(MIGRATION_1_2)
+                    .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
                 instance
@@ -53,3 +63,4 @@ abstract class SoulQuoteContentDatabase : RoomDatabase() {
         }
     }
 }
+

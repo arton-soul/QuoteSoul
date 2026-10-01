@@ -12,6 +12,8 @@ data class Meditation(
     val version: Int = 1,
     val checksum: String,
     val sizeBytes: Long,
+    val meditationStartSeconds: Int? = null,
+    val youtubeUrl: String? = null,
     val isActive: Boolean = true,
     val isDownloaded: Boolean = false,
     val isFavorite: Boolean = false
@@ -25,3 +27,4 @@ data class MeditationCategory(
     val iconName: String? = null,
     val sortOrder: Int = 0
 )
+

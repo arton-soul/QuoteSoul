@@ -129,6 +129,12 @@ interface AppStrings {
     val instructorPrefix: String
     val availableOfflineDesc: String
     val downloadOfflineDesc: String
+    val chapterDiscourse: String
+    val chapterMeditation: String
+    val watchOnYouTube: String
+    val watchOnYouTubeAtMeditation: String
+    val meditationPhaseDiscourse: String
+    val meditationPhasePractice: String
 
     // Extra Settings Strings
     val closeButton: String
@@ -296,6 +302,12 @@ object IndonesianStrings : AppStrings {
     override val instructorPrefix = "Instruktur: %s"
     override val availableOfflineDesc = "Tersedia Offline"
     override val downloadOfflineDesc = "Unduh Offline"
+    override val chapterDiscourse = "Pencerahan"
+    override val chapterMeditation = "Mulai Meditasi (%s)"
+    override val watchOnYouTube = "Tonton Video di YouTube"
+    override val watchOnYouTubeAtMeditation = "Tonton di YouTube (Mulai Meditasi %s)"
+    override val meditationPhaseDiscourse = "Fase: Pencerahan & Kesadaran"
+    override val meditationPhasePractice = "Fase: Meditasi Hening"
 
     // Extra Settings Strings
     override val closeButton = "Tutup"
@@ -456,6 +468,12 @@ object EnglishStrings : AppStrings {
     override val instructorPrefix = "Instructor: %s"
     override val availableOfflineDesc = "Available Offline"
     override val downloadOfflineDesc = "Download Offline"
+    override val chapterDiscourse = "Discourse"
+    override val chapterMeditation = "Start Meditation (%s)"
+    override val watchOnYouTube = "Watch Video on YouTube"
+    override val watchOnYouTubeAtMeditation = "Watch on YouTube (Start at %s)"
+    override val meditationPhaseDiscourse = "Phase: Discourse & Awareness"
+    override val meditationPhasePractice = "Phase: Guided Stillness"
 
     // Extra Settings Strings
     override val closeButton = "Close"

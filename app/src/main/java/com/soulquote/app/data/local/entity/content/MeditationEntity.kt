@@ -24,6 +24,8 @@ data class MeditationEntity(
     val version: Int = 1,
     val checksum: String,
     val sizeBytes: Long,
+    val meditationStartSeconds: Int? = null,
+    val youtubeUrl: String? = null,
     val active: Boolean = true
 )
 
@@ -37,3 +39,4 @@ data class MeditationCategoryEntity(
     val iconName: String? = null,
     val sortOrder: Int = 0
 )
+

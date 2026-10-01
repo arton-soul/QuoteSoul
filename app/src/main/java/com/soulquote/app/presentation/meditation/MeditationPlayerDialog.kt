@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.CloudDownload
 import androidx.compose.material.icons.filled.Delete
@@ -30,7 +31,9 @@ import androidx.compose.material.icons.filled.FastForward
 import androidx.compose.material.icons.filled.FastRewind
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.PlayCircle
 import androidx.compose.material.icons.filled.SelfImprovement
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
@@ -41,6 +44,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Surface
@@ -58,10 +62,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.soulquote.app.core.localization.LocalAppStrings
 import com.soulquote.app.domain.model.Meditation
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -79,6 +85,8 @@ fun MeditationPlayerModal(
 ) {
     val meditation = playerState.currentMeditation ?: return
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val strings = LocalAppStrings.current
+    val uriHandler = LocalUriHandler.current
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -217,7 +225,76 @@ fun MeditationPlayerModal(
                 )
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            // Chapter / Phase Jump Buttons (Pencerahan & Meditasi)
+            meditation.meditationStartSeconds?.let { startSec ->
+                if (startSec > 0) {
+                    val formattedStart = String.format("%02d:%02d", startSec / 60, startSec % 60)
+                    val currentSec = (playerState.currentPositionMs / 1000).toInt()
+                    val isInMeditationPhase = currentSec >= startSec
+
+                    Spacer(modifier = Modifier.height(14.dp))
+
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        FilterChip(
+                            selected = !isInMeditationPhase,
+                            onClick = { onSeekTo(0L) },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.MenuBook,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(16.dp)
+                                )
+                            },
+                            label = {
+                                Text(
+                                    text = "${strings.chapterDiscourse} (00:00)",
+                                    fontSize = 12.sp,
+                                    fontWeight = if (!isInMeditationPhase) FontWeight.SemiBold else FontWeight.Normal
+                                )
+                            },
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                                selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                        )
+
+                        FilterChip(
+                            selected = isInMeditationPhase,
+                            onClick = { onSeekTo(startSec * 1000L) },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Default.SelfImprovement,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(16.dp)
+                                )
+                            },
+                            label = {
+                                Text(
+                                    text = String.format(strings.chapterMeditation, formattedStart),
+                                    fontSize = 12.sp,
+                                    fontWeight = if (isInMeditationPhase) FontWeight.SemiBold else FontWeight.Normal
+                                )
+                            },
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                                selectedLabelColor = MaterialTheme.colorScheme.onSecondaryContainer
+                            )
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = if (isInMeditationPhase) strings.meditationPhasePractice else strings.meditationPhaseDiscourse,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
 
             // Seeking Slider
             var isUserSeeking by remember { mutableStateOf(false) }
@@ -342,6 +419,51 @@ fun MeditationPlayerModal(
                             selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
                             selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
                         )
+                    )
+                }
+            }
+
+            // YouTube Source Video Button
+            meditation.youtubeUrl?.takeIf { it.isNotBlank() }?.let { rawUrl ->
+                Spacer(modifier = Modifier.height(20.dp))
+                val startSec = meditation.meditationStartSeconds
+                val targetYoutubeUrl = remember(rawUrl, startSec) {
+                    if (startSec != null && startSec > 0 && !rawUrl.contains("t=")) {
+                        if (rawUrl.contains("?")) "$rawUrl&t=${startSec}s" else "$rawUrl?t=${startSec}s"
+                    } else {
+                        rawUrl
+                    }
+                }
+
+                OutlinedButton(
+                    onClick = {
+                        try {
+                            uriHandler.openUri(targetYoutubeUrl)
+                        } catch (e: Exception) {
+                            // Safely ignore if no browser/YouTube app available
+                        }
+                    },
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = MaterialTheme.colorScheme.onSurface
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.PlayCircle,
+                        contentDescription = null,
+                        tint = Color(0xFFE53935),
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = if (startSec != null && startSec > 0) {
+                            val formattedStart = String.format("%02d:%02d", startSec / 60, startSec % 60)
+                            String.format(strings.watchOnYouTubeAtMeditation, formattedStart)
+                        } else {
+                            strings.watchOnYouTube
+                        },
+                        style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Medium)
                     )
                 }
             }

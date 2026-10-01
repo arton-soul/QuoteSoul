@@ -18,6 +18,8 @@ fun MeditationEntity.toDomain(isDownloaded: Boolean = false, isFavorite: Boolean
         version = version,
         checksum = checksum,
         sizeBytes = sizeBytes,
+        meditationStartSeconds = meditationStartSeconds,
+        youtubeUrl = youtubeUrl,
         isActive = active,
         isDownloaded = isDownloaded,
         isFavorite = isFavorite
@@ -34,3 +36,4 @@ fun MeditationCategoryEntity.toDomain(): MeditationCategory {
         sortOrder = sortOrder
     )
 }
+
