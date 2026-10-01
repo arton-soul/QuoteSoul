@@ -61,9 +61,18 @@ class NotificationHelper(private val context: Context) {
                 setSound(zenBowlUri, audioAttributes)
             }
 
+            val ratingChannel = NotificationChannel(
+                CHANNEL_RATING_ID,
+                "Apresiasi & Rating SoulQuote",
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                description = "Notifikasi apresiasi dan ajakan rating aplikasi SoulQuote di Play Store"
+            }
+
             val systemNotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             systemNotificationManager.createNotificationChannel(dailyQuoteChannel)
             systemNotificationManager.createNotificationChannel(meditationChannel)
+            systemNotificationManager.createNotificationChannel(ratingChannel)
         }
     }
 
@@ -192,12 +201,59 @@ class NotificationHelper(private val context: Context) {
         }
     }
 
+    fun showRatingNotification(
+        title: String = "SoulQuote • Beri Rating di Play Store",
+        message: String = "Bagikan pengalaman damaimu bersama SoulQuote dengan memberikan ulasan di Google Play Store."
+    ) {
+        if (!hasNotificationPermission()) return
+
+        val intent = Intent(context, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            putExtra(EXTRA_NAV_TARGET, "rate_app")
+        }
+
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            NOTIFICATION_ID_RATING,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val notification = NotificationCompat.Builder(context, CHANNEL_RATING_ID)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle(title)
+            .setContentText(message)
+            .setStyle(
+                NotificationCompat.BigTextStyle()
+                    .bigText(message)
+                    .setSummaryText("Apresiasi SoulQuote")
+            )
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
+            .build()
+
+        try {
+            notificationManager.notify(NOTIFICATION_ID_RATING, notification)
+        } catch (_: SecurityException) {
+        }
+    }
+
+    fun cancelRatingNotification() {
+        try {
+            notificationManager.cancel(NOTIFICATION_ID_RATING)
+        } catch (_: Exception) {
+        }
+    }
+
     companion object {
         const val CHANNEL_DAILY_QUOTE_ID = "channel_daily_quote_v2"
         const val CHANNEL_MEDITATION_ID = "channel_meditation_v2"
+        const val CHANNEL_RATING_ID = "channel_rating_v1"
 
         const val NOTIFICATION_ID_DAILY_QUOTE = 1001
         const val NOTIFICATION_ID_MEDITATION = 1002
+        const val NOTIFICATION_ID_RATING = 1003
 
         const val EXTRA_QUOTE_ID = "extra_quote_id"
         const val EXTRA_NAV_TARGET = "extra_nav_target"

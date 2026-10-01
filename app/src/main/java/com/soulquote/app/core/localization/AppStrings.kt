@@ -87,6 +87,13 @@ interface AppStrings {
     val disclaimerTitle: String
     val disclaimerBody: String
     val disclaimerVisitYoutube: String
+    val rateAppButton: String
+    val ratingPromptTitle: String
+    val ratingPromptBody: String
+    val ratingPromptRateButton: String
+    val ratingPromptLaterButton: String
+    val ratingNotificationTitle: String
+    val ratingNotificationMessage: String
     val splashTagline: String
     val splashMindfulBreath: String
 
@@ -260,6 +267,13 @@ object IndonesianStrings : AppStrings {
     override val disclaimerTitle = "Penafian & Sumber Konten"
     override val disclaimerBody = "Aplikasi SoulQuote dikembangkan secara mandiri dan BUKAN merupakan aplikasi resmi dari Bunda Arsaningsih maupun organisasi/perusahaan SOUL. Tidak ada ikatan kerja sama resmi, afiliasi, kemitraan, ataupun sponsor antara pengembang aplikasi ini dan pihak Bunda Arsaningsih / organisasi SOUL.\n\nAplikasi ini dibuat semata-mata sebagai sarana pembantu yang terinspirasi oleh materi dan ceramah di Kanal YouTube Resmi Bunda Arsaningsih. Seluruh kutipan bijak dan panduan meditasi bersumber serta dirangkum dari tayangan publik YouTube tersebut, dengan tujuan tulus untuk mempermudah masyarakat dalam melatih keheningan batin dan meditasi SOUL Reflection setiap hari.\n\nHak cipta atas rekaman, naskah renungan, dan ajaran orisinal sepenuhnya tetap menjadi milik Bunda Arsaningsih. Dukung selalu karya asli beliau dengan menonton dan berlangganan di Kanal YouTube Resmi Bunda Arsaningsih."
     override val disclaimerVisitYoutube = "Buka YouTube Bunda Arsaningsih"
+    override val rateAppButton = "Beri Rating di Play Store"
+    override val ratingPromptTitle = "Suka Menggunakan SoulQuote?"
+    override val ratingPromptBody = "Dukungan dan ulasan bintang 5 Anda di Google Play Store sangat berarti untuk membantu kami terus menghadirkan ketenangan dan inspirasi bagi lebih banyak jiwa."
+    override val ratingPromptRateButton = "Beri Rating Sekarang"
+    override val ratingPromptLaterButton = "Nanti Saja"
+    override val ratingNotificationTitle = "SoulQuote • Beri Rating di Play Store"
+    override val ratingNotificationMessage = "Bagikan pengalaman damaimu bersama SoulQuote dengan memberikan ulasan di Google Play Store."
     override val splashTagline = "Ruang Hening & Kebijaksanaan Jiwa"
     override val splashMindfulBreath = "Tarik napas perlahan... Hadir seutuhnya di saat ini."
 
@@ -426,6 +440,13 @@ object EnglishStrings : AppStrings {
     override val disclaimerTitle = "Disclaimer & Attribution"
     override val disclaimerBody = "SoulQuote is an independently developed application and is NOT an official app of Bunda Arsaningsih or the SOUL organization/company. There is no official affiliation, partnership, sponsorship, or endorsement between the developer and Bunda Arsaningsih or SOUL entities.\n\nThis app was created as a personal mindfulness companion inspired by the teachings and public video content on Bunda Arsaningsih's official YouTube Channel. All wisdom quotes and guided meditation resources are referenced from these public videos to help users easily practice daily SOUL Reflection and inner stillness.\n\nAll original copyrights and intellectual property remain solely with Bunda Arsaningsih. We encourage users to support her official work by subscribing to and following the official Bunda Arsaningsih YouTube channel."
     override val disclaimerVisitYoutube = "Visit Bunda Arsaningsih on YouTube"
+    override val rateAppButton = "Rate on Google Play"
+    override val ratingPromptTitle = "Enjoying SoulQuote?"
+    override val ratingPromptBody = "Your 5-star rating and review on Google Play Store will help us bring mindfulness, peace, and daily wisdom to more souls."
+    override val ratingPromptRateButton = "Rate on Play Store"
+    override val ratingPromptLaterButton = "Maybe Later"
+    override val ratingNotificationTitle = "SoulQuote • Rate on Google Play"
+    override val ratingNotificationMessage = "Share your peaceful experience with SoulQuote by leaving a rating on Google Play."
     override val splashTagline = "Sanctuary for Mindfulness & Inner Peace"
     override val splashMindfulBreath = "Breathe in gently... Be fully present in this moment."
 

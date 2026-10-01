@@ -325,9 +325,7 @@ fun StudioScreen(
                 when (activeTab) {
                     0 -> FormatControls(
                         currentRatio = uiState.aspectRatio,
-                        verticalBias = uiState.verticalBias,
-                        onSelectRatio = { viewModel.setAspectRatio(it) },
-                        onVerticalBiasChange = { viewModel.setVerticalBias(it) }
+                        onSelectRatio = { viewModel.setAspectRatio(it) }
                     )
                     1 -> BackgroundControls(
                         currentBackground = uiState.background,
@@ -345,10 +343,12 @@ fun StudioScreen(
                         fontSizeSp = uiState.fontSizeSp,
                         textAlign = uiState.textAlign,
                         textColor = uiState.textColor,
+                        verticalBias = uiState.verticalBias,
                         onSelectFont = { viewModel.setFont(it) },
                         onFontSizeChange = { viewModel.setFontSize(it) },
                         onSelectAlign = { viewModel.setTextAlign(it) },
-                        onSelectTextColor = { viewModel.setTextColor(it) }
+                        onSelectTextColor = { viewModel.setTextColor(it) },
+                        onVerticalBiasChange = { viewModel.setVerticalBias(it) }
                     )
                     3 -> EffectsControls(
                         textCardBg = uiState.textCardBg,
@@ -551,9 +551,7 @@ fun StudioPreviewCard(
 @Composable
 fun FormatControls(
     currentRatio: StudioAspectRatio,
-    verticalBias: Float,
-    onSelectRatio: (StudioAspectRatio) -> Unit,
-    onVerticalBiasChange: (Float) -> Unit
+    onSelectRatio: (StudioAspectRatio) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -598,52 +596,6 @@ fun FormatControls(
                 )
             }
         }
-
-        Spacer(modifier = Modifier.height(14.dp))
-        Text(
-            text = "Posisi Kutipan (Geser Layar / Tombol Cepat)",
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        Spacer(modifier = Modifier.height(6.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            OutlinedButton(
-                onClick = { onVerticalBiasChange(-0.55f) },
-                modifier = Modifier.weight(1f),
-                contentPadding = PaddingValues(horizontal = 4.dp, vertical = 6.dp)
-            ) {
-                Icon(Icons.Default.VerticalAlignTop, contentDescription = null, modifier = Modifier.size(16.dp))
-                Spacer(modifier = Modifier.width(4.dp))
-                Text("Atas", fontSize = 12.sp)
-            }
-            OutlinedButton(
-                onClick = { onVerticalBiasChange(0f) },
-                modifier = Modifier.weight(1f),
-                contentPadding = PaddingValues(horizontal = 4.dp, vertical = 6.dp)
-            ) {
-                Icon(Icons.Default.VerticalAlignCenter, contentDescription = null, modifier = Modifier.size(16.dp))
-                Spacer(modifier = Modifier.width(4.dp))
-                Text("Tengah", fontSize = 12.sp)
-            }
-            OutlinedButton(
-                onClick = { onVerticalBiasChange(0.55f) },
-                modifier = Modifier.weight(1f),
-                contentPadding = PaddingValues(horizontal = 4.dp, vertical = 6.dp)
-            ) {
-                Icon(Icons.Default.VerticalAlignBottom, contentDescription = null, modifier = Modifier.size(16.dp))
-                Spacer(modifier = Modifier.width(4.dp))
-                Text("Bawah", fontSize = 12.sp)
-            }
-        }
-        Spacer(modifier = Modifier.height(4.dp))
-        Slider(
-            value = verticalBias,
-            onValueChange = onVerticalBiasChange,
-            valueRange = -0.75f..0.75f
-        )
     }
 }
 
@@ -805,10 +757,12 @@ fun TypographyControls(
     fontSizeSp: Float,
     textAlign: TextAlign,
     textColor: StudioTextColor,
+    verticalBias: Float,
     onSelectFont: (StudioFont) -> Unit,
     onFontSizeChange: (Float) -> Unit,
     onSelectAlign: (TextAlign) -> Unit,
-    onSelectTextColor: (StudioTextColor) -> Unit
+    onSelectTextColor: (StudioTextColor) -> Unit,
+    onVerticalBiasChange: (Float) -> Unit
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -920,6 +874,54 @@ fun TypographyControls(
                 style = MaterialTheme.typography.labelSmall
             )
         }
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        // Posisi Kutipan (Geser Layar / Tombol Cepat)
+        Text(
+            text = "Posisi Kutipan (Geser Layar / Tombol Cepat)",
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(modifier = Modifier.height(6.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            OutlinedButton(
+                onClick = { onVerticalBiasChange(-0.55f) },
+                modifier = Modifier.weight(1f),
+                contentPadding = PaddingValues(horizontal = 4.dp, vertical = 6.dp)
+            ) {
+                Icon(Icons.Default.VerticalAlignTop, contentDescription = null, modifier = Modifier.size(16.dp))
+                Spacer(modifier = Modifier.width(4.dp))
+                Text("Atas", fontSize = 12.sp)
+            }
+            OutlinedButton(
+                onClick = { onVerticalBiasChange(0f) },
+                modifier = Modifier.weight(1f),
+                contentPadding = PaddingValues(horizontal = 4.dp, vertical = 6.dp)
+            ) {
+                Icon(Icons.Default.VerticalAlignCenter, contentDescription = null, modifier = Modifier.size(16.dp))
+                Spacer(modifier = Modifier.width(4.dp))
+                Text("Tengah", fontSize = 12.sp)
+            }
+            OutlinedButton(
+                onClick = { onVerticalBiasChange(0.55f) },
+                modifier = Modifier.weight(1f),
+                contentPadding = PaddingValues(horizontal = 4.dp, vertical = 6.dp)
+            ) {
+                Icon(Icons.Default.VerticalAlignBottom, contentDescription = null, modifier = Modifier.size(16.dp))
+                Spacer(modifier = Modifier.width(4.dp))
+                Text("Bawah", fontSize = 12.sp)
+            }
+        }
+        Spacer(modifier = Modifier.height(4.dp))
+        Slider(
+            value = verticalBias,
+            onValueChange = onVerticalBiasChange,
+            valueRange = -0.75f..0.75f
+        )
     }
 }
 

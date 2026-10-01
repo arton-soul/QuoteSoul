@@ -118,11 +118,24 @@ class MainActivity : ComponentActivity() {
             }
 
             var showSplash by rememberSaveable { mutableStateOf(true) }
+            var showRatingDialog by rememberSaveable { mutableStateOf(false) }
 
             val initialNavTarget by navTarget.collectAsState()
             LaunchedEffect(initialNavTarget) {
                 if (initialNavTarget != null) {
                     showSplash = false
+                }
+            }
+
+            LaunchedEffect(Unit) {
+                val appContainer = (application as SoulQuoteApp).appContainer
+                val shouldPrompt = com.soulquote.app.core.util.RatingHelper.checkAndTrackAppLaunch(appContainer.userRepository)
+                if (shouldPrompt) {
+                    showRatingDialog = true
+                    appContainer.notificationHelper.showRatingNotification(
+                        title = strings.ratingNotificationTitle,
+                        message = strings.ratingNotificationMessage
+                    )
                 }
             }
 
@@ -153,6 +166,20 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                     }
+
+                    if (showRatingDialog && !showSplash) {
+                        com.soulquote.app.presentation.components.RatingPromptDialog(
+                            onRateNow = {
+                                showRatingDialog = false
+                                val appContainer = (application as SoulQuoteApp).appContainer
+                                appContainer.notificationHelper.cancelRatingNotification()
+                                com.soulquote.app.core.util.RatingHelper.launchPlayStoreRating(this@MainActivity)
+                            },
+                            onDismiss = {
+                                showRatingDialog = false
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -171,6 +198,10 @@ class MainActivity : ComponentActivity() {
                 ambientViewModel.selectTab(1)
             } else if (target == "meditation") {
                 ambientViewModel.selectTab(0)
+            } else if (target == "rate_app") {
+                val appContainer = (application as SoulQuoteApp).appContainer
+                appContainer.notificationHelper.cancelRatingNotification()
+                com.soulquote.app.core.util.RatingHelper.launchPlayStoreRating(this)
             }
             _navTarget.value = target
         }

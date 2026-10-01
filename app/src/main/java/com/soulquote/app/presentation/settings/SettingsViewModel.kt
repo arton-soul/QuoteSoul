@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.File
+import com.soulquote.app.core.util.RatingHelper
 
 data class ContentUpdateUiState(
     val currentVersion: Int = 3,
@@ -104,6 +105,12 @@ class SettingsViewModel(
                     isNetworkConnected = networkAvailable
                 )
             }
+        }
+    }
+
+    fun markRatingPromptShown() {
+        viewModelScope.launch {
+            RatingHelper.markRatingPromptShown(userRepository)
         }
     }
 
