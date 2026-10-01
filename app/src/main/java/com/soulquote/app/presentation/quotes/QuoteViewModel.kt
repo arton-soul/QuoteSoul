@@ -124,6 +124,23 @@ class QuoteViewModel(
         }
     }
 
+    fun loadRandomQuote() {
+        viewModelScope.launch {
+            val currentId = _dailyQuote.value?.id
+            var newQuote: Quote? = null
+            for (attempt in 0..4) {
+                val candidate = getRandomQuoteUseCase()
+                if (candidate != null && (candidate.id != currentId || attempt == 4)) {
+                    newQuote = candidate
+                    break
+                }
+            }
+            if (newQuote != null) {
+                _dailyQuote.value = newQuote
+            }
+        }
+    }
+
     fun selectCategory(categoryId: String) {
         _selectedCategoryId.value = categoryId
     }

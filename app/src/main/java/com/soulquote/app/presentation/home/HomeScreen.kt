@@ -1,6 +1,10 @@
 package com.soulquote.app.presentation.home
 
 import android.content.Intent
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -90,6 +94,12 @@ fun HomeScreen(
 
     var showJournalDialog by remember { mutableStateOf(false) }
     var showBadgesDialog by remember { mutableStateOf(false) }
+    var refreshRotation by remember { mutableFloatStateOf(0f) }
+    val animatedRotation by animateFloatAsState(
+        targetValue = refreshRotation,
+        animationSpec = tween(durationMillis = 400),
+        label = "refreshIconRotation"
+    )
 
     val streakInfo = journalViewModel?.streakInfo?.collectAsStateWithLifecycle()?.value
     val todayEntries = journalViewModel?.todayEntries?.collectAsStateWithLifecycle()?.value ?: emptyList()
@@ -188,11 +198,17 @@ fun HomeScreen(
                         Spacer(modifier = Modifier.width(6.dp))
                     }
 
-                    IconButton(onClick = { viewModel.loadDailyQuote() }) {
+                    IconButton(
+                        onClick = {
+                            refreshRotation += 360f
+                            viewModel.loadRandomQuote()
+                        }
+                    ) {
                         Icon(
                             imageVector = Icons.Default.Refresh,
-                            contentDescription = "Refresh Daily Quote",
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            contentDescription = "Acak Kutipan Inspirasi",
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.graphicsLayer { rotationZ = animatedRotation }
                         )
                     }
                     if (onNavigateToFavorites != null) {
