@@ -5,6 +5,27 @@ All notable changes to the **SoulQuote** project will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2026-10-01
+
+### Added & Enhanced
+- **Quote Studio Controls Ergonomics**:
+  - Moved quote vertical repositioning controls (quick alignment buttons `Atas`, `Tengah`, `Bawah` and the vertical bias slider) from the "Format" tab to the "Teks" (`TypographyControls`) tab, consolidating all text manipulation in one place.
+  - Streamlined the "Format" (`FormatControls`) tab to focus strictly on canvas aspect ratio presets (`1:1`, `9:16`, `4:5`).
+- **Play Store Rating System & Settings Entry**:
+  - Created `RatingHelper.kt` for market deep-linking (`market://details?id=...`), launch count tracking, and strictly one-time rating prompt logic.
+  - Implemented `RatingPromptDialog.kt` with a 5-star rating presentation and mindful prompt messaging.
+  - Added system rating notification via `NotificationHelper` (`channel_rating_v1`, ID `1003`) triggered on the 3rd application launch (shown at most once).
+  - Added "Beri Rating di Play Store" button in `SettingsScreen.kt` inside the About card.
+  - Added bilingual strings in `AppStrings.kt`, `IndonesianStrings`, and `EnglishStrings`.
+- **Home Screen Quote Randomization & Animation**:
+  - Upgraded the refresh button next to Favorites to trigger `loadRandomQuote()`, selecting a new quote different from the currently displayed one.
+  - Added a smooth 360° rotation animation on the refresh icon (`animateFloatAsState` and `rotationZ`) for instant tactile feedback.
+- **Testing & Quality Assurance**:
+  - Added unit test suite `RatingHelperTest.kt` verifying app launch increments, threshold checks, and prompt suppression.
+- **Production Release Signing**:
+  - Bumped `versionCode` to `7` and `versionName` to `0.7.0`.
+  - Compiled and signed production Android App Bundle (`app-release.aab`, 9.25 MB) and release APK (`app-release.apk`, 6.33 MB).
+
 ## [0.6.0] - 2026-10-01
 
 ### Added & Enhanced

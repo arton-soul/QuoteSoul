@@ -7,8 +7,8 @@ Dokumen ini merupakan panduan komprehensif untuk proses build, penandatanganan (
 ## 1. Spesifikasi Rilis Aplikasi
 
 - **Application ID**: `com.dearyoti.soulquote`
-- **Version Code**: `6`
-- **Version Name**: `0.6.0`
+- **Version Code**: `7`
+- **Version Name**: `0.7.0`
 - **Min SDK**: `26` (Android 8.0 Oreo)
 - **Target SDK**: `36` (Android 16 / Android 15+ Google Play Compliant)
 - **Compile SDK**: `36`
@@ -24,8 +24,8 @@ Setelah proses kompilasi rilis berhasil dieksekusi:
 
 | Tipe Berkas | Lokasi Berkas | Ukuran | SHA-256 Checksum | Kegunaan |
 | :--- | :--- | :--- | :--- | :--- |
-| **Release AAB** | [`app/build/outputs/bundle/release/app-release.aab`](file:///d:/Android/Projectku/SoulQuote/app/build/outputs/bundle/release/app-release.aab) | **9.23 MB** (9,681,474 B) | `a628a6fccfa1ae88e44eb369876be258f77315cb98803bb14d481c3d268302e8` | **Upload ke Google Play Console (Production / Internal Testing)** |
-| **Release APK** | [`app/build/outputs/apk/release/app-release.apk`](file:///d:/Android/Projectku/SoulQuote/app/build/outputs/apk/release/app-release.apk) | **6.33 MB** (6,633,844 B) | `0aa56b87f6b0ca057138d7835b318c2d24dee16c5d3893d1eacfc58127fb4d6c` | Pengujian dan instalasi langsung di perangkat fisik |
+| **Release AAB** | [`app/build/outputs/bundle/release/app-release.aab`](file:///d:/Android/Projectku/SoulQuote/app/build/outputs/bundle/release/app-release.aab) | **9.25 MB** (9,695,212 B) | `02c434d3c434d0c2cd3c644a6dc5a8809e3a7b83ba0cb7083bc18a16c6943542` | **Upload ke Google Play Console (Production / Internal Testing)** |
+| **Release APK** | [`app/build/outputs/apk/release/app-release.apk`](file:///d:/Android/Projectku/SoulQuote/app/build/outputs/apk/release/app-release.apk) | **6.33 MB** (6,633,848 B) | `73a1ea4d5acc319fc542039b439cd75aa3a8c721d36578f868ebed3ae7da7b17` | Pengujian dan instalasi langsung di perangkat fisik |
 
 ---
 
@@ -33,7 +33,30 @@ Setelah proses kompilasi rilis berhasil dieksekusi:
 
 Teks siap salin untuk kolom **Keterangan Rilis (Release Notes)** di Google Play Console:
 
-### 🌟 Versi 0.6.0 (Version Code: 6) — Terkini (Current Release)
+### 🌟 Versi 0.7.0 (Version Code: 7) — Terkini (Current Release)
+```text
+<id-ID>
+Pembaruan SoulQuote v0.7.0 menyempurnakan kenyamanan Studio Kutipan, Beranda, dan dukungan aplikasi:
+• Studio Kutipan Lebih Intuitif: Kontrol posisi kutipan (tombol Atas/Tengah/Bawah & slider geser vertikal) kini dipindahkan ke tab "Teks" bersama seluruh pengaturan tipografi font.
+• Tab Format Lebih Ringkas: Pilihan rasio kanvas (1:1, 9:16, 4:5) kini tampil lebih rapi dan fokus.
+• Acak Kutipan Inspirasi di Beranda: Tombol refresh di samping tombol favorit kini langsung mengacak dan menampilkan kutipan baru seketika dengan animasi putar halus 360°.
+• Dukungan Rating Play Store: Menu apresiasi baru "Beri Rating di Play Store" kini tersedia di Pengaturan untuk memudahkan ulasan.
+• Notifikasi & Dialog Apresiasi Ramah: Dialog dan notifikasi apresiasi bintang 5 dihadirkan secara elegan pada peluncuran ke-3 (tampil tepat satu kali saja).
+• Peningkatan Kestabilan: Pengoptimalan performa antarmuka dan animasi di berbagai perangkat Android.
+</id-ID>
+
+<en-US>
+SoulQuote v0.7.0 refines Quote Studio ergonomics, Home screen discovery, and Play Store support:
+• Streamlined Quote Studio: Quote text repositioning controls (Top/Center/Bottom quick buttons & vertical slider) are now located in the "Text" tab alongside all typography tools.
+• Cleaner Format Tab: Canvas aspect ratio presets (1:1, 9:16, 4:5) are now focused and unobstructed.
+• Random Quote on Home: The refresh button next to favorites now instantly randomizes a new inspirational quote with a smooth 360° rotation animation.
+• In-App Play Store Rating: Added a direct "Rate on Google Play" button in Settings to support easy app reviews.
+• Mindful Rating Prompt: Elegant 5-star rating dialog and notification triggered gently on the 3rd app launch (shown strictly once).
+• Stability & Performance: Optimized UI rendering and animations across Android devices.
+</en-US>
+```
+
+### Versi 0.6.0 (Version Code: 6) — Versi Sebelumnya
 ```text
 <id-ID>
 Pembaruan SoulQuote v0.6.0 menyempurnakan sesi meditasi dan memurnikan inspirasi kutipan:
