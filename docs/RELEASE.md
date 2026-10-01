@@ -7,8 +7,8 @@ Dokumen ini merupakan panduan komprehensif untuk proses build, penandatanganan (
 ## 1. Spesifikasi Rilis Aplikasi
 
 - **Application ID**: `com.dearyoti.soulquote`
-- **Version Code**: `5`
-- **Version Name**: `0.5.0`
+- **Version Code**: `6`
+- **Version Name**: `0.6.0`
 - **Min SDK**: `26` (Android 8.0 Oreo)
 - **Target SDK**: `36` (Android 16 / Android 15+ Google Play Compliant)
 - **Compile SDK**: `36`
@@ -24,8 +24,8 @@ Setelah proses kompilasi rilis berhasil dieksekusi:
 
 | Tipe Berkas | Lokasi Berkas | Ukuran | SHA-256 Checksum | Kegunaan |
 | :--- | :--- | :--- | :--- | :--- |
-| **Release AAB** | [`app/build/outputs/bundle/release/app-release.aab`](file:///d:/Android/Projectku/SoulQuote/app/build/outputs/bundle/release/app-release.aab) | **9.20 MB** (9,646,937 B) | `76610816cf85073cecbb2a77ca621a9755251b6724f72d829fee0ddaae8cfad8` | **Upload ke Google Play Console (Production / Internal Testing)** |
-| **Release APK** | [`app/build/outputs/apk/release/app-release.apk`](file:///d:/Android/Projectku/SoulQuote/app/build/outputs/apk/release/app-release.apk) | **6.31 MB** (6,614,627 B) | `1e6075ef1833eb010532571201f0ff9a33da477c8ec0af0941605dff5302e40c` | Pengujian dan instalasi langsung di perangkat fisik |
+| **Release AAB** | [`app/build/outputs/bundle/release/app-release.aab`](file:///d:/Android/Projectku/SoulQuote/app/build/outputs/bundle/release/app-release.aab) | **9.23 MB** (9,681,474 B) | `a628a6fccfa1ae88e44eb369876be258f77315cb98803bb14d481c3d268302e8` | **Upload ke Google Play Console (Production / Internal Testing)** |
+| **Release APK** | [`app/build/outputs/apk/release/app-release.apk`](file:///d:/Android/Projectku/SoulQuote/app/build/outputs/apk/release/app-release.apk) | **6.33 MB** (6,633,844 B) | `0aa56b87f6b0ca057138d7835b318c2d24dee16c5d3893d1eacfc58127fb4d6c` | Pengujian dan instalasi langsung di perangkat fisik |
 
 ---
 
@@ -33,7 +33,30 @@ Setelah proses kompilasi rilis berhasil dieksekusi:
 
 Teks siap salin untuk kolom **Keterangan Rilis (Release Notes)** di Google Play Console:
 
-### 🌟 Versi 0.5.0 (Version Code: 5) — Terkini (Current Release)
+### 🌟 Versi 0.6.0 (Version Code: 6) — Terkini (Current Release)
+```text
+<id-ID>
+Pembaruan SoulQuote v0.6.0 menyempurnakan sesi meditasi dan memurnikan inspirasi kutipan:
+• Audio Meditasi Lengkap: 16 sesi meditasi kini hadir secara utuh diawali pencerahan dan dilanjutkan meditasi terpandu oleh Bunda Arsaningsih.
+• Fitur Lompat ke Meditasi: Tombol navigasi bab pada pemutar audio untuk langsung beralih ke sesi hening meditasi tanpa menggeser slider secara manual.
+• Tautan Langsung ke YouTube: Akses video sumber resmi di YouTube langsung pada menit dimulainya meditasi hanya dengan satu sentuhan.
+• 100% Kutipan Bunda Arsaningsih: Pembersihan menyeluruh katalog kutipan sehingga seluruh 180 kutipan inspirasi kini murni karya Bunda Arsaningsih.
+• Migrasi Basis Data v2: Peningkatan struktur data lokal Room Database yang lebih tangguh dan efisien.
+• Peningkatan Stabilitas: Optimasi pemutaran audio dan performa di berbagai perangkat Android.
+</id-ID>
+
+<en-US>
+SoulQuote v0.6.0 enhances meditation sessions and purifies inspirational quote wisdom:
+• Full-Length Meditation Audios: 16 complete meditation sessions featuring opening mindful discourse followed by guided meditation by Bunda Arsaningsih.
+• Jump to Meditation: Chapter navigation buttons on the audio player to quickly jump to the meditation section without manual seeking.
+• Direct YouTube Integration: One-tap button to open original YouTube source videos directly at the meditation timestamp.
+• 100% Bunda Arsaningsih Quotes: Catalog refined so all 180 inspirational quotes are authored by Bunda Arsaningsih.
+• Database Migration v2: Enhanced local Room Database structure with seamless non-destructive schema migration.
+• Performance & Stability: Improved audio streaming resilience and general stability across Android devices.
+</en-US>
+```
+
+### Versi 0.5.0 (Version Code: 5) — Versi Sebelumnya
 ```text
 <id-ID>
 Pembaruan SoulQuote v0.5.0 menghadirkan ekspansi katalog meditasi dan peningkatan studio kutipan:
@@ -183,20 +206,20 @@ Endpoint manifes default yang ditanam di dalam aplikasi:
 `https://raw.githubusercontent.com/arton-soul/QuoteSoul/main/distribution/content_manifest.json`
 
 ### Langkah Memperbarui Konten Tanpa Rilis APK Baru:
-1. Siapkan paket pembaruan konten baru (misal `distribution/content_update_v5.json`).
+1. Siapkan paket pembaruan konten baru (misal `distribution/content_update_v10.json`).
 2. Dapatkan ukuran bytes dan hash SHA-256 berkas tersebut di PowerShell:
    ```powershell
-   (Get-Item distribution\content_update_v5.json).Length
-   (Get-FileHash distribution\content_update_v5.json -Algorithm SHA256).Hash.ToLower()
+   (Get-Item distribution\content_update_v10.json).Length
+   (Get-FileHash distribution\content_update_v10.json -Algorithm SHA256).Hash.ToLower()
    ```
 3. Perbarui `distribution/content_manifest.json`:
-   - Naikkan `contentVersion` (misal dari `4` menjadi `5`).
+   - Naikkan `contentVersion` (misal dari `9` menjadi `10`).
    - Perbarui `packageUrl` menuju URL raw GitHub.
    - Masukkan `packageSizeBytes` dan `packageChecksumSha256`.
 4. Lakukan commit dan push ke GitHub:
    ```bash
    git add distribution/
-   git commit -m "feat: publish content update v5"
+   git commit -m "feat: publish content update v10"
    git push origin main
    ```
 5. Pengguna di Google Play Store akan secara otomatis mendeteksi pembaruan dan mengunduhnya ke basis data lokal perangkat mereka.

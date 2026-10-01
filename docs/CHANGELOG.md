@@ -5,6 +5,27 @@ All notable changes to the **SoulQuote** project will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2026-10-01
+
+### Added & Enhanced
+- **Full-Length Meditation Audios with Chapter Navigation (Content Update v10)**:
+  - Integrated 16 full-length authentic meditation audio recordings by Bunda Arsaningsih, preserving both opening mindful discourse (pencerahan) and guided meditation sessions.
+  - Implemented Chapter Navigation Chips in `MeditationPlayerDialog`: `📖 Pencerahan (00:00)` and `🧘 Mulai Meditasi (mm:ss)` for instant seeking.
+  - Added real-time meditation phase indicator (`Fase: Pencerahan & Kesadaran` vs `Fase: Meditasi Hening`).
+  - Added direct YouTube source button linking to the exact meditation start timestamp (`&t=XXs`).
+  - Created OTA update package `content_update_v10.json` and updated `content_manifest.json` with exact byte sizes and SHA-256 integrity hashes.
+- **100% Bunda Arsaningsih Inspirational Quotes Alignment**:
+  - Removed all 12 non-Bunda quotes (Marcus Aurelius, Seneca, Rumi, Lao Tzu, Buddha, Epicurus, Deepak Chopra).
+  - Purged quotes database to contain exactly 180 inspirational quotes authored by Bunda Arsaningsih across 6 categories.
+  - Added `@Query("DELETE FROM quotes WHERE author != 'Bunda Arsaningsih'")` in `QuoteDao` and automated database cleaning in `DatabaseSeeder` and `ContentUpdateManager`.
+- **Database Migration & Architecture**:
+  - Incremented `SoulQuoteContentDatabase` to version `2` with non-destructive `MIGRATION_1_2` adding `meditationStartSeconds` (INTEGER) and `youtubeUrl` (TEXT) columns to `meditations` table.
+  - Updated domain model `Meditation`, entity `MeditationEntity`, DTO `ContentPackage`, and mapper `MeditationMapper`.
+  - Added comprehensive unit tests in `RoomMigrationTest` and `QuoteRepositoryTest`.
+- **Production Release Signing**:
+  - Bumped `versionCode` to `6` and `versionName` to `0.6.0`.
+  - Built and signed release Android App Bundle (`app-release.aab`, 9.23 MB) and release APK (`app-release.apk`, 6.33 MB).
+
 ## [0.5.0] - 2026-09-30
 
 ### Added & Enhanced
